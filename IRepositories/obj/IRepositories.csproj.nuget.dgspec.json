@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "K:\\Flo\\Formation\\CDA\\Projet\\repo\\Digiliberte-back\\IRepositories\\IRepositories.csproj": {}
+    "C:\\Users\\oliko\\OneDrive\\Bureau\\GIT projet fileRouge\\Digiliberte-back\\IRepositories\\IRepositories.csproj": {}
   },
   "projects": {
-    "K:\\Flo\\Formation\\CDA\\Projet\\repo\\Digiliberte-back\\IRepositories\\IRepositories.csproj": {
+    "C:\\Users\\oliko\\OneDrive\\Bureau\\GIT projet fileRouge\\Digiliberte-back\\IRepositories\\IRepositories.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "K:\\Flo\\Formation\\CDA\\Projet\\repo\\Digiliberte-back\\IRepositories\\IRepositories.csproj",
+        "projectUniqueName": "C:\\Users\\oliko\\OneDrive\\Bureau\\GIT projet fileRouge\\Digiliberte-back\\IRepositories\\IRepositories.csproj",
         "projectName": "IRepositories",
-        "projectPath": "K:\\Flo\\Formation\\CDA\\Projet\\repo\\Digiliberte-back\\IRepositories\\IRepositories.csproj",
-        "packagesPath": "C:\\Users\\FLO\\.nuget\\packages\\",
-        "outputPath": "K:\\Flo\\Formation\\CDA\\Projet\\repo\\Digiliberte-back\\IRepositories\\obj\\",
+        "projectPath": "C:\\Users\\oliko\\OneDrive\\Bureau\\GIT projet fileRouge\\Digiliberte-back\\IRepositories\\IRepositories.csproj",
+        "packagesPath": "C:\\Users\\oliko\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\oliko\\OneDrive\\Bureau\\GIT projet fileRouge\\Digiliberte-back\\IRepositories\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\FLO\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\oliko\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -65,7 +65,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
