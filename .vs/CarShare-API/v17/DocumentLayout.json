@@ -1,21 +1,49 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "K:\\Flo\\Formation\\CDA\\Projet\\repo\\Digiliberte-back\\",
+  "WorkspaceRootPath": "C:\\Users\\DIGINAMIC\\Documents\\CODE CAFE\\BackEndRepo\\Digiliberte-back\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{6D6B6C71-0C91-427F-B83A-E04293C50B80}|Main\\Main.csproj|k:\\flo\\formation\\cda\\projet\\repo\\digiliberte-back\\main\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6D6B6C71-0C91-427F-B83A-E04293C50B80}|Main\\Main.csproj|solutionrelative:main\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{41E94768-4F53-4D4B-B2AC-7813E43DD048}|Models\\Models.csproj|c:\\users\\diginamic\\documents\\code cafe\\backendrepo\\digiliberte-back\\models\\localization.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{41E94768-4F53-4D4B-B2AC-7813E43DD048}|Models\\Models.csproj|solutionrelative:models\\localization.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{41E94768-4F53-4D4B-B2AC-7813E43DD048}|Models\\Models.csproj|K:\\Flo\\Formation\\CDA\\Projet\\repo\\Digiliberte-back\\models\\appuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{41E94768-4F53-4D4B-B2AC-7813E43DD048}|Models\\Models.csproj|solutionrelative:models\\appuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{41E94768-4F53-4D4B-B2AC-7813E43DD048}|Models\\Models.csproj|c:\\users\\diginamic\\documents\\code cafe\\backendrepo\\digiliberte-back\\models\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{41E94768-4F53-4D4B-B2AC-7813E43DD048}|Models\\Models.csproj|solutionrelative:models\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{41E94768-4F53-4D4B-B2AC-7813E43DD048}|Models\\Models.csproj|K:\\Flo\\Formation\\CDA\\Projet\\repo\\Digiliberte-back\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{41E94768-4F53-4D4B-B2AC-7813E43DD048}|Models\\Models.csproj|c:\\users\\diginamic\\documents\\code cafe\\backendrepo\\digiliberte-back\\models\\brand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{41E94768-4F53-4D4B-B2AC-7813E43DD048}|Models\\Models.csproj|solutionrelative:models\\brand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{41E94768-4F53-4D4B-B2AC-7813E43DD048}|Models\\Models.csproj|c:\\users\\diginamic\\documents\\code cafe\\backendrepo\\digiliberte-back\\models\\motorization.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{41E94768-4F53-4D4B-B2AC-7813E43DD048}|Models\\Models.csproj|solutionrelative:models\\motorization.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{41E94768-4F53-4D4B-B2AC-7813E43DD048}|Models\\Models.csproj|c:\\users\\diginamic\\documents\\code cafe\\backendrepo\\digiliberte-back\\models\\model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{41E94768-4F53-4D4B-B2AC-7813E43DD048}|Models\\Models.csproj|solutionrelative:models\\model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{41E94768-4F53-4D4B-B2AC-7813E43DD048}|Models\\Models.csproj|c:\\users\\diginamic\\documents\\code cafe\\backendrepo\\digiliberte-back\\models\\state.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{41E94768-4F53-4D4B-B2AC-7813E43DD048}|Models\\Models.csproj|solutionrelative:models\\state.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{41E94768-4F53-4D4B-B2AC-7813E43DD048}|Models\\Models.csproj|c:\\users\\diginamic\\documents\\code cafe\\backendrepo\\digiliberte-back\\models\\vehicle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{41E94768-4F53-4D4B-B2AC-7813E43DD048}|Models\\Models.csproj|solutionrelative:models\\vehicle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{41E94768-4F53-4D4B-B2AC-7813E43DD048}|Models\\Models.csproj|c:\\users\\diginamic\\documents\\code cafe\\backendrepo\\digiliberte-back\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{41E94768-4F53-4D4B-B2AC-7813E43DD048}|Models\\Models.csproj|solutionrelative:models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E7B17744-3347-4A85-BC94-8D2117AF156B}|IRepositories\\IRepositories.csproj|K:\\Flo\\Formation\\CDA\\Projet\\repo\\Digiliberte-back\\irepositories\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{41E94768-4F53-4D4B-B2AC-7813E43DD048}|Models\\Models.csproj|c:\\users\\diginamic\\documents\\code cafe\\backendrepo\\digiliberte-back\\models\\appuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{41E94768-4F53-4D4B-B2AC-7813E43DD048}|Models\\Models.csproj|solutionrelative:models\\appuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6D6B6C71-0C91-427F-B83A-E04293C50B80}|Main\\Main.csproj|c:\\users\\diginamic\\documents\\code cafe\\backendrepo\\digiliberte-back\\main\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6D6B6C71-0C91-427F-B83A-E04293C50B80}|Main\\Main.csproj|solutionrelative:main\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E7B17744-3347-4A85-BC94-8D2117AF156B}|IRepositories\\IRepositories.csproj|c:\\users\\diginamic\\documents\\code cafe\\backendrepo\\digiliberte-back\\irepositories\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E7B17744-3347-4A85-BC94-8D2117AF156B}|IRepositories\\IRepositories.csproj|solutionrelative:irepositories\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -26,7 +54,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 280,
-          "SelectedChildIndex": 9,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -42,10 +70,6 @@
             },
             {
               "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
-            },
-            {
-              "$type": "Bookmark",
               "Name": "ST:130:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
             },
             {
@@ -54,11 +78,102 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Localization.cs",
+              "DocumentMoniker": "C:\\Users\\DIGINAMIC\\Documents\\CODE CAFE\\BackEndRepo\\Digiliberte-back\\Models\\Localization.cs",
+              "RelativeDocumentMoniker": "Models\\Localization.cs",
+              "ToolTip": "C:\\Users\\DIGINAMIC\\Documents\\CODE CAFE\\BackEndRepo\\Digiliberte-back\\Models\\Localization.cs",
+              "RelativeToolTip": "Models\\Localization.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABQAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-23T10:26:44.296Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 3,
+              "Title": "Motorization.cs",
+              "DocumentMoniker": "C:\\Users\\DIGINAMIC\\Documents\\CODE CAFE\\BackEndRepo\\Digiliberte-back\\Models\\Motorization.cs",
+              "RelativeDocumentMoniker": "Models\\Motorization.cs",
+              "ToolTip": "C:\\Users\\DIGINAMIC\\Documents\\CODE CAFE\\BackEndRepo\\Digiliberte-back\\Models\\Motorization.cs",
+              "RelativeToolTip": "Models\\Motorization.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAA0AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-23T10:25:36.544Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Category.cs",
+              "DocumentMoniker": "C:\\Users\\DIGINAMIC\\Documents\\CODE CAFE\\BackEndRepo\\Digiliberte-back\\Models\\Category.cs",
+              "RelativeDocumentMoniker": "Models\\Category.cs",
+              "ToolTip": "C:\\Users\\DIGINAMIC\\Documents\\CODE CAFE\\BackEndRepo\\Digiliberte-back\\Models\\Category.cs",
+              "RelativeToolTip": "Models\\Category.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAsAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-23T10:23:40.889Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "State.cs",
+              "DocumentMoniker": "C:\\Users\\DIGINAMIC\\Documents\\CODE CAFE\\BackEndRepo\\Digiliberte-back\\Models\\State.cs",
+              "RelativeDocumentMoniker": "Models\\State.cs",
+              "ToolTip": "C:\\Users\\DIGINAMIC\\Documents\\CODE CAFE\\BackEndRepo\\Digiliberte-back\\Models\\State.cs",
+              "RelativeToolTip": "Models\\State.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAdAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-23T10:23:13.933Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Brand.cs",
+              "DocumentMoniker": "C:\\Users\\DIGINAMIC\\Documents\\CODE CAFE\\BackEndRepo\\Digiliberte-back\\Models\\Brand.cs",
+              "RelativeDocumentMoniker": "Models\\Brand.cs",
+              "ToolTip": "C:\\Users\\DIGINAMIC\\Documents\\CODE CAFE\\BackEndRepo\\Digiliberte-back\\Models\\Brand.cs",
+              "RelativeToolTip": "Models\\Brand.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-23T10:22:20.178Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Model.cs",
+              "DocumentMoniker": "C:\\Users\\DIGINAMIC\\Documents\\CODE CAFE\\BackEndRepo\\Digiliberte-back\\Models\\Model.cs",
+              "RelativeDocumentMoniker": "Models\\Model.cs",
+              "ToolTip": "C:\\Users\\DIGINAMIC\\Documents\\CODE CAFE\\BackEndRepo\\Digiliberte-back\\Models\\Model.cs",
+              "RelativeToolTip": "Models\\Model.cs",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAABEAAAAdAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-23T10:20:03.934Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Vehicle.cs",
+              "DocumentMoniker": "C:\\Users\\DIGINAMIC\\Documents\\CODE CAFE\\BackEndRepo\\Digiliberte-back\\Models\\Vehicle.cs",
+              "RelativeDocumentMoniker": "Models\\Vehicle.cs",
+              "ToolTip": "C:\\Users\\DIGINAMIC\\Documents\\CODE CAFE\\BackEndRepo\\Digiliberte-back\\Models\\Vehicle.cs",
+              "RelativeToolTip": "Models\\Vehicle.cs",
+              "ViewState": "AQIAABsAAAAAAAAAAAAuwDMAAAAuAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-23T10:11:53.963Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
               "Title": "Class1.cs",
-              "DocumentMoniker": "K:\\Flo\\Formation\\CDA\\Projet\\repo\\Digiliberte-back\\IRepositories\\Class1.cs",
+              "DocumentMoniker": "C:\\Users\\DIGINAMIC\\Documents\\CODE CAFE\\BackEndRepo\\Digiliberte-back\\IRepositories\\Class1.cs",
               "RelativeDocumentMoniker": "IRepositories\\Class1.cs",
-              "ToolTip": "K:\\Flo\\Formation\\CDA\\Projet\\repo\\Digiliberte-back\\IRepositories\\Class1.cs",
+              "ToolTip": "C:\\Users\\DIGINAMIC\\Documents\\CODE CAFE\\BackEndRepo\\Digiliberte-back\\IRepositories\\Class1.cs",
               "RelativeToolTip": "IRepositories\\Class1.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -66,35 +181,37 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 8,
               "Title": "AppUser.cs",
-              "DocumentMoniker": "K:\\Flo\\Formation\\CDA\\Projet\\repo\\Digiliberte-back\\Models\\AppUser.cs",
+              "DocumentMoniker": "C:\\Users\\DIGINAMIC\\Documents\\CODE CAFE\\BackEndRepo\\Digiliberte-back\\Models\\AppUser.cs",
               "RelativeDocumentMoniker": "Models\\AppUser.cs",
-              "ToolTip": "K:\\Flo\\Formation\\CDA\\Projet\\repo\\Digiliberte-back\\Models\\AppUser.cs",
+              "ToolTip": "C:\\Users\\DIGINAMIC\\Documents\\CODE CAFE\\BackEndRepo\\Digiliberte-back\\Models\\AppUser.cs",
               "RelativeToolTip": "Models\\AppUser.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAmAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-19T10:43:45.306Z"
+              "WhenOpened": "2024-04-19T10:43:45.306Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 7,
               "Title": "User.cs",
-              "DocumentMoniker": "K:\\Flo\\Formation\\CDA\\Projet\\repo\\Digiliberte-back\\Models\\User.cs",
+              "DocumentMoniker": "C:\\Users\\DIGINAMIC\\Documents\\CODE CAFE\\BackEndRepo\\Digiliberte-back\\Models\\User.cs",
               "RelativeDocumentMoniker": "Models\\User.cs",
-              "ToolTip": "K:\\Flo\\Formation\\CDA\\Projet\\repo\\Digiliberte-back\\Models\\User.cs",
+              "ToolTip": "C:\\Users\\DIGINAMIC\\Documents\\CODE CAFE\\BackEndRepo\\Digiliberte-back\\Models\\User.cs",
               "RelativeToolTip": "Models\\User.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-19T10:44:02.011Z"
+              "WhenOpened": "2024-04-19T10:44:02.011Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 9,
               "Title": "Program.cs",
-              "DocumentMoniker": "K:\\Flo\\Formation\\CDA\\Projet\\repo\\Digiliberte-back\\Main\\Program.cs",
+              "DocumentMoniker": "C:\\Users\\DIGINAMIC\\Documents\\CODE CAFE\\BackEndRepo\\Digiliberte-back\\Main\\Program.cs",
               "RelativeDocumentMoniker": "Main\\Program.cs",
-              "ToolTip": "K:\\Flo\\Formation\\CDA\\Projet\\repo\\Digiliberte-back\\Main\\Program.cs",
+              "ToolTip": "C:\\Users\\DIGINAMIC\\Documents\\CODE CAFE\\BackEndRepo\\Digiliberte-back\\Main\\Program.cs",
               "RelativeToolTip": "Main\\Program.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",

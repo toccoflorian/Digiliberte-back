@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "K:\\Flo\\Formation\\CDA\\Projet\\repo\\Digiliberte-back\\Repositories\\Repositories.csproj": {}
+    "C:\\Users\\DIGINAMIC\\Documents\\CODE CAFE\\BackEndRepo\\Digiliberte-back\\Repositories\\Repositories.csproj": {}
   },
   "projects": {
-    "K:\\Flo\\Formation\\CDA\\Projet\\repo\\Digiliberte-back\\Repositories\\Repositories.csproj": {
+    "C:\\Users\\DIGINAMIC\\Documents\\CODE CAFE\\BackEndRepo\\Digiliberte-back\\Repositories\\Repositories.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "K:\\Flo\\Formation\\CDA\\Projet\\repo\\Digiliberte-back\\Repositories\\Repositories.csproj",
+        "projectUniqueName": "C:\\Users\\DIGINAMIC\\Documents\\CODE CAFE\\BackEndRepo\\Digiliberte-back\\Repositories\\Repositories.csproj",
         "projectName": "Repositories",
-        "projectPath": "K:\\Flo\\Formation\\CDA\\Projet\\repo\\Digiliberte-back\\Repositories\\Repositories.csproj",
-        "packagesPath": "C:\\Users\\FLO\\.nuget\\packages\\",
-        "outputPath": "K:\\Flo\\Formation\\CDA\\Projet\\repo\\Digiliberte-back\\Repositories\\obj\\",
+        "projectPath": "C:\\Users\\DIGINAMIC\\Documents\\CODE CAFE\\BackEndRepo\\Digiliberte-back\\Repositories\\Repositories.csproj",
+        "packagesPath": "C:\\Users\\DIGINAMIC\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\DIGINAMIC\\Documents\\CODE CAFE\\BackEndRepo\\Digiliberte-back\\Repositories\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\FLO\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\DIGINAMIC\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,7 +26,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -65,7 +64,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files (x86)\\dotnet\\sdk\\8.0.201/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
