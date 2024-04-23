@@ -11,9 +11,9 @@ namespace Models
         public int Id;
 
         public DateTime Date {  get; set; }
-        public StartDateRents List<Rent> {  get; set; }
-        public EndDateRent List<Rent> { get; set; }
-        public StartDateCarPools List<CarPool>{  get; set; }
-        public EndDateCarPool List<CarPool>{  get; set; }
+        public List<Rent>? StartDateRents {  get; set; }
+        public List<Rent>? EndDateRent { get; set; }
+        public List<CarPool>? StartDateCarPools {  get; set; }
+        public List<CarPool>? EndDateCarPool {  get; set; }
     }
 }
