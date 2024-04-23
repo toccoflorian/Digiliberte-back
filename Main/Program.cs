@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Models;
 using Repositories;
 using Swashbuckle.AspNetCore.Filters;
 using System.Reflection;
@@ -14,6 +16,9 @@ builder.Services.AddDbContext<DatabaseContext>(dbContextBuilderOptions =>
 
 builder.Services.AddAuthorization();
 
+builder.Services.AddIdentityApiEndpoints<AppUser>()
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<DatabaseContext>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -21,10 +26,10 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(swaggerOptions =>
 {
-    swaggerOptions.SwaggerDoc("V1", new OpenApiInfo { Title = "Blog API V1", Version = "V1" });
-    string xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    string xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-    swaggerOptions.IncludeXmlComments(xmlPath);
+    //swaggerOptions.SwaggerDoc("V1", new OpenApiInfo { Title = "Blog API V1", Version = "V1" });
+    //string xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    //string xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    //swaggerOptions.IncludeXmlComments(xmlPath);
 
     swaggerOptions.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
     {
@@ -45,6 +50,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.MapIdentityApi<AppUser>();
 
 app.UseHttpsRedirection();
 

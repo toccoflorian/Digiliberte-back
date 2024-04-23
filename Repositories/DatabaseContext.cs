@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Models;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Repositories
 {
-    public class DatabaseContext : DbContext
+    public class DatabaseContext : IdentityDbContext<AppUser>
     {
         public DbSet<Brand> Brands { get; set; }
         public DbSet<CarPool> CarPools { get; set; }
