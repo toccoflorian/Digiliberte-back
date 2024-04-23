@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-    public class Date
+    public class Dates
     {
-        public int Id;
-
+        public int Id { get; set; }
         public DateTime Date {  get; set; }
         public List<Rent>? StartDateRents {  get; set; }
         public List<Rent>? EndDateRents { get; set; }

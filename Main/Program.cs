@@ -1,11 +1,41 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using Repositories;
+using Swashbuckle.AspNetCore.Filters;
+using System.Reflection;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddDbContext<DatabaseContext>(dbContextBuilderOptions =>
+    dbContextBuilderOptions.UseSqlServer(builder.Configuration.GetConnectionString("ContextCS"))
+);
+
+builder.Services.AddAuthorization();
+
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddSwaggerGen(swaggerOptions =>
+{
+    swaggerOptions.SwaggerDoc("V1", new OpenApiInfo { Title = "Blog API V1", Version = "V1" });
+    string xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    string xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    swaggerOptions.IncludeXmlComments(xmlPath);
+
+    swaggerOptions.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey
+    });
+
+    swaggerOptions.OperationFilter<SecurityRequirementsOperationFilter>();
+});
+
 
 var app = builder.Build();
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,9 +16,9 @@ namespace Models
         public int EndLocalizationID { get; set; }
         public Localization EndLocalization { get; set; }
         public int StartDateID { get; set; }
-        public Date StartDate { get; set; }
+        public Dates StartDate { get; set; }
         public int EndDateID { get; set; }
-        public Date EndDate { get; set; }
+        public Dates EndDate { get; set; }
         public int RentId { get; set; }
         public Rent Rent { get; set; }
         public List<CarPoolPassenger>? carPoolPassengers { get; set; }
