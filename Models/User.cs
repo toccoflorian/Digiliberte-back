@@ -6,7 +6,15 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-    internal class User
+    public class User
     {
+        public string Id { get; set; }
+        public string Firstname { get; set; }
+        public string Lastname { get; set; }
+        public string PictureURL { get; set; }
+        public string AppUserId { get; set; }
+        public AppUser AppUser { get; set; }
+        public List<Rent>? Rents { get; set; }
+        public List<CarPoolPassenger>? CarPoolsPassengers { get; set; }
     }
 }
