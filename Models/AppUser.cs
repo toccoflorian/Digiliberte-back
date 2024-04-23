@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-    internal class AppUser
+    public class AppUser
     {
         public User User { get; set; }
     }
