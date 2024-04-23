@@ -26,10 +26,10 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(swaggerOptions =>
 {
-    //swaggerOptions.SwaggerDoc("V1", new OpenApiInfo { Title = "Blog API V1", Version = "V1" });
-    //string xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    //string xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-    //swaggerOptions.IncludeXmlComments(xmlPath);
+    swaggerOptions.SwaggerDoc("V1", new OpenApiInfo { Title = "Blog API V1", Version = "V1" });
+    string xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    string xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    swaggerOptions.IncludeXmlComments(xmlPath);
 
     swaggerOptions.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
     {
