@@ -1,6 +1,67 @@
-﻿namespace Main
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Storage;
+using Models;
+using Repositories;
+using System;
+
+namespace Main
 {
     public class InitializeUser
     {
+        //sdqdqsdqsd
+        public async static Task adminInit(DatabaseContext context, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
+        {
+            if (roleManager.FindByNameAsync("ADMIN") == null) // creer un role admin si null
+            {
+                string adminPassword = "Azerty1+";
+                AppUser userAdmin = new AppUser { Email = "admin@admin.fr", NormalizedEmail = "admin@admin.fr", UserName = "admin@admin.fr" };
+                IdentityRole roleAdmin = new IdentityRole { Name = "admin", NormalizedName = "ADMIN" };
+
+                User userClass = new User { AppUserId = userAdmin.Id, Firstname = "admin", AppUser = userAdmin };
+
+                IdentityRole? roleAdminCheck = await context.Roles.FindAsync(roleAdmin.Id);
+                User? userAdminCheck = await context.Users.FindAsync(userClass.Id);
+
+                if (roleAdminCheck == null && userAdminCheck == null)
+                {
+                    await userManager.CreateAsync(userAdmin, adminPassword);
+                    await roleManager.CreateAsync(roleAdmin);
+
+                    await userManager.AddToRoleAsync(userAdmin, "SUPERADMIN");
+
+                    await context.AddAsync(userClass);
+                    await context.SaveChangesAsync();
+                }
+            }
+            Task.Delay(100);
+            
+        }
+        public async static Task UserInit(DatabaseContext context, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
+        {
+            if (roleManager.FindByNameAsync("USER") == null) // Creer un role user si null
+            {
+                string userPassword = "Azerty1+";
+                AppUser newUser = new AppUser { Email = "user@user.fr", NormalizedEmail = "user@user.fr", UserName = "user@user.fr" };
+                IdentityRole roleUser = new IdentityRole { Name = "user", NormalizedName = "USER" };
+
+                User userClass1 = new User { AppUserId = newUser.Id, Firstname = "user", AppUser = newUser };
+
+                IdentityRole? roleUserCheck = await context.Roles.FindAsync(roleUser.Id);
+                User? newUserCheck = await context.Users.FindAsync(userClass1.Id);
+
+                if (roleUserCheck == null && newUserCheck == null)
+                {
+                    await userManager.CreateAsync(newUser, userPassword);
+                    await roleManager.CreateAsync(roleUser);
+
+                    await userManager.AddToRoleAsync(newUser, "USER");
+
+                    await context.AddAsync(userClass1);
+                    await context.SaveChangesAsync();
+                }
+            }
+        }
+
+
     }
 }
