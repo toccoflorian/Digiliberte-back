@@ -6,7 +6,7 @@ using Repositories;
 using Swashbuckle.AspNetCore.Filters;
 using System.Reflection;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
@@ -27,8 +27,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(swaggerOptions =>
 {
     swaggerOptions.SwaggerDoc("v1", new OpenApiInfo { Title = "Car share", Version = "V1" });
-    string xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    string xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    string? xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    string? xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     swaggerOptions.IncludeXmlComments(xmlPath);
 
     swaggerOptions.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
@@ -42,7 +42,7 @@ builder.Services.AddSwaggerGen(swaggerOptions =>
 });
 
 
-var app = builder.Build();
+WebApplication? app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
