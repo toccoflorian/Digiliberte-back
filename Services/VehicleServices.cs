@@ -24,7 +24,11 @@ namespace Services
             this.vehicleRepository = vehicleRepository;
         }
 
-
+        /// <summary>
+        /// Used to create a new vehicle , check if immats already exists, need a rework and more errors check
+        /// </summary>
+        /// <param name="createVehicleDTO"></param>
+        /// <returns></returns>
         public async Task<GetOneVehicleDTO?> CreateVehicleAsync(CreateVehicleDTO createVehicleDTO)
         {
             if(await vehicleRepository.GetVehicleByImmat(createVehicleDTO.Immatriculation) == null) 

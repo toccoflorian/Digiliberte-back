@@ -12,7 +12,7 @@ namespace Repositories
     public class VehicleRepository
     {
         public DatabaseContext Context { get; set; }
-        public VehicleRepository(DatabaseContext databaseContext)
+        public VehicleRepository(DatabaseContext databaseContext)  // Dependancy injections
         {
             this.Context = databaseContext;
         }
@@ -21,8 +21,9 @@ namespace Repositories
         /// </summary>
         /// <param name="createVehicleDTO">Gives a DTO as parameter with only needed values</param>
         /// <returns>Return Get One vehicle DTO</returns>
-        public async Task<GetOneVehicleDTO> CreateVehicleAsync(CreateVehicleDTO createVehicleDTO)
+        public async Task<GetOneVehicleDTO?> CreateVehicleAsync(CreateVehicleDTO createVehicleDTO)
         {
+            //Create the vehicle Based on CreateDTO
             Vehicle newVehicle = new Vehicle
             {
                 BrandID = createVehicleDTO.BrandId,
@@ -38,24 +39,68 @@ namespace Repositories
             await Context.Vehicles.AddAsync(newVehicle);
             await Context.SaveChangesAsync();
 
+            // Maps all the values of the created vehicle to getOneVehicleDTO as output
+            //var vehicleInfo = await Context.Vehicles
+            //    .Where(v => v.Immatriculation == createVehicleDTO.Immatriculation)
+            //    .Include(v => v.Brand)
+            //    .Include(v => v.Model)
+            //    .Include(v => v.Category)
+            //    .Include(v => v.Motorization)
+            //    .Include(v => v.State) // Assuming there's a navigation property for State
+            //    .Select(v => new GetOneVehicleDTO
+            //    {
+            //        VehicleId = v.Id,
+            //        BrandName = v.Brand.Label,
+            //        ModelName = v.Model.Label,
+            //        CategoryName = v.Category.Label,
+            //        MotorizationName = v.Motorization.Label,
+            //        StateName = v.State.Label, // This assumes there is a direct relation to State
+            //        CO2 = v.Model.CO2,
+            //        ModelYear = v.Model.Year
+            //    })
+            //    .FirstOrDefaultAsync();    
+            
+            
+            return await Context.Vehicles
+                .Where(v => v.Immatriculation == createVehicleDTO.Immatriculation)
+                .Include(v => v.Brand)
+                .Include(v => v.Model)
+                .Include(v => v.Category)
+                .Include(v => v.Motorization)
+                .Include(v => v.State) // Assuming there's a navigation property for State
+                .Select(v => new GetOneVehicleDTO
+                {
+                    VehicleId = v.Id,
+                    BrandName = v.Brand.Label,
+                    ModelName = v.Model.Label,
+                    CategoryName = v.Category.Label,
+                    MotorizationName = v.Motorization.Label,
+                    StateName = v.State.Label, // This assumes there is a direct relation to State
+                    CO2 = v.Model.CO2,
+                    ModelYear = v.Model.Year
+                })
+                .FirstOrDefaultAsync();
 
-            return new GetOneVehicleDTO
-            {
-                VehicleId = (await Context.Vehicles.FirstOrDefaultAsync(v => v.Immatriculation == createVehicleDTO.Immatriculation)).Id,
-                BrandName = (await Context.Brands.FirstOrDefaultAsync(b => b.Id == createVehicleDTO.BrandId)).Label,
-                ModelName = (await Context.Models.FirstOrDefaultAsync(m => m.Id == createVehicleDTO.ModelId)).Label,
-                CategoryName = (await Context.Categories.FirstOrDefaultAsync(c => c.Id == createVehicleDTO.CategoryId)).Label,
-                MotorizationName = (await Context.Motorizations.FirstOrDefaultAsync(m => m.Id == createVehicleDTO.MotorizationId)).Label,
-                StateName = (await Context.States.FirstOrDefaultAsync(c => c.Id == 1)).Label,
-                CO2 = (await Context.Models.FirstOrDefaultAsync(c => c.Id == createVehicleDTO.ModelId)).CO2,
-                ModelYear = (await Context.Models.FirstOrDefaultAsync(c => c.Id == createVehicleDTO.ModelId)).Year
-            };
+
+            //new GetOneVehicleDTO
+            //{
+            //    VehicleId = (await Context.Vehicles.FirstOrDefaultAsync(v => v.Immatriculation == createVehicleDTO.Immatriculation)).Id,
+            //    BrandName = (await Context.Brands.FirstOrDefaultAsync(b => b.Id == createVehicleDTO.BrandId)).Label,
+            //    ModelName = (await Context.Models.FirstOrDefaultAsync(m => m.Id == createVehicleDTO.ModelId)).Label,
+            //    CategoryName = (await Context.Categories.FirstOrDefaultAsync(c => c.Id == createVehicleDTO.CategoryId)).Label,
+            //    MotorizationName = (await Context.Motorizations.FirstOrDefaultAsync(m => m.Id == createVehicleDTO.MotorizationId)).Label,
+            //    StateName = (await Context.States.FirstOrDefaultAsync(c => c.Id == 1)).Label,
+            //    CO2 = (await Context.Models.FirstOrDefaultAsync(c => c.Id == createVehicleDTO.ModelId)).CO2,
+            //    ModelYear = (await Context.Models.FirstOrDefaultAsync(c => c.Id == createVehicleDTO.ModelId)).Year
+            //};
+
+
         }
 
         /// <summary>
         /// Get a vehicle by immat , used to know if immat exists already
         /// </summary>
-        /// <param name="Immatriculation"></param>
+        /// <param name="Immatriculation">string</param>
         /// <returns></returns>
         public async Task<string> GetVehicleByImmat(string Immatriculation)
         {

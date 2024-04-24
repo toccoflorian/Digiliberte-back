@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 
 namespace Repositories
 {
+    /// <summary>
+    /// Used for database context , all DB sets are done here
+    /// </summary>
     public class DatabaseContext : IdentityDbContext<AppUser>
     {
         public DbSet<Brand> Brands { get; set; }
