@@ -1,7 +1,6 @@
 ﻿using DTO.Vehicles;
 using Microsoft.EntityFrameworkCore;
 using Models;
-using Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,8 +42,8 @@ namespace Repositories
                 MotorizationName = (await Context.Motorizations.FirstOrDefaultAsync(m => m.Id == createVehicleDTO.MotorizationId)).Label,
                 StateName = (await Context.States.FirstOrDefaultAsync(c => c.Id == 1)).Label,
                 CO2 = (await Context.Models.FirstOrDefaultAsync(c => c.Id == createVehicleDTO.ModelId)).CO2,
-                ModelYear = (await Context.Models.FirstOrDefaultAsync(c => c.Id == createVehicleDTO.ModelId)). 
-            }
+                //ModelYear = (await Context.Models.FirstOrDefaultAsync(c => c.Id == createVehicleDTO.ModelId));
+            };
         }
 
         public async Task<string> GetVehicleByImmat(string Immatriculation)

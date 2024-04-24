@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DTO.Localization
 {
-    internal class LocalizationDTO
+    public class LocalizationDTO
     {
         public double Logitude {  get; set; }
         public double Latitude { get; set; }
