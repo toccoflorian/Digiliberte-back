@@ -15,6 +15,8 @@ builder.Services.AddScoped<VehicleServices>();
 builder.Services.AddScoped<VehicleRepository>();
 builder.Services.AddScoped<ModelRepository>();
 builder.Services.AddScoped<ModelServices>();
+builder.Services.AddScoped<BrandRepository>();
+builder.Services.AddScoped<BrandServices>();
 
 
 
