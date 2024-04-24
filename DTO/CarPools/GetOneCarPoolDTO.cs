@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DTO.CarPoolPassenger;
+using DTO.Localization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,3 +29,4 @@ namespace DTO.CarPools
         public int FreeSeats { get; set; }
         public List<GetOneCarPoolPassengerDTO> Passengers { get; set; }
     }
+}

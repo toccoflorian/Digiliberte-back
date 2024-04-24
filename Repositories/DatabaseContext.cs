@@ -17,7 +17,7 @@ namespace Repositories
         public DbSet<CarPool> CarPools { get; set; }
         public DbSet<CarPoolPassenger> CarPoolPassengers { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Dates> Dates { get; set; }
+        public DbSet<DatesClass> Dates { get; set; }
         public DbSet<Localization> Localizations { get; set; }
         public DbSet<Model> Models { get; set; }
         public DbSet<Motorization> Motorizations { get; set; }

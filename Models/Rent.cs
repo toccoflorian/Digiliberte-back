@@ -13,9 +13,9 @@ namespace Models
         [Key]
         public int Id { get; set; }
         public int StartDateID { get; set; }
-        public Dates StartDate { get; set; }
+        public DatesClass StartDate { get; set; }
         public int ReturnDateID { get; set; }
-        public Dates ReturnDate { get; set; }
+        public DatesClass ReturnDate { get; set; }
         public string UserID { get; set; }
         public User User { get; set; }
         public Vehicle Vehicle {  get; set; }
