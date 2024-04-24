@@ -25,13 +25,13 @@ namespace Services
         }
 
 
-        public async Task CreateVehicle(CreateVehicleDTO createVehicleDTO)
+        public async Task<GetOneVehicleDTO?> CreateVehicleAsync(CreateVehicleDTO createVehicleDTO)
         {
-            if(vehicleRepository.GetVehicleByImmat(createVehicleDTO.Immatriculation) == null) 
+            if(await vehicleRepository.GetVehicleByImmat(createVehicleDTO.Immatriculation) == null) 
             { 
-                return;
+                return null;
             }
-            vehicleRepository.CreateVehicleAsync(createVehicleDTO);
+            return await vehicleRepository.CreateVehicleAsync(createVehicleDTO);
         }
     }
 }

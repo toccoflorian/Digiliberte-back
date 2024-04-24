@@ -3,17 +3,25 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Models;
 using Repositories;
+using Services;
 using Swashbuckle.AspNetCore.Filters;
 using System.Reflection;
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+//----------------SERVICES ADDING ------------------
+builder.Services.AddScoped<VehicleServices>();
+builder.Services.AddScoped<VehicleRepository>();
 
+
+
+
+
+
+// --------------IDENTITY ET DBCONTEXT-------------------
 builder.Services.AddDbContext<DatabaseContext>(dbContextBuilderOptions =>
     dbContextBuilderOptions.UseSqlServer(builder.Configuration.GetConnectionString("ContextCS"))
 );
-
 builder.Services.AddAuthorization();
 
 builder.Services.AddIdentityApiEndpoints<AppUser>()
