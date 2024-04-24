@@ -32,9 +32,9 @@ namespace Repositories
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Default States
-            State inService = new State { Id = 0, Label = "En service" };
-            State underRepair = new State { Id = 1, Label = "En réparation" };
-            State outOfService = new State { Id = 2, Label = "Hors service" };
+            State inService = new State { Id = 1, Label = "En service" };
+            State underRepair = new State { Id = 2, Label = "En réparation" };
+            State outOfService = new State { Id = 3, Label = "Hors service" };
             modelBuilder.Entity<State>().HasData(new List<State> { inService, underRepair, outOfService });
 
             // Foreign Keys
