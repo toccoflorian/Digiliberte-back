@@ -12,7 +12,7 @@ namespace Repositories
     public class VehicleRepository
     {
         public DatabaseContext Context { get; set; }
-        public VehicleRepository(DatabaseContext databaseContext)
+        public VehicleRepository(DatabaseContext databaseContext)  // Dependancy injections
         {
             this.Context = databaseContext;
         }
@@ -23,6 +23,7 @@ namespace Repositories
         /// <returns>Return Get One vehicle DTO</returns>
         public async Task<GetOneVehicleDTO> CreateVehicleAsync(CreateVehicleDTO createVehicleDTO)
         {
+            //Create the vehicle Based on CreateDTO
             Vehicle newVehicle = new Vehicle
             {
                 BrandID = createVehicleDTO.BrandId,
@@ -38,7 +39,7 @@ namespace Repositories
             await Context.Vehicles.AddAsync(newVehicle);
             await Context.SaveChangesAsync();
 
-
+            // Maps all the values of the created vehicle to getOneVehicleDTO as output
             return new GetOneVehicleDTO
             {
                 VehicleId = (await Context.Vehicles.FirstOrDefaultAsync(v => v.Immatriculation == createVehicleDTO.Immatriculation)).Id,
@@ -55,7 +56,7 @@ namespace Repositories
         /// <summary>
         /// Get a vehicle by immat , used to know if immat exists already
         /// </summary>
-        /// <param name="Immatriculation"></param>
+        /// <param name="Immatriculation">string</param>
         /// <returns></returns>
         public async Task<string> GetVehicleByImmat(string Immatriculation)
         {

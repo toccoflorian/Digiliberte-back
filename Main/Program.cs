@@ -10,11 +10,11 @@ using System.Reflection;
 WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 
 //----------------SERVICES ADDING ------------------
+
 builder.Services.AddScoped<VehicleServices>();
 builder.Services.AddScoped<VehicleRepository>();
-
-
-
+builder.Services.AddScoped<ModelRepository>();
+builder.Services.AddScoped<ModelServices>();
 
 
 
