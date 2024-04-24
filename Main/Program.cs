@@ -1,3 +1,5 @@
+using ICategoryServices;
+using IRepositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -17,7 +19,8 @@ builder.Services.AddScoped<ModelRepository>();
 builder.Services.AddScoped<ModelServices>();
 builder.Services.AddScoped<BrandRepository>();
 builder.Services.AddScoped<BrandServices>();
-
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
 
 // --------------IDENTITY ET DBCONTEXT-------------------
