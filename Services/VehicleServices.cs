@@ -2,9 +2,12 @@
 using Models;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utils.Enum;
+using Repositories;
 
 namespace Services
 {
@@ -13,17 +16,22 @@ namespace Services
     /// </summary>
     public class VehicleServices
     {
+        // ----- Injection de dependances
+        public readonly VehicleRepository vehicleRepository;
+         
+        public VehicleServices(VehicleRepository vehicleRepository)
+        {
+            this.vehicleRepository = vehicleRepository;
+        }
+
+
         public async Task CreateVehicle(CreateVehicleDTO createVehicleDTO)
         {
-            Vehicle newVehicle = new Vehicle
-            {
-                BrandID = createVehicleDTO.BrandId,
-                CategoryID = createVehicleDTO.CategoryId,
-                ModelID = createVehicleDTO.ModelId,
-                MotorizationID = createVehicleDTO.MotorizationId,
-                ColorId = createVehicleDTO.
-
+            if(vehicleRepository.GetVehicleByImmat(createVehicleDTO.Immatriculation) == null) 
+            { 
+                return;
             }
+            vehicleRepository.CreateVehicleAsync(createVehicleDTO);
         }
     }
 }

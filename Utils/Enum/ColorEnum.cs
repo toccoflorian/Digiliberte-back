@@ -1,6 +1,6 @@
 ﻿namespace Utils.Enum
 {
-    public enum Color
+    public enum ColorEnum
     {
         White,
         Green,
