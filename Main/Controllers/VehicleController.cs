@@ -19,7 +19,15 @@ namespace Main.Controllers
         [HttpPost]
         public async Task<ActionResult<GetOneVehicleDTO?>> CreateVehicle(CreateVehicleDTO createVehicleDTO)
         {
-            return Ok(await VehicleServices.CreateVehicleAsync(createVehicleDTO));
+            try
+            {
+                return Ok(await VehicleServices.CreateVehicleAsync(createVehicleDTO));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
     }
 }

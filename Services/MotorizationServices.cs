@@ -23,9 +23,9 @@ namespace Services
         {
             if (await motorizationRepository.GetMotorizationByName(createMotorizationDTO.Name) == null)
             {
-            return await motorizationRepository.CreateOneMotorizationAsync(createMotorizationDTO);
+                return await motorizationRepository.CreateOneMotorizationAsync(createMotorizationDTO);
             }
-                return null;
+            throw new Exception("This Motorization already exists");
         }
     }
 }

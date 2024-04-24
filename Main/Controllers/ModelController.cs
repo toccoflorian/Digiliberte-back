@@ -24,7 +24,14 @@ namespace Main.Controllers
         
         public async Task<ActionResult<GetOneModelDTO?>> CreateModel(CreateOneModelDTO createOneModel)
         {
-            return Ok(await ModelServices.CreateModelAsync(createOneModel));
+            try
+            {
+                return Ok(await ModelServices.CreateModelAsync(createOneModel));
+            }catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
         /// <summary>

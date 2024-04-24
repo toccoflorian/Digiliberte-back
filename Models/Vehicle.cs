@@ -11,7 +11,7 @@ namespace Models
         // Variables propres à vehicule
         public int Id { get; set; }
         public string Immatriculation { get; set; }
-        public int ColorId { get; set; }
+        public int? ColorId { get; set; }
 
         // Localization 
 

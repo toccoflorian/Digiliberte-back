@@ -17,7 +17,11 @@ namespace Repositories
         {
             this._context = context;
         }
-
+        /// <summary>
+        /// Create One category Async
+        /// </summary>
+        /// <param name="createOneCategoryDTO"></param>
+        /// <returns></returns>
         public async Task<GetOneCategoryDTO> CreateOneCategoryAsync(CreateOneCategoryDTO createOneCategoryDTO)
         {
             //Category
