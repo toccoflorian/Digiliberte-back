@@ -26,5 +26,19 @@ namespace Main.Controllers
         {
             return Ok(await ModelServices.CreateModelAsync(createOneModel));
         }
+
+        /// <summary>
+        /// Put a Model into the db, use a DTO for update        /// </summary>
+        /// <param name="updateOneModel">DTO of Model for update</param>
+        /// <returns>Returns a DTO of the updated Vehicle</returns>
+        [HttpPut]
+
+        public async Task<ActionResult<GetOneModelDTO?>> UpdateModel(GetOneModelDTO getOneOneModel)
+        {
+            try
+            {
+            return Ok(await ModelServices.UpdateModelAsync(getOneOneModel));
+            }catch (Exception ex) { return BadRequest(ex.Message); }
+        }
     }
 }
