@@ -1,16 +1,30 @@
+
 using Main;
+using ICategoryServices;
+using IRepositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Models;
 using Repositories;
+using Services;
 using Swashbuckle.AspNetCore.Filters;
 using System;
 using System.Reflection;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+//----------------SERVICES ADDING ------------------
+builder.Services.AddScoped<VehicleServices>();
+builder.Services.AddScoped<VehicleRepository>();
+builder.Services.AddScoped<ModelRepository>();
+builder.Services.AddScoped<ModelServices>();
+builder.Services.AddScoped<BrandRepository>();
+builder.Services.AddScoped<BrandServices>();
+builder.Services.AddScoped<MotorizationRepository>();
+builder.Services.AddScoped<MotorizationServices>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
 // ------------------Ajoue de la database 
 builder.Services.AddDbContext<DatabaseContext>(dbContextBuilderOptions =>
@@ -18,7 +32,14 @@ builder.Services.AddDbContext<DatabaseContext>(dbContextBuilderOptions =>
 ); // DATABASE ADDS
 
 
-// ---------- IDENTITY ADD
+
+
+
+// --------------IDENTITY ET DBCONTEXT-------------------
+builder.Services.AddDbContext<DatabaseContext>(dbContextBuilderOptions =>
+    dbContextBuilderOptions.UseSqlServer(builder.Configuration.GetConnectionString("ContextCS"))
+);
+
 builder.Services.AddAuthorization();
 
 builder.Services.AddIdentityApiEndpoints<AppUser>()
@@ -40,8 +61,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(swaggerOptions =>
 {
     swaggerOptions.SwaggerDoc("v1", new OpenApiInfo { Title = "Car share", Version = "V1" });
-    string xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    string xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    string? xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    string? xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     swaggerOptions.IncludeXmlComments(xmlPath);
 
     swaggerOptions.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
@@ -55,7 +76,7 @@ builder.Services.AddSwaggerGen(swaggerOptions =>
 });
 
 
-var app = builder.Build();
+WebApplication? app = builder.Build();
 
 
 using (var scope = app.Services.CreateAsyncScope())

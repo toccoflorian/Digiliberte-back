@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-    public class Dates
+    public class DatesClass
     {
         public int Id { get; set; }
         public DateTime Date {  get; set; }

@@ -16,9 +16,9 @@ namespace Models
         public int EndLocalizationID { get; set; }
         public Localization EndLocalization { get; set; }
         public int StartDateID { get; set; }
-        public Dates StartDate { get; set; }
+        public DatesClass StartDate { get; set; }
         public int EndDateID { get; set; }
-        public Dates EndDate { get; set; }
+        public DatesClass EndDate { get; set; }
         public int RentId { get; set; }
         public Rent Rent { get; set; }
         public List<CarPoolPassenger>? carPoolPassengers { get; set; }

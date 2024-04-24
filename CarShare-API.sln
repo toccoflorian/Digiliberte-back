@@ -3,21 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34701.34
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Main", "Main\Main.csproj", "{6D6B6C71-0C91-427F-B83A-E04293C50B80}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Main", "Main\Main.csproj", "{6D6B6C71-0C91-427F-B83A-E04293C50B80}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRepositories", "IRepositories\IRepositories.csproj", "{E7B17744-3347-4A85-BC94-8D2117AF156B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IRepositories", "IRepositories\IRepositories.csproj", "{E7B17744-3347-4A85-BC94-8D2117AF156B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repositories", "Repositories\Repositories.csproj", "{3E1EF20F-1339-4A17-A6D5-D8B8C1F9A79E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositories", "Repositories\Repositories.csproj", "{3E1EF20F-1339-4A17-A6D5-D8B8C1F9A79E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IServices", "IServices\IServices.csproj", "{CC86740B-1339-4A4E-9777-80D766A72EC8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IServices", "IServices\IServices.csproj", "{CC86740B-1339-4A4E-9777-80D766A72EC8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{7CADA663-E71E-4ACC-9346-575018807FC2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{7CADA663-E71E-4ACC-9346-575018807FC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{41E94768-4F53-4D4B-B2AC-7813E43DD048}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{41E94768-4F53-4D4B-B2AC-7813E43DD048}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTO", "DTO\DTO.csproj", "{2EA2D125-1E53-4168-AE59-9183CBD8A60D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DTO", "DTO\DTO.csproj", "{2EA2D125-1E53-4168-AE59-9183CBD8A60D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Projects", "Projects", "{15DCA06B-2F3B-4A04-A4FB-5E1C427FAFDD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "Utils\Utils.csproj", "{0D7D96CB-3377-4789-A013-C593801B1910}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,10 @@ Global
 		{2EA2D125-1E53-4168-AE59-9183CBD8A60D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2EA2D125-1E53-4168-AE59-9183CBD8A60D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2EA2D125-1E53-4168-AE59-9183CBD8A60D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D7D96CB-3377-4789-A013-C593801B1910}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D7D96CB-3377-4789-A013-C593801B1910}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D7D96CB-3377-4789-A013-C593801B1910}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D7D96CB-3377-4789-A013-C593801B1910}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +70,7 @@ Global
 		{7CADA663-E71E-4ACC-9346-575018807FC2} = {15DCA06B-2F3B-4A04-A4FB-5E1C427FAFDD}
 		{41E94768-4F53-4D4B-B2AC-7813E43DD048} = {15DCA06B-2F3B-4A04-A4FB-5E1C427FAFDD}
 		{2EA2D125-1E53-4168-AE59-9183CBD8A60D} = {15DCA06B-2F3B-4A04-A4FB-5E1C427FAFDD}
+		{0D7D96CB-3377-4789-A013-C593801B1910} = {15DCA06B-2F3B-4A04-A4FB-5E1C427FAFDD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1E069769-CEDC-4BBA-934C-C794F56604A8}
