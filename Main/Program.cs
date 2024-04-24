@@ -19,9 +19,10 @@ builder.Services.AddScoped<ModelRepository>();
 builder.Services.AddScoped<ModelServices>();
 builder.Services.AddScoped<BrandRepository>();
 builder.Services.AddScoped<BrandServices>();
+builder.Services.AddScoped<MotorizationRepository>();
+builder.Services.AddScoped<MotorizationServices>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-
 
 // --------------IDENTITY ET DBCONTEXT-------------------
 builder.Services.AddDbContext<DatabaseContext>(dbContextBuilderOptions =>

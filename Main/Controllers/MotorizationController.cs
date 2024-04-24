@@ -17,8 +17,15 @@ namespace Main.Controllers
 
             [HttpPost]
             public async Task<ActionResult<GetOneMotorizationDTO?>> CreateMotorization(CreateOneMotorizationDTO createMotorizationDTO)
+        {
+            try
             {
                 return Ok(await MotorizationServices.CreateMotorizationAsync(createMotorizationDTO));
+            }catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
             }
         }
     }

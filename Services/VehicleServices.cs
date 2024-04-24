@@ -18,7 +18,7 @@ namespace Services
     {
         // ----- Injection de dependances
         public readonly VehicleRepository vehicleRepository;
-         
+
         public VehicleServices(VehicleRepository vehicleRepository)
         {
             this.vehicleRepository = vehicleRepository;
@@ -31,11 +31,11 @@ namespace Services
         /// <returns></returns>
         public async Task<GetOneVehicleDTO?> CreateVehicleAsync(CreateVehicleDTO createVehicleDTO)
         {
-            if(await vehicleRepository.GetVehicleByImmat(createVehicleDTO.Immatriculation) == null) 
-            { 
-                return null;
+            if (await vehicleRepository.GetVehicleByImmat(createVehicleDTO.Immatriculation) == null)
+            {
+                return await vehicleRepository.CreateVehicleAsync(createVehicleDTO);
             }
-            return await vehicleRepository.CreateVehicleAsync(createVehicleDTO);
+            throw new Exception("Vehicle Immatriculation already exists");
         }
     }
 }

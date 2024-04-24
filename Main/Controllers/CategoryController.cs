@@ -16,6 +16,12 @@ namespace Main.Controllers
             this._categoryService = categoryService;
         } 
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="createOneCategoryDTO"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<GetOneCategoryDTO>> CreateOneCategory(CreateOneCategoryDTO createOneCategoryDTO)
         {
