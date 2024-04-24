@@ -13,7 +13,7 @@ namespace Repositories
     public class MotorizationRepository
     {
         public DatabaseContext Context { get; set; }
-        public MotorizationRepository(DatabaseContext databaseContext)
+        public MotorizationRepository(DatabaseContext databaseContext) // Dependancy injections
         {
             this.Context = databaseContext;
         }
@@ -22,6 +22,10 @@ namespace Repositories
         /// </summary>
         /// <param name="createOneMotorizationDTO">Gives a DTO as parameter with only needed values</param>
         /// <returns>Return Get One motorization DTO</returns>
+
+        
+        public async Task<GetOneMotorizationDTO> CreateOneMotorizationAsync(CreateOneMotorizationDTO createOneMotorizationDTO)
+
         public async Task<GetOneMotorizationDTO?> CreateOneMotorizationAsync(CreateOneMotorizationDTO createOneMotorizationDTO)
         {
             Motorization newMotorization = new Motorization
@@ -31,7 +35,6 @@ namespace Repositories
             await Context.Motorizations.AddAsync(newMotorization);
             await Context.SaveChangesAsync();
 
-
             return new GetOneMotorizationDTO
             {
                 Id = (await Context.Motorizations.FirstOrDefaultAsync(m=>m.Label == createOneMotorizationDTO.Name)).Id,
@@ -40,7 +43,7 @@ namespace Repositories
         }
 
         /// <summary>
-        /// Get a motorization by name , used to know if name exists already
+        /// Get a motorization by name , used Label to know if  exists already
         /// </summary>
         /// <param name="Name"></param>
         /// <returns></returns>

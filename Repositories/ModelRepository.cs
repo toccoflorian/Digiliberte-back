@@ -1,4 +1,5 @@
 ﻿using DTO.Models;
+using Microsoft.EntityFrameworkCore;
 using Models;
 using System;
 using System.Collections.Generic;
@@ -42,6 +43,36 @@ namespace Repositories
                 Name = newModel.Label,
                 Co2 = newModel.CO2,
                 Year = newModel.Year
+            };
+        }
+
+        public async Task<GetOneModelDTO?> UpdateOneModelByIdAsync(GetOneModelDTO updatedModelDTO)
+        {
+            // Recherchez le modèle existant dans la base de données en fonction de son ID
+            var existingModel = await Context.Models.FindAsync(updatedModelDTO.Id);
+
+            if (existingModel == null)
+            {
+                // Si le modèle n'est pas trouvé, vous pouvez choisir de retourner null ou de lever une exception
+                // Ici, je choisis de retourner null
+                throw new Exception("Id not found");
+            }
+
+            // Mettez à jour les propriétés du modèle existant avec les nouvelles valeurs
+            existingModel.Label = updatedModelDTO.Name;
+            existingModel.CO2 = updatedModelDTO.Co2;
+            existingModel.Year = updatedModelDTO.Year;
+
+            // Enregistrez les modifications dans la base de données
+            await Context.SaveChangesAsync();
+
+            // Retournez le modèle mis à jour sous forme de DTO
+            return new GetOneModelDTO
+            {
+                Id = existingModel.Id,
+                Name = existingModel.Label,
+                Year = existingModel.Year,
+                Co2 = existingModel.CO2
             };
         }
     }
