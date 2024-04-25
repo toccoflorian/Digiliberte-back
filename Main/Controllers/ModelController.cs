@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Repositories;
 using Services;
 using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Main.Controllers
 {
@@ -42,11 +41,11 @@ namespace Main.Controllers
         /// <returns>Returns a DTO of the updated Vehicle</returns>
         [HttpPut]
 
-        public async Task<ActionResult<GetOneModelDTO?>> UpdateModel(GetOneModelDTO getOneOneModel)
+        public async Task<ActionResult<GetOneModelDTO?>> UpdateModel(GetOneModelDTO getOneModel)
         {
             try
             {
-            return Ok(await ModelServices.UpdateModelAsync(getOneOneModel));
+            return Ok(await ModelServices.UpdateModelAsync(getOneModel));
             }catch (Exception ex) { return BadRequest(ex.Message); }
         }
 
@@ -64,7 +63,7 @@ namespace Main.Controllers
             if (model != null)
             {
                 await ModelServices.DeleteOneModelByIdAsync(Id); 
-                return Ok($"Modèle {Id} delete ");
+                return Ok($"Le modèle avec le id : {Id} à été supprimé ");
             }
             else
             {
