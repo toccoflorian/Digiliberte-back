@@ -1,5 +1,6 @@
 ﻿using DTO.Brands;
 using Repositories;
+using IServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace Services
     /// <summary>
     /// Brand Services used in controllers
     /// </summary>
-    public class BrandServices
+    public class BrandServices : IBrandService
     {
 
         // DEPENDANCY INJECTION

@@ -1,4 +1,5 @@
 ﻿using DTO.Models;
+using IServices;
 using Repositories;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace Services
     /// <summary>
     /// Class for all models services
     /// </summary>
-    public class ModelServices
+    public class ModelServices : IModelService
     {
         // ----- Injection de dependances
         public readonly ModelRepository ModelRepository;
@@ -55,7 +56,7 @@ namespace Services
             }
         }
 
-            public async Task<GetOneModelDTO?> GetOneModelByIdAsync(int modelId)
+        public async Task<GetOneModelDTO?> GetOneModelByIdAsync(int modelId)
         {
             // Utilisez le repository pour récupérer le modèle par son ID
             var model = await ModelRepository.GetOneModelByIdAsync(modelId);

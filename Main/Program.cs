@@ -1,8 +1,7 @@
 
 using Main;
-using ICategoryServices;
-using IRepositories;
 using IServices;
+using IRepositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -21,10 +20,10 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<VehicleServices>();
 builder.Services.AddScoped<VehicleRepository>();
-builder.Services.AddScoped<ModelRepository>();
-builder.Services.AddScoped<ModelServices>();
-builder.Services.AddScoped<BrandRepository>();
-builder.Services.AddScoped<BrandServices>();
+builder.Services.AddScoped<IModelRepository, ModelRepository>();
+builder.Services.AddScoped<IModelService, ModelServices>();
+builder.Services.AddScoped<IBrandRepository,BrandRepository>();
+builder.Services.AddScoped<IBrandService,BrandServices>();
 builder.Services.AddScoped<MotorizationRepository>();
 builder.Services.AddScoped<MotorizationServices>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
