@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Models
 {
+    /// <summary>
+    /// Id, Firstname, Lastname, PictureURL, AppUserId
+    /// </summary>
     public class User
     {
         public string Id { get; set; }

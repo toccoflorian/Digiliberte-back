@@ -11,13 +11,16 @@ using System.Threading.Tasks;
 
 namespace Repositories
 {
+    /// <summary>
+    /// Used for database context , all DB sets are done here
+    /// </summary>
     public class DatabaseContext : IdentityDbContext<AppUser>
     {
         public DbSet<Brand> Brands { get; set; }
         public DbSet<CarPool> CarPools { get; set; }
         public DbSet<CarPoolPassenger> CarPoolPassengers { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Dates> Dates { get; set; }
+        public DbSet<DatesClass> Dates { get; set; }
         public DbSet<Localization> Localizations { get; set; }
         public DbSet<Model> Models { get; set; }
         public DbSet<Motorization> Motorizations { get; set; }
@@ -28,6 +31,13 @@ namespace Repositories
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Default States
+            State inService = new State { Id = 1, Label = "En service" };
+            State underRepair = new State { Id = 2, Label = "En réparation" };
+            State outOfService = new State { Id = 3, Label = "Hors service" };
+            modelBuilder.Entity<State>().HasData(new List<State> { inService, underRepair, outOfService });
+
+            // Foreign Keys
             modelBuilder.Entity<CarPool>(entity =>
                 entity
                     .HasOne(d => d.StartLocalization)

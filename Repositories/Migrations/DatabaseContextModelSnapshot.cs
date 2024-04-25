@@ -327,7 +327,7 @@ namespace Repositories.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("Models.Dates", b =>
+            modelBuilder.Entity("Models.DatesClass", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -376,6 +376,9 @@ namespace Repositories.Migrations
                     b.Property<string>("Label")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -586,7 +589,7 @@ namespace Repositories.Migrations
 
             modelBuilder.Entity("Models.CarPool", b =>
                 {
-                    b.HasOne("Models.Dates", "EndDate")
+                    b.HasOne("Models.DatesClass", "EndDate")
                         .WithMany("EndDateCarPools")
                         .HasForeignKey("EndDateID")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -606,7 +609,7 @@ namespace Repositories.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Models.Dates", "StartDate")
+                    b.HasOne("Models.DatesClass", "StartDate")
                         .WithMany("StartDateCarPools")
                         .HasForeignKey("StartDateID")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -652,14 +655,14 @@ namespace Repositories.Migrations
 
             modelBuilder.Entity("Models.Rent", b =>
                 {
-                    b.HasOne("Models.Dates", "ReturnDate")
+                    b.HasOne("Models.DatesClass", "ReturnDate")
                         .WithMany("EndDateRents")
                         .HasForeignKey("ReturnDateID")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
                         .HasConstraintName("FK__Rent__ReturnDateID__DatesId");
 
-                    b.HasOne("Models.Dates", "StartDate")
+                    b.HasOne("Models.DatesClass", "StartDate")
                         .WithMany("StartDateRents")
                         .HasForeignKey("StartDateID")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -770,7 +773,7 @@ namespace Repositories.Migrations
                     b.Navigation("Vehicles");
                 });
 
-            modelBuilder.Entity("Models.Dates", b =>
+            modelBuilder.Entity("Models.DatesClass", b =>
                 {
                     b.Navigation("EndDateCarPools");
 

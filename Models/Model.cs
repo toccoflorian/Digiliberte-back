@@ -12,6 +12,7 @@ namespace Models
         public int Id { get; set; }
         public string Label { get; set; }
         public double CO2 { get; set; }
+        public int Year { get; set; }
 
         // Navigation For EF
 
