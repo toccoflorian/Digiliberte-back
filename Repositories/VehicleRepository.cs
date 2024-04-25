@@ -34,6 +34,7 @@ namespace Repositories
                 Immatriculation = createVehicleDTO.Immatriculation,
                 PictureURL = createVehicleDTO.PictureUrl,
                 StateID = 1,
+                LocalizationID = createVehicleDTO.LocalizationId,
 
             };
             await Context.Vehicles.AddAsync(newVehicle);
@@ -102,9 +103,15 @@ namespace Repositories
         /// </summary>
         /// <param name="Immatriculation">string</param>
         /// <returns></returns>
-        public async Task<string> GetVehicleByImmat(string Immatriculation)
+        public async Task<string?> GetVehicleByImmat(string Immat)
         {
-            return (await Context.Vehicles.FirstOrDefaultAsync(c => c.Immatriculation == Immatriculation)).Immatriculation;
+            var vehicle = await Context.Vehicles.FirstOrDefaultAsync(c => c.Immatriculation.ToUpper() == Immat.ToUpper());
+
+            if (vehicle == null)
+            {
+                return null;
+            }
+            return vehicle.Immatriculation;
         }
     }
 }

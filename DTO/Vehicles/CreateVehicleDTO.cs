@@ -18,5 +18,6 @@ namespace DTO.Vehicles
         public int ColorId { get; set; }
         public string Immatriculation { get; set; }
         public string PictureUrl { get; set; }
+        public int LocalizationId { get; set; } // Will change 
     }
 }
