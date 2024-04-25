@@ -17,6 +17,6 @@ namespace IRepositories
         public Task<List<GetOneUserDTO>> GetUserByCarPoolAsync(int carPoolID);
         public Task<List<GetOneUserDTO>> GetUsersByNameAsync(GetUserByNameDTO getUserByNameDTO);
         public Task<GetOneUserDTO> UpdateUserByIdAsync(CreateUserDTO updateOneUserDTO);
-        public Task DeleteUserByIdAsync(int userID);
+        public Task DeleteUserByIdAsync(string userID);
     }
 }

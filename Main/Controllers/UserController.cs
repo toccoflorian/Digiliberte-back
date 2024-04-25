@@ -17,10 +17,24 @@ namespace Main.Controllers
             this._userService = userService;
         }
 
-        //public Task DeleteUserById(int userID)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        /// <summary>
+        /// Delete one User with referenced AppUser
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns>void</returns>
+        [HttpDelete]
+        public async Task<ActionResult> DeleteUserById(string userID)
+        {
+            try
+            {
+                await this._userService.DeleteUserByIdAsync(userID);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         /// <summary>
         /// get all users registered

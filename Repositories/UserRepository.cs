@@ -1,6 +1,8 @@
 ﻿using DTO.User;
 using IRepositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,14 +13,29 @@ namespace Repositories
     public class UserRepository : IUserRepository
     {
         private readonly DatabaseContext _context;
-        public UserRepository(DatabaseContext context)
+        private readonly UserManager<AppUser> _userManager;
+        public UserRepository(DatabaseContext context, UserManager<AppUser> userManager)
         {
             this._context = context;
+            this._userManager = userManager;
         }
 
-        public Task DeleteUserByIdAsync(int userID)
+        /// <summary>
+        /// Delete one User with referenced AppUser
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns>void</returns>
+        public async Task DeleteUserByIdAsync(string userID)
         {
-            throw new NotImplementedException();
+            AppUser? appUser = await this._userManager.FindByIdAsync(userID);
+            if (appUser == null)
+            {
+                throw new Exception("Utilisateur introuvable ! Aucune suppression n'a été éffectuée !");
+            }
+            else
+            {
+                await this._userManager.DeleteAsync(appUser);
+            }
         }
 
         /// <summary>

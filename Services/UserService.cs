@@ -17,9 +17,14 @@ namespace Services
             this._userRepository = userRepository;
         }
 
-        public Task DeleteUserByIdAsync(int userID)
+        /// <summary>
+        /// Delete one User with referenced AppUser
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns>void</returns>
+        public async Task DeleteUserByIdAsync(string userID)
         {
-            throw new NotImplementedException();
+            await this._userRepository.DeleteUserByIdAsync(userID);
         }
 
         /// <summary>
