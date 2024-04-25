@@ -1,4 +1,4 @@
-﻿using DTO.Auth;
+﻿using DTO.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +9,6 @@ namespace IServices
 {
     public interface IAuthService
     {
-        public Task RegisterAsync(RegisterDTO registerDTO);
+        public Task RegisterAsync(CreateUserDTO createUserDTO);
     }
 }

@@ -1,4 +1,4 @@
-﻿using DTO.Auth;
+﻿using DTO.User;
 using IRepositories;
 using IServices;
 using Microsoft.AspNetCore.Authentication;
@@ -20,14 +20,14 @@ namespace Main.Controllers
         /// <summary>
         /// registration of a new user
         /// </summary>
-        /// <param name="registerDTO"></param>
+        /// <param name="createUserDTO"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult> Register(RegisterDTO registerDTO)
+        public async Task<ActionResult> Register(CreateUserDTO createUserDTO)
         {
             try
             {
-                await this._authRepository.RegisterAsync(registerDTO);
+                await this._authRepository.RegisterAsync(createUserDTO);
                 return Ok();
             }
             catch (Exception ex)
