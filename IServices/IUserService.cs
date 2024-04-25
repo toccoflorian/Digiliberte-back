@@ -10,12 +10,12 @@ namespace IServices
     public interface IUserService
     {
         public Task<List<GetOneUserDTO>> GetAllUsersAsync();
-        public Task<Task<GetOneUserDTO>> GetUserByIdAsync(string userID);
-        public Task<List<GetOneUserDTO>> GetUserByRoleAsync(int rentID);
-        public Task<GetOneUserDTO> GetUserByRentAsync(int rentID);
-        public Task<List<GetOneUserDTO>> GetUserByCarPoolAsync(int carPoolID);
+        public Task<GetOneUserDTO> GetUserByIdAsync(string userId);
+        public Task<List<GetOneUserDTO>> GetUserByRoleAsync(int rentId);
+        public Task<GetOneUserDTO> GetUserByRentAsync(int rentId);
+        public Task<List<GetOneUserDTO>> GetUserByCarPoolAsync(int carPoolId);
         public Task<List<GetOneUserDTO>> GetUsersByNameAsync(GetUserByNameDTO getUserByNameDTO);
         public Task<GetOneUserDTO> UpdateUserByIdAsync(CreateUserDTO updateOneUserDTO);
-        public Task DeleteUserByIdAsync(string userID);
+        public Task DeleteUserByIdAsync(string userId);
     }
 }

@@ -20,11 +20,11 @@ namespace Services
         /// <summary>
         /// Delete one User with referenced AppUser
         /// </summary>
-        /// <param name="userID"></param>
+        /// <param name="userId"></param>
         /// <returns>void</returns>
-        public async Task DeleteUserByIdAsync(string userID)
+        public async Task DeleteUserByIdAsync(string userId)
         {
-            await this._userRepository.DeleteUserByIdAsync(userID);
+            await this._userRepository.DeleteUserByIdAsync(userId);
         }
 
         /// <summary>
@@ -36,22 +36,27 @@ namespace Services
             return await this._userRepository.GetAllUsersAsync();
         }
 
-        public Task<List<GetOneUserDTO>> GetUserByCarPoolAsync(int carPoolID)
+        public async Task<List<GetOneUserDTO>> GetUserByCarPoolAsync(int carPoolId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Task<GetOneUserDTO>> GetUserByIdAsync(string userID)
+        /// <summary>
+        /// Get one User with User.Id
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns>one user formated with GetOneUserDTO</returns>
+        public async Task<GetOneUserDTO> GetUserByIdAsync(string userId)
+        {
+            return await this._userRepository.GetUserByIdAsync(userId);
+        }
+
+        public Task<GetOneUserDTO> GetUserByRentAsync(int rentId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<GetOneUserDTO> GetUserByRentAsync(int rentID)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<GetOneUserDTO>> GetUserByRoleAsync(int rentID)
+        public Task<List<GetOneUserDTO>> GetUserByRoleAsync(int rentId)
         {
             throw new NotImplementedException();
         }
