@@ -20,6 +20,12 @@ namespace Repositories
             this._userManager = userManager;
         }
 
+        /// <summary>
+        ///  registration of a new user
+        /// </summary>
+        /// <param name="registerDTO"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task RegisterAsync(RegisterDTO registerDTO)
         {
             AppUser appUser = new AppUser{ 
