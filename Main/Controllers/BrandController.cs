@@ -1,5 +1,6 @@
 ﻿using DTO.Brands;
 using DTO.Brands;
+using IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services;
@@ -10,9 +11,9 @@ namespace Main.Controllers
     [ApiController]
     public class BrandController : ControllerBase
     {
-        private readonly BrandServices brandService;
+        private readonly IBrandService brandService;
 
-        public BrandController(BrandServices brandService)
+        public BrandController(IBrandService brandService)
         {
             this.brandService = brandService;
         }

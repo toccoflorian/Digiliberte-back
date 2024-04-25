@@ -14,7 +14,7 @@ namespace Main.Controllers
     [ApiController]
     public class ModelController : ControllerBase
     {
-        public readonly IModelService _modelServices;
+        private readonly IModelService _modelServices;
         public ModelController(IModelService modelServices)
         {
             this._modelServices = modelServices;

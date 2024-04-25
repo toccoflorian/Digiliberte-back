@@ -12,7 +12,7 @@ namespace Main.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _categoryServices;
-        public CategoryController(ICategoryService categoryService) 
+        public CategoryController(ICategoryService categoryService)
         {
             this._categoryServices = categoryService;
         }
@@ -27,8 +27,9 @@ namespace Main.Controllers
         {
             try
             {
-            return await this._categoryServices.CreateOneCategoryAsync(createOneCategoryDTO);
-            }catch (Exception ex)
+                return await this._categoryServices.CreateOneCategoryAsync(createOneCategoryDTO);
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -59,17 +60,11 @@ namespace Main.Controllers
         [HttpDelete]
         public async Task<ActionResult<GetOneCategoryDTO?>> DeleteOneCategoryByIdAsync(int Id)
         {
-            var model = await _categoryServices.GetOneCategoryByIdAsync(Id);
-
-            if (model != null)
+            try
             {
-                await _categoryServices.DeleteOneCategoryByIdAsync(Id);
-                return Ok($"La catégorie avec le id : {Id} delete ");
+                return Ok(await _categoryServices.DeleteOneCategoryByIdAsync(Id));
             }
-            else
-            {
-                return null; // Indique que le modèle n'a pas été trouvé, donc la suppression n'a pas été effectuée
-            }
+            catch(Exception ex) { return BadRequest(ex.Message) ; }
         }
 
         /// <summary>
@@ -81,18 +76,11 @@ namespace Main.Controllers
         public async Task<ActionResult<GetOneCategoryDTO?>> GetOneCategoryByIdAsync(int Id)
         {
             // Utilisez le service pour récupérer le modèle par son ID
-            var modelDto = await _categoryServices.GetOneCategoryByIdAsync(Id);
-
-            // Si le modèle est trouvé, retournez-le en tant que réponse HTTP 200 OK
-            if (modelDto != null)
+            try
             {
-                return Ok(modelDto);
+                return Ok(await _categoryServices.GetOneCategoryByIdAsync(Id));
             }
-            else
-            {
-                // Si le modèle n'est pas trouvé, retournez une réponse HTTP 404 Not Found
-                return NotFound();
-            }
+            catch (Exception ex) { return BadRequest(ex.Message); }
         }
     }
 }

@@ -19,7 +19,11 @@ namespace Services
             this._categoryRepository = categoryRepository;
         }
 
-        
+        /// <summary>
+        /// Create one category 
+        /// </summary>
+        /// <param name="createOneCategoryDTO"></param>
+        /// <returns>GetOneCategory DTO </returns>
         public async Task<GetOneCategoryDTO> CreateOneCategoryAsync(CreateOneCategoryDTO createOneCategoryDTO)
         {
             return await this._categoryRepository.CreateOneCategoryAsync(createOneCategoryDTO);
@@ -31,6 +35,7 @@ namespace Services
             // Vérifiez d'abord si un categorie avec le même id existe déjà dans la base de données
             var existingCategory = await _categoryRepository.UpdateOneCategoryByIdAsync(getOneCategoryDTO);
 
+            
             // Si aucun categorie avec le même id n'existe, vous pouvez procéder à la mise à jour
             return existingCategory;
         }
@@ -49,7 +54,7 @@ namespace Services
             }
             else
             {
-                return false; // Indique que le categorie n'a pas été trouvé, donc la suppression n'a pas été effectuée
+                throw new Exception("Id Not Found"); // Indique que le categorie n'a pas été trouvé, donc la suppression n'a pas été effectuée
             }
         }
 
@@ -61,16 +66,12 @@ namespace Services
             // Si le categorie existe, mappez-le vers un DTO et retournez-le
             if (model != null)
             {
-                return new GetOneCategoryDTO
-                {
-                    Name = model.Label,
-                    SeatsNumber = model.SeatsNumber,
-                };
+                return model;
             }
             else
             {
                 // Si le categorie n'existe pas, retournez null
-                return null;
+                throw new Exception("Category not found");
             }
         }
     }

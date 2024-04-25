@@ -31,20 +31,28 @@ namespace Repositories
         public async Task<GetOneCategoryDTO> CreateOneCategoryAsync(CreateOneCategoryDTO createOneCategoryDTO)
         {
             //Category
-            await _context.Categories.AddAsync(new Category
+            var newCategory = new Category
             {
                 Label = createOneCategoryDTO.Name,
                 SeatsNumber = createOneCategoryDTO.SeatsNumber,
-            });
+            };
+            await _context.Categories.AddAsync(newCategory);
 
             await _context.SaveChangesAsync();
+
             return new GetOneCategoryDTO
             {
-                ID = (await this._context.Categories.FirstOrDefaultAsync(c => c.Label == createOneCategoryDTO.Name)).Id,
-                Name = createOneCategoryDTO.Name,
-                SeatsNumber = createOneCategoryDTO.SeatsNumber
+                ID = newCategory.Id,
+                Name = newCategory.Label,
+                SeatsNumber = newCategory.SeatsNumber
             };
         }
+        /// <summary>
+        /// Update une categorie avec DTO en entree qui cherche sur l'id 
+        /// </summary>
+        /// <param name="updatedCategoryDTO"></param>
+        /// <returns>renvois le DTO update si modifié</returns>
+        /// <exception cref="Exception"> Renvois une exception si cat innexistante</exception>
         public async Task<GetOneCategoryDTO?> UpdateOneCategoryByIdAsync(GetOneCategoryDTO updatedCategoryDTO)
         {
             // Recherchez le categorie existant dans la base de données en fonction de son ID
@@ -62,11 +70,14 @@ namespace Repositories
             existingCategory.SeatsNumber = updatedCategoryDTO.SeatsNumber;
 
             // Enregistrez les modifications dans la base de données
+            _context.Update(existingCategory);
+
             await _context.SaveChangesAsync();
 
             // Retournez le categorie mis à jour sous forme de DTO
             return new GetOneCategoryDTO
             {
+                ID = existingCategory.Id,
                 Name = existingCategory.Label,
                 SeatsNumber = existingCategory.SeatsNumber,
             };
@@ -76,8 +87,8 @@ namespace Repositories
         /// Delete a category by Id , used Id to know if  exists
         /// </summary>
         /// <param name="Id"></param>
-        /// <returns></returns>
-        public async Task DeleteOneCategoryByIdAsync(int categoryId)
+        /// <returns>Bool , true si modifié, false si non modifié </returns>
+        public async Task<bool> DeleteOneCategoryByIdAsync(int categoryId)
         {
             var categoryToDelete = await _context.Categories.FindAsync(categoryId);
 
@@ -85,7 +96,10 @@ namespace Repositories
             {
                 _context.Categories.Remove(categoryToDelete);
                 await _context.SaveChangesAsync();
+                return true;
             }
+
+            return false;
             // Si le modèle n'existe pas, il n'y a rien à supprimer
         }
 
@@ -94,9 +108,25 @@ namespace Repositories
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public async Task<Category?> GetOneCategoryByIdAsync(int Id)
+        public async Task<GetOneCategoryDTO?> GetOneCategoryByIdAsync(int Id)
         {
-            return await _context.Categories.FirstOrDefaultAsync(c => c.Id == Id);
+            var getCategory = await _context.Categories.FirstOrDefaultAsync(c => c.Id == Id);
+
+            if (getCategory != null)
+            {
+                GetOneCategoryDTO? getOneCategoryDTO = new GetOneCategoryDTO
+                {
+                    ID = getCategory.Id,
+                    Name = getCategory.Label,
+                    SeatsNumber = getCategory.SeatsNumber,
+                };
+                return getOneCategoryDTO;
+            }
+            else
+            {
+                return null;
+            }
+
         }
     }
 }
