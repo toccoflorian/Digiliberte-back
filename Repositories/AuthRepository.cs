@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utils.Constants;
 
 namespace Repositories
 {
@@ -38,14 +39,16 @@ namespace Repositories
 
             if (identityResult.Succeeded)
             {
-                await this._context.Users.AddAsync(new User
-                {
-                    Id = appUser.Id,
-                    Firstname = createUserDTO.Firstname,
-                    Lastname = createUserDTO.Lastname,
-                    AppUserId = appUser.Id,
-                    PictureURL = "https://defaultPhoto.com"
-                });
+                await this._userManager.AddToRoleAsync(appUser, ROLE.USER);
+                await this._context.Users.AddAsync(
+                    new User
+                    {
+                        Id = appUser.Id,
+                        Firstname = createUserDTO.Firstname,
+                        Lastname = createUserDTO.Lastname,
+                        AppUserId = appUser.Id,
+                        PictureURL = "https://defaultPhoto.com"
+                    });
                 await this._context.SaveChangesAsync();
         }
             else
