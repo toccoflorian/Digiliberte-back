@@ -30,6 +30,7 @@ builder.Services.AddScoped<MotorizationServices>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
+
 // ------------------Ajoue de la database 
 builder.Services.AddDbContext<DatabaseContext>(dbContextBuilderOptions =>
     dbContextBuilderOptions.UseSqlServer(builder.Configuration.GetConnectionString("ContextCS")) // connexionString dans appSettings.json
