@@ -16,7 +16,7 @@ namespace Repositories
     /// </summary>
     public class BrandRepository : IBrandRepository
     {
-        public DatabaseContext Context { get; set; }
+        private readonly DatabaseContext Context;
         public BrandRepository(DatabaseContext databaseContext)  // Dependancy injections
         {
             this.Context = databaseContext;

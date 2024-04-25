@@ -1,4 +1,5 @@
 ﻿using DTO.Models;
+using IRepositories;
 using IServices;
 using Repositories;
 using System;
@@ -17,9 +18,9 @@ namespace Services
     public class ModelServices : IModelService
     {
         // ----- Injection de dependances
-        public readonly ModelRepository ModelRepository;
+        private readonly IModelRepository ModelRepository;
 
-        public ModelServices(ModelRepository modelRepository)
+        public ModelServices(IModelRepository modelRepository)
         {
             this.ModelRepository = modelRepository;
         }

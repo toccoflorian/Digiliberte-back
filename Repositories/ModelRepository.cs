@@ -15,7 +15,7 @@ namespace Repositories
     /// </summary>
     public class ModelRepository : IModelRepository
     {
-        public DatabaseContext Context { get; set; }
+        private readonly DatabaseContext Context;
         public ModelRepository(DatabaseContext databaseContext)  // Dependancy injections
         {
             this.Context = databaseContext;
