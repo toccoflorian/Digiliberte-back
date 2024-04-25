@@ -13,7 +13,12 @@ namespace Services
             this._authRepository = authRepository;
         }
 
-
+        /// <summary>
+        /// registration of a new user
+        /// </summary>
+        /// <param name="registerDTO"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task RegisterAsync(RegisterDTO registerDTO)
         {
             if(registerDTO.Password == null || registerDTO.Password != registerDTO.ConfirmPassword)
