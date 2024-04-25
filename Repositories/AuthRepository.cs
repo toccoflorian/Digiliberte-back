@@ -23,15 +23,15 @@ namespace Repositories
         public async Task RegisterAsync(RegisterDTO registerDTO)
         {
             AppUser appUser = new AppUser{ 
-                UserName = registerDTO.Firstname + " " + registerDTO.Lastname, 
-                NormalizedUserName = registerDTO.Firstname.ToUpper() + " " + registerDTO.Lastname.ToUpper(),
+                UserName = registerDTO.EMail.ToUpper(), 
+                NormalizedUserName = registerDTO.EMail.ToUpper(),
                 Email = registerDTO.EMail,
                 NormalizedEmail = registerDTO.EMail.ToUpper()};
 
             IdentityResult? identityResult = await this._userManager.CreateAsync(appUser, registerDTO.Password);
 
-            //if(identityResult.Succeeded) 
-            //{
+            if (identityResult.Succeeded)
+            {
                 await this._context.Users.AddAsync(new User
                 {
                     Id = appUser.Id,
@@ -41,11 +41,11 @@ namespace Repositories
                     PictureURL = "https://defaultPhoto.com"
                 });
                 await this._context.SaveChangesAsync();
-            //}
-            //else
-            //{
-            //    //throw new Exception(identityResult.Errors.ToString());
-            //}
+        }
+            else
+            {
+                throw new Exception(identityResult.Errors.ToString());
+            }
         }
     }
 }
