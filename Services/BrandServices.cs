@@ -1,5 +1,4 @@
 ﻿using DTO.Brands;
-using DTO.Models;
 using Repositories;
 using System;
 using System.Collections.Generic;
@@ -28,6 +27,55 @@ namespace Services
         public async Task<GetOneBrandDTO?> CreateBrandAsync(CreateOneBrandDTO createBrandDTO)
         {
             return await brandRepository.CreateBrandAsync(createBrandDTO);
+        }
+
+        public async Task<GetOneBrandDTO?> UpdateBrandAsync(GetOneBrandDTO getOneBrandDTO)
+        {
+
+            // Vérifiez d'abord si un modèle avec le même id existe déjà dans la base de données
+            var existingBrand = await brandRepository.UpdateOneBrandByIdAsync(getOneBrandDTO);
+
+            // Si aucun modèle avec le même id n'existe, vous pouvez procéder à la mise à jour
+            return existingBrand;
+        }
+
+        public async Task<bool> DeleteOneBrandByIdAsync(int brandId)
+        {
+
+            // Vérifiez d'abord si un modèle avec le même id existe déjà dans la base de données
+            var existingBrand = await brandRepository.GetOneBrandByIdAsync(brandId);
+
+            // Si le brand existe, procédez à sa suppression
+            if (existingBrand != null)
+            {
+                await brandRepository.DeleteOneBrandByIdAsync(brandId);
+                return true; // Indique que la suppression a été effectuée avec succès
+            }
+            else
+            {
+                return false; // Indique que le modèle n'a pas été trouvé, donc la suppression n'a pas été effectuée
+            }
+        }
+
+        public async Task<GetOneBrandDTO?> GetOneBrandByIdAsync(int brandId)
+        {
+            // Utilisez le repository pour récupérer le modèle par son ID
+            var brand = await brandRepository.GetOneBrandByIdAsync(brandId);
+
+            // Si le modèle existe, mappez-le vers un DTO et retournez-le
+            if (brand != null)
+            {
+                return new GetOneBrandDTO
+                {
+                    Id = brand.Id,
+                    Name = brand.Label
+                };
+            }
+            else
+            {
+                // Si le modèle n'existe pas, retournez null
+                return null;
+            }
         }
     }
 }
