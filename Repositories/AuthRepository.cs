@@ -1,4 +1,4 @@
-﻿using DTO.Auth;
+﻿using DTO.User;
 using IRepositories;
 using Microsoft.AspNetCore.Identity;
 using Models;
@@ -23,26 +23,26 @@ namespace Repositories
         /// <summary>
         ///  registration of a new user
         /// </summary>
-        /// <param name="registerDTO"></param>
+        /// <param name="createUserDTO"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task RegisterAsync(RegisterDTO registerDTO)
+        public async Task RegisterAsync(CreateUserDTO createUserDTO)
         {
             AppUser appUser = new AppUser{ 
-                UserName = registerDTO.EMail.ToUpper(), 
-                NormalizedUserName = registerDTO.EMail.ToUpper(),
-                Email = registerDTO.EMail,
-                NormalizedEmail = registerDTO.EMail.ToUpper()};
+                UserName = createUserDTO.EmailLogin.ToUpper(), 
+                NormalizedUserName = createUserDTO.EmailLogin.ToUpper(),
+                Email = createUserDTO.EmailLogin,
+                NormalizedEmail = createUserDTO.EmailLogin.ToUpper()};
 
-            IdentityResult? identityResult = await this._userManager.CreateAsync(appUser, registerDTO.Password);
+            IdentityResult? identityResult = await this._userManager.CreateAsync(appUser, createUserDTO.Password);
 
             if (identityResult.Succeeded)
             {
                 await this._context.Users.AddAsync(new User
                 {
                     Id = appUser.Id,
-                    Firstname = registerDTO.Firstname,
-                    Lastname = registerDTO.Lastname,
+                    Firstname = createUserDTO.Firstname,
+                    Lastname = createUserDTO.Lastname,
                     AppUserId = appUser.Id,
                     PictureURL = "https://defaultPhoto.com"
                 });
