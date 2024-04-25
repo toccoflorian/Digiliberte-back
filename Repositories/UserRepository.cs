@@ -25,9 +25,9 @@ namespace Repositories
         /// </summary>
         /// <param name="userID"></param>
         /// <returns>void</returns>
-        public async Task DeleteUserByIdAsync(string userID)
+        public async Task DeleteUserByIdAsync(string userId)
         {
-            AppUser? appUser = await this._userManager.FindByIdAsync(userID);
+            AppUser? appUser = await this._userManager.FindByIdAsync(userId);
             if (appUser == null)
             {
                 throw new Exception("Utilisateur introuvable ! Aucune suppression n'a été éffectuée !");
@@ -54,22 +54,42 @@ namespace Repositories
                 }).ToListAsync();
         }
 
-        public Task<List<GetOneUserDTO>> GetUserByCarPoolAsync(int carPoolID)
+        public Task<List<GetOneUserDTO>> GetUserByCarPoolAsync(int carPoolId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Task<GetOneUserDTO>> GetUserByIdAsync(string userID)
+        /// <summary>
+        /// Get one User with User.Id
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns>one user formated with GetOneUserDTO</returns>
+        public async Task<GetOneUserDTO> GetUserByIdAsync(string userId)
+        {
+            GetOneUserDTO? userDTO = await this._context.Users.Select(user =>
+                new GetOneUserDTO
+                {
+                    Id = user.Id,
+                    Firstname= user.Firstname,
+                    Lastname= user.Lastname,
+                    PictureURL = user.PictureURL
+                }).FirstOrDefaultAsync(user => user.Id == userId);
+            if(userDTO == null)
+            {
+                throw new Exception("L'utilisateur est introuvable !");
+            }
+            else
+            {
+                return userDTO;
+            }
+        }
+
+        public Task<GetOneUserDTO> GetUserByRentAsync(int rentId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<GetOneUserDTO> GetUserByRentAsync(int rentID)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<GetOneUserDTO>> GetUserByRoleAsync(int rentID)
+        public Task<List<GetOneUserDTO>> GetUserByRoleAsync(int rentId)
         {
             throw new NotImplementedException();
         }

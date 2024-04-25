@@ -58,10 +58,16 @@ namespace Main.Controllers
         //    throw new NotImplementedException();
         //}
 
-        //public Task<Task<GetOneUserDTO>> GetUserById(string userID)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        /// <summary>
+        /// Get one User with User.Id
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns>one user formated with GetOneUserDTO</returns>
+        [HttpGet]
+        public async Task<ActionResult<GetOneUserDTO>> GetUserById(string userID)
+        {
+            return Ok(await this._userService.GetUserByIdAsync(userID));
+        }
 
         //public Task<GetOneUserDTO> GetUserByRent(int rentID)
         //{
