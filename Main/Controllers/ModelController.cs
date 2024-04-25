@@ -1,8 +1,10 @@
 ﻿using DTO.Models;
-using DTO.Vehicles;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Repositories;
 using Services;
+using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Main.Controllers
 {
@@ -46,6 +48,51 @@ namespace Main.Controllers
             {
             return Ok(await ModelServices.UpdateModelAsync(getOneOneModel));
             }catch (Exception ex) { return BadRequest(ex.Message); }
+        }
+
+        /// <summary>
+        /// Dlete a Model into the db, use a DTO for delete        
+        /// 
+        /// /// </summary>
+        /// <param name="deleteOneModel">DTO of Model for delete</param>
+        /// <returns>Returns a DTO of the deleted Vehicle</returns>
+        [HttpDelete]
+        public async Task<ActionResult<GetOneModelDTO?>> DeleteOneModelByIdAsync(int Id)
+        {
+            var model = await ModelServices.GetOneModelByIdAsync(Id);
+
+            if (model != null)
+            {
+                await ModelServices.DeleteOneModelByIdAsync(Id); 
+                return Ok($"Modèle {Id} delete ");
+            }
+            else
+            {
+                return null; // Indique que le modèle n'a pas été trouvé, donc la suppression n'a pas été effectuée
+            }
+        }
+
+        /// <summary>
+        /// Get a Model By Id into the db, use a Id       
+        /// /// </summary>
+        /// <param name="GetOneModelById">DTO of Model for GetOneModel</param>
+        /// <returns>Returns a DTO of the GetOneModelById Model</returns>
+        [HttpGet]
+        public async Task<ActionResult<GetOneModelDTO?>> GetOneModelByIdAsync(int Id)
+        {
+            // Utilisez le service pour récupérer le modèle par son ID
+            var modelDto = await ModelServices.GetOneModelByIdAsync(Id);
+
+            // Si le modèle est trouvé, retournez-le en tant que réponse HTTP 200 OK
+            if (modelDto != null)
+            {
+                return Ok(modelDto);
+            }
+            else
+            {
+                // Si le modèle n'est pas trouvé, retournez une réponse HTTP 404 Not Found
+                return NotFound();
+            }
         }
     }
 }

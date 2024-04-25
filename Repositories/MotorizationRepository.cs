@@ -17,14 +17,12 @@ namespace Repositories
         {
             this.Context = databaseContext;
         }
+
         /// <summary>
         /// Create a Motorization Repository
         /// </summary>
         /// <param name="createOneMotorizationDTO">Gives a DTO as parameter with only needed values</param>
         /// <returns>Return Get One motorization DTO</returns>
-
-        
-        public async Task<GetOneMotorizationDTO> CreateOneMotorizationAsync(CreateOneMotorizationDTO createOneMotorizationDTO)
 
         public async Task<GetOneMotorizationDTO?> CreateOneMotorizationAsync(CreateOneMotorizationDTO createOneMotorizationDTO)
         {
