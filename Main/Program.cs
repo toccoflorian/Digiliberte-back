@@ -2,6 +2,7 @@
 using Main;
 using ICategoryServices;
 using IRepositories;
+using IServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -11,10 +12,13 @@ using Services;
 using Swashbuckle.AspNetCore.Filters;
 using System;
 using System.Reflection;
+using System.Text.Json.Serialization;
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 
 //----------------SERVICES ADDING ------------------
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<VehicleServices>();
 builder.Services.AddScoped<VehicleRepository>();
 builder.Services.AddScoped<ModelRepository>();
@@ -57,6 +61,11 @@ builder.Services.AddScoped<InitializeUser>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddControllers().AddJsonOptions(jsonOptions =>
+    jsonOptions.JsonSerializerOptions.ReferenceHandler =
+    ReferenceHandler.IgnoreCycles
+);
 
 builder.Services.AddSwaggerGen(swaggerOptions =>
 {
