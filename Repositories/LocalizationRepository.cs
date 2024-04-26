@@ -60,13 +60,13 @@ namespace Repositories
         }
 
         /// <summary>
-        /// Return all Localizations in Db with cars at this position or close by 100 Meters (radius = 0.0009)
+        /// Return all Localizations in Db with cars at this position or close by 500 Meters (radius = 0.0045)
         /// </summary>
         /// <param name="inputLongitude">Longitude To choose</param>
         /// <param name="inputLatitude">Latitude To choose</param>
         /// <param name="radius">Default value is 0.0009, approximatively 100 meters</param>
         /// <returns>Reutrn a List</returns>
-        public async Task<List<LocalizationWithCarDTO>?> GetLocalizationAndCarsByCoordinatesAsync(double inputLongitude, double inputLatitude, double radius = 0.0009)
+        public async Task<List<LocalizationWithCarDTO>?> GetLocalizationAndCarsByCoordinatesAsync(double inputLongitude, double inputLatitude, double radius = 0.0045)
         {
             // Check les localizations en fonction du radius 
             var localizationWithCars = await Context.Localizations
@@ -93,7 +93,7 @@ namespace Repositories
         /// <param name="inputLatitude">Latitude</param>
         /// <param name="radius">default is 0.000135 around 10 meters</param>
         /// <returns>List of LocalizationIdDTO</returns>
-        public async Task<List<LocalizationIdDTO>?> GetLocalizationsByCoordinatesAsync(double inputLongitude, double inputLatitude, double radius = 0.000135)
+        public async Task<List<LocalizationIdDTO>?> GetLocalizationsByCoordinatesAsync(double inputLongitude, double inputLatitude, double radius = 0.0009)
         {
             List<LocalizationIdDTO> localizations = await Context.Localizations
                 .Where(localization =>
@@ -110,7 +110,7 @@ namespace Repositories
         }
 
         /// <summary>
-        /// Create A new Localization, will be used when creating a car or Carpool, if the localization doesn't exists, it creates it, if not , it returns the closest localization
+        /// Create A new Localization, will be used when creating a car or Carpool, if the localization doesn't exists, it creates it, if not , it returns the closest localization, default is 100meters
         /// </summary>
         /// <param name="localizationDTO">Take inputs as Longitude and Latitudes</param>
         /// <returns></returns>
@@ -135,7 +135,7 @@ namespace Repositories
                 await Context.Localizations.AddAsync(newLocalization);
                 await Context.SaveChangesAsync();
 
-                List<LocalizationIdDTO>? outputList = await GetLocalizationsByCoordinatesAsync(inputLongitude: localizationDTO.Logitude, inputLatitude: localizationDTO.Latitude, 0.00005);
+                List<LocalizationIdDTO>? outputList = await GetLocalizationsByCoordinatesAsync(inputLongitude: localizationDTO.Logitude, inputLatitude: localizationDTO.Latitude);
                 LocalizationIdDTO? outPut = outputList.FirstOrDefault();
 
                 return outPut;
