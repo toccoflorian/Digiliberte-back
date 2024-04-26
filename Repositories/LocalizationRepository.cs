@@ -17,16 +17,18 @@ namespace Repositories
     /// </summary>
     public class LocalizationRepository
     {
-        public readonly DatabaseContext Context;
+        private readonly DatabaseContext Context;
         public LocalizationRepository(DatabaseContext context) { this.Context = context; } // Dependency injections
 
-        /// <summary>
-        /// Outputs all localization with their DTO , no futher informations 
-        /// </summary>
-        /// <returns></returns>
-        public async Task<List<LocalizationDTO>> GetAllLocalizationsAsync()
+       /// <summary>
+       /// Get All Localizations with pagination parameters, default are 0 for index and 10 for pageSize
+       /// </summary>
+       /// <param name="paginationIndex">Index of starting, 0 will be 0 , 1 would be 10(pageSize), 2 would be 20(pageSize*index)</param>
+       /// <param name="pageSize">Number of items to display, default is 10</param>
+       /// <returns>A list of LocalizationDTO</returns>
+        public async Task<List<LocalizationDTO>> GetAllLocalizationsAsync(int paginationIndex = 0,int pageSize = 10)
         {
-            List<LocalizationDTO> localizationsList = await Context.Localizations.Select(loc => new LocalizationDTO
+            List<LocalizationDTO> localizationsList = await Context.Localizations.Skip(pageSize*paginationIndex).Take(pageSize).Select(loc => new LocalizationDTO
             {
                 Logitude = loc.Longitude,
                 Latitude = loc.Latitude,
@@ -35,12 +37,14 @@ namespace Repositories
             return localizationsList;
         }
         /// <summary>
-        /// Get ALL localization with all Vehicles ID, would be good to add pagination
+        /// Get ALL localization with all Vehicles ID, with Pagination
         /// </summary>
+        /// <param name="pageSize">Page size number, default is 10</param>
+        /// <param name="paginationIndex">Index of starting, 0 will be 0 , 1 would be 10(pageSize), 2 would be 20(pageSize*index)</param>
         /// <returns>Return a Localization List with cars</returns>
-        public async Task<List<LocalizationWithCarDTO>> GetAllLocalizationsWithVehiclesAsync()
+        public async Task<List<LocalizationWithCarDTO>> GetAllLocalizationsWithVehiclesAsync(int paginationIndex = 0, int pageSize = 10)
         {
-            List<LocalizationWithCarDTO> localizationWithCars = await Context.Localizations
+            List<LocalizationWithCarDTO> localizationWithCars = await Context.Localizations.Skip(pageSize * paginationIndex).Take(pageSize) // Pagination
                 .Select(localization => new LocalizationWithCarDTO
                 {
                     Longitude = localization.Longitude,
@@ -157,17 +161,19 @@ namespace Repositories
 
         }
         /// <summary>
-        /// Get Localizations List with their carpoools starting or ending here
+        /// Get Localizations List with their carpoools starting or ending here, giving pagination index and page size, starting at 0
         /// </summary
+        /// <param name="pageSize">number of Items to display, default is 10</param>
+        /// <param name="paginationIndex">Index of starting, 0 will be 0 , 1 would be 10(pageSize), 2 would be 20(pageSize*index)</param>
         /// <param name="localizationDTO">Coordinates Long and Lat</param>
         /// <param name="radius">double, radius around the coordinates , default is 0.0009 (around 100m)</param>
         /// <returns>Return a list that can be empty</returns>
 
-        public async Task<List<LocalizationWithCarpoolDTO>?> GetLocalizationAndCarpoolsAsync(LocalizationDTO localizationDTO,int paginationBegin, int paginationEnd, double radius = 0.0009)
+        public async Task<List<LocalizationWithCarpoolDTO>?> GetLocalizationAndCarpoolsAsync(LocalizationDTO localizationDTO,int paginationIndex = 0, int pageSize = 10, double radius = 0.0009)
         {
             // Check les localizations en fonction du radius 
             // Making two requests for now
-            List<LocalizationWithCarpoolDTO> localizationWithCarpools = await Context.Localizations
+            List<LocalizationWithCarpoolDTO> localizationWithCarpools = await Context.Localizations.Skip(paginationIndex*pageSize).Take(pageSize)
             .Select(localization => new LocalizationWithCarpoolDTO
             {
                 Longitude = localization.Longitude,
