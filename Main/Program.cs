@@ -1,6 +1,6 @@
 
 using Main;
-using ICategoryServices;
+using IServices;
 using IRepositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -11,20 +11,25 @@ using Services;
 using Swashbuckle.AspNetCore.Filters;
 using System;
 using System.Reflection;
+using System.Text.Json.Serialization;
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 
 //----------------SERVICES ADDING ------------------
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<VehicleServices>();
 builder.Services.AddScoped<VehicleRepository>();
-builder.Services.AddScoped<ModelRepository>();
-builder.Services.AddScoped<ModelServices>();
-builder.Services.AddScoped<BrandRepository>();
-builder.Services.AddScoped<BrandServices>();
-builder.Services.AddScoped<MotorizationRepository>();
-builder.Services.AddScoped<MotorizationServices>();
+builder.Services.AddScoped<IModelRepository, ModelRepository>();
+builder.Services.AddScoped<IModelService, ModelServices>();
+builder.Services.AddScoped<IBrandRepository,BrandRepository>();
+builder.Services.AddScoped<IBrandService,BrandServices>();
+builder.Services.AddScoped<IMotorizationRepository, MotorizationRepository>();
+builder.Services.AddScoped<IMotorizationService, MotorizationServices>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ILocalizationRepository, LocalizationRepository>();
 
 
@@ -59,6 +64,11 @@ builder.Services.AddScoped<InitializeUser>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddControllers().AddJsonOptions(jsonOptions =>
+    jsonOptions.JsonSerializerOptions.ReferenceHandler =
+    ReferenceHandler.IgnoreCycles
+);
 
 builder.Services.AddSwaggerGen(swaggerOptions =>
 {
