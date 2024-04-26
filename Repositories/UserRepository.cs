@@ -116,9 +116,60 @@ namespace Repositories
             return userDTOs;
         }
 
-        public Task<List<GetOneUserDTO>> GetUsersByNameAsync(GetUserByNameDTO getUserByNameDTO)
+
+        /// <summary>
+        /// get a list of users by name
+        /// </summary>
+        /// <param name="getUserByNameDTO"></param>
+        /// <returns>List of users formated with GetUserByNameDTO</returns>
+        public async Task<List<GetOneUserDTO>> GetUsersByNameAsync(GetUserByNameDTO getUserByNameDTO)     // get users by name
         {
-            throw new NotImplementedException();
+            if (getUserByNameDTO.Firstname != null && getUserByNameDTO.Lastname == null)
+            {
+                return await this._context.Users
+                .Select(user =>
+                    new GetOneUserDTO
+                    {
+                        Id = user.Id,
+                        Firstname = user.Firstname,
+                        Lastname = user.Lastname,
+                        PictureURL = user.PictureURL
+                    })
+                .Where(user => user.Firstname == getUserByNameDTO.Firstname)
+                .ToListAsync();
+            }
+            else if (getUserByNameDTO.Firstname == null && getUserByNameDTO.Lastname != null)
+            {
+                return await this._context.Users
+                .Select(user =>
+                    new GetOneUserDTO
+                    {
+                        Id = user.Id,
+                        Firstname = user.Firstname,
+                        Lastname = user.Lastname,
+                        PictureURL = user.PictureURL
+                    })
+                .Where(user => user.Lastname == getUserByNameDTO.Lastname)
+                .ToListAsync();
+            }
+            else
+            {
+                return await this._context.Users
+                .Select(user =>
+                    new GetOneUserDTO
+                    {
+                        Id = user.Id,
+                        Firstname = user.Firstname,
+                        Lastname = user.Lastname,
+                        PictureURL = user.PictureURL
+                    })
+                .Where(user => 
+                    user.Firstname == getUserByNameDTO.Firstname
+                    &&
+                    user.Lastname == getUserByNameDTO.Lastname)
+                .ToListAsync();
+            }
+            
         }
 
         public Task<GetOneUserDTO> UpdateUserByIdAsync(CreateUserDTO updateOneUserDTO)
