@@ -86,8 +86,15 @@ namespace Main.Controllers
         //[Authorize(Roles = ROLE.ADMIN)]
         public async Task<ActionResult<List<GetOneUserDTO>>> GetUserByRole(string role)         // get user by role
         {
-            return Ok(await this._userService.GetUserByRoleAsync(role));
-        }
+            try
+            {
+                return Ok(await this._userService.GetUserByRoleAsync(role));
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            }
 
         //public Task<List<GetOneUserDTO>> GetUsersByName(GetUserByNameDTO getUserByNameDTO)
         //{
