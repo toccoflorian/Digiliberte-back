@@ -96,10 +96,24 @@ namespace Main.Controllers
             }
             }
 
-        //public Task<List<GetOneUserDTO>> GetUsersByName(GetUserByNameDTO getUserByNameDTO)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        /// <summary>
+        /// get a list of users by name
+        /// </summary>
+        /// <param name="getUserByNameDTO"></param>
+        /// <returns>List of users formated with GetUserByNameDTO</returns>
+        [HttpPost]
+        //[Authorize(Roles = ROLE.ADMIN)]
+        public async Task<ActionResult<List<GetOneUserDTO>>> GetUsersByName(GetUserByNameDTO getUserByNameDTO)     // get users by name
+        {
+            try
+            {
+                return await this._userService.GetUsersByNameAsync(getUserByNameDTO);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         //public Task<GetOneUserDTO> UpdateUserById(CreateUserDTO updateOneUserDTO)
         //{

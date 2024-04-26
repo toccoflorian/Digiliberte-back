@@ -62,9 +62,15 @@ namespace Services
             return await this._userRepository.GetUserByRoleAsync(role);
         }
 
-        public Task<List<GetOneUserDTO>> GetUsersByNameAsync(GetUserByNameDTO getUserByNameDTO)
+
+        /// <summary>
+        /// get a list of users by name
+        /// </summary>
+        /// <param name="getUserByNameDTO"></param>
+        /// <returns>List of users formated with GetUserByNameDTO</returns>
+        public async Task<List<GetOneUserDTO>> GetUsersByNameAsync(GetUserByNameDTO getUserByNameDTO)     // get users by name
         {
-            throw new NotImplementedException();
+            return await this._userRepository.GetUsersByNameAsync(getUserByNameDTO);
         }
 
         public Task<GetOneUserDTO> UpdateUserByIdAsync(CreateUserDTO updateOneUserDTO)
