@@ -1,4 +1,5 @@
 ﻿using DTO.Models;
+using IRepositories;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using System;
@@ -12,9 +13,9 @@ namespace Repositories
     /// <summary>
     /// Class for all Model Tools
     /// </summary>
-    public class ModelRepository
+    public class ModelRepository : IModelRepository
     {
-        public DatabaseContext Context { get; set; }
+        private readonly DatabaseContext Context;
         public ModelRepository(DatabaseContext databaseContext)  // Dependancy injections
         {
             this.Context = databaseContext;

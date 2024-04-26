@@ -1,4 +1,6 @@
 ﻿using DTO.Brands;
+using IRepositories;
+using IRepositories;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using System;
@@ -12,9 +14,9 @@ namespace Repositories
     /// <summary>
     /// Class for Brand Repositories
     /// </summary>
-    public class BrandRepository
+    public class BrandRepository : IBrandRepository
     {
-        public DatabaseContext Context { get; set; }
+        private readonly DatabaseContext Context;
         public BrandRepository(DatabaseContext databaseContext)  // Dependancy injections
         {
             this.Context = databaseContext;

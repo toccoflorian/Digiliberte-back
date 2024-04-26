@@ -1,23 +1,25 @@
 ﻿using DTO.Brands;
 using Repositories;
+using IServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IRepositories;
 
 namespace Services
 {
     /// <summary>
     /// Brand Services used in controllers
     /// </summary>
-    public class BrandServices
+    public class BrandServices : IBrandService
     {
 
         // DEPENDANCY INJECTION
 
-        public readonly BrandRepository brandRepository;
-        public BrandServices(BrandRepository brandRepository) { this.brandRepository = brandRepository; }
+        private readonly IBrandRepository brandRepository;
+        public BrandServices(IBrandRepository brandRepository) { this.brandRepository = brandRepository; }
 
         /// <summary>
         /// Service to call repository CreateBrandAsync , returns GetOneBrandDTO
