@@ -8,7 +8,7 @@ namespace Utils.Constants
 {
     public static class ROLE
     {
-        public static string ADMIN = "ADMIN";
-        public static string USER = "USER";
+        public const string ADMIN = "ADMIN";
+        public const string USER = "USER";
     }
 }

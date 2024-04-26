@@ -1,18 +1,14 @@
 ﻿using DTO.User;
 using IRepositories;
 using IServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services
 {
     public class UserService : IUserService
     {
         private IUserRepository _userRepository;
-        public UserService(IUserRepository userRepository)
+
+        public UserService(IUserRepository userRepository )
         {
             this._userRepository = userRepository;
         }
@@ -22,7 +18,7 @@ namespace Services
         /// </summary>
         /// <param name="userId"></param>
         /// <returns>void</returns>
-        public async Task DeleteUserByIdAsync(string userId)
+        public async Task DeleteUserByIdAsync(string userId)                // delete user
         {
             await this._userRepository.DeleteUserByIdAsync(userId);
         }
@@ -46,7 +42,7 @@ namespace Services
         /// </summary>
         /// <param name="userID"></param>
         /// <returns>one user formated with GetOneUserDTO</returns>
-        public async Task<GetOneUserDTO> GetUserByIdAsync(string userId)
+        public async Task<GetOneUserDTO> GetUserByIdAsync(string userId)                // get user by Id
         {
             return await this._userRepository.GetUserByIdAsync(userId);
         }
@@ -56,9 +52,14 @@ namespace Services
             throw new NotImplementedException();
         }
 
-        public Task<List<GetOneUserDTO>> GetUserByRoleAsync(int rentId)
+        /// <summary>
+        /// Get list of user in the role
+        /// </summary>
+        /// <param name="role"></param>
+        /// <returns>List of user formated with GetOneUserDTO</returns>
+        public async Task<List<GetOneUserDTO?>> GetUserByRoleAsync(string role)                 // get user by role
         {
-            throw new NotImplementedException();
+            return await this._userRepository.GetUserByRoleAsync(role);
         }
 
         public Task<List<GetOneUserDTO>> GetUsersByNameAsync(GetUserByNameDTO getUserByNameDTO)

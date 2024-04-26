@@ -1,4 +1,6 @@
 ﻿using DTO.User;
+using Microsoft.AspNetCore.Identity;
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +13,7 @@ namespace IServices
     {
         public Task<List<GetOneUserDTO>> GetAllUsersAsync();
         public Task<GetOneUserDTO> GetUserByIdAsync(string userId);
-        public Task<List<GetOneUserDTO>> GetUserByRoleAsync(int rentId);
+        public Task<List<GetOneUserDTO?>> GetUserByRoleAsync(string role);
         public Task<GetOneUserDTO> GetUserByRentAsync(int rentId);
         public Task<List<GetOneUserDTO>> GetUserByCarPoolAsync(int carPoolId);
         public Task<List<GetOneUserDTO>> GetUsersByNameAsync(GetUserByNameDTO getUserByNameDTO);

@@ -3,10 +3,6 @@ using IRepositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Models;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Repositories
 {
@@ -25,7 +21,7 @@ namespace Repositories
         /// </summary>
         /// <param name="userID"></param>
         /// <returns>void</returns>
-        public async Task DeleteUserByIdAsync(string userId)
+        public async Task DeleteUserByIdAsync(string userId)                    // delete user
         {
             AppUser? appUser = await this._userManager.FindByIdAsync(userId);
             if (appUser == null)
@@ -64,7 +60,7 @@ namespace Repositories
         /// </summary>
         /// <param name="userID"></param>
         /// <returns>one user formated with GetOneUserDTO</returns>
-        public async Task<GetOneUserDTO> GetUserByIdAsync(string userId)
+        public async Task<GetOneUserDTO> GetUserByIdAsync(string userId)                // get user by id
         {
             GetOneUserDTO? userDTO = await this._context.Users.Select(user =>
                 new GetOneUserDTO
@@ -89,9 +85,35 @@ namespace Repositories
             throw new NotImplementedException();
         }
 
-        public Task<List<GetOneUserDTO>> GetUserByRoleAsync(int rentId)
+        /// <summary>
+        /// Get list of user in the role
+        /// </summary>
+        /// <param name="role"></param>
+        /// <returns>List of user formated with GetOneUserDTO</returns>
+        public async Task<List<GetOneUserDTO?>> GetUserByRoleAsync(string role)         
         {
-            throw new NotImplementedException();
+            List<GetOneUserDTO?> userDTOs = new List<GetOneUserDTO?>();
+            List<IdentityUserRole<string>>? userRoles = await this._context.UserRoles.ToListAsync();
+
+            foreach (IdentityUserRole<string> userRole in userRoles)
+            {
+                AppUser? appUser = await this._userManager.FindByIdAsync(userRole.UserId);
+                if (await this._userManager.IsInRoleAsync(appUser, role))
+                {
+                    userDTOs
+                        .Add(await this._context.Users
+                            .Select(user =>
+                                new GetOneUserDTO
+                                {
+                                    Id = user.Id,
+                                    Firstname = user.Firstname,
+                                    Lastname = user.Lastname,
+                                    PictureURL  = user.PictureURL
+                                })
+                            .FirstOrDefaultAsync(user => user.Id == userRole.UserId));
+                }
+            }
+            return userDTOs;
         }
 
         public Task<List<GetOneUserDTO>> GetUsersByNameAsync(GetUserByNameDTO getUserByNameDTO)

@@ -1,5 +1,4 @@
 ﻿using DTO.User;
-using IRepositories;
 using IServices;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
@@ -11,10 +10,10 @@ namespace Main.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthRepository _authRepository;
-        public AuthController(IAuthRepository authRepository)
+        private readonly IAuthService _authService;
+        public AuthController(IAuthService authService)
         {
-            this._authRepository = authRepository;
+            this._authService = authService;
         }
 
         /// <summary>
@@ -27,12 +26,12 @@ namespace Main.Controllers
         {
             try
             {
-                await this._authRepository.RegisterAsync(createUserDTO);
+                await this._authService.RegisterAsync(createUserDTO);
                 return Ok();
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
         }   
     }

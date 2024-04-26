@@ -1,9 +1,9 @@
 ﻿using DTO.User;
-using IRepositories;
 using IServices;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Models;
+using Utils.Constants;
+
 
 namespace Main.Controllers
 {
@@ -23,7 +23,8 @@ namespace Main.Controllers
         /// <param name="userID"></param>
         /// <returns>void</returns>
         [HttpDelete]
-        public async Task<ActionResult> DeleteUserById(string userID)
+        //[Authorize]
+        public async Task<ActionResult> DeleteUserById(string userID)           // delete user
         {
             try
             {
@@ -41,6 +42,7 @@ namespace Main.Controllers
         /// </summary>
         /// <returns>List of users formated with GetOneUserDTO</returns>
         [HttpGet]
+        //[Authorize(Roles = ROLE.ADMIN)]
         public async Task<ActionResult<List<GetOneUserDTO>>> GetAllUsers()         // get all users
         {
             try
@@ -64,7 +66,8 @@ namespace Main.Controllers
         /// <param name="userID"></param>
         /// <returns>one user formated with GetOneUserDTO</returns>
         [HttpGet]
-        public async Task<ActionResult<GetOneUserDTO>> GetUserById(string userID)
+        //[Authorize]
+        public async Task<ActionResult<GetOneUserDTO>> GetUserById(string userID)           // get user by Id
         {
             return Ok(await this._userService.GetUserByIdAsync(userID));
         }
@@ -74,10 +77,17 @@ namespace Main.Controllers
         //    throw new NotImplementedException();
         //}
 
-        //public Task<List<GetOneUserDTO>> GetUserByRole(int rentID)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        /// <summary>
+        /// Get list of user in the role
+        /// </summary>
+        /// <param name="role"></param>
+        /// <returns>List of user formated with GetOneUserDTO</returns>
+        [HttpGet]
+        //[Authorize(Roles = ROLE.ADMIN)]
+        public async Task<ActionResult<List<GetOneUserDTO>>> GetUserByRole(string role)         // get user by role
+        {
+            return Ok(await this._userService.GetUserByRoleAsync(role));
+        }
 
         //public Task<List<GetOneUserDTO>> GetUsersByName(GetUserByNameDTO getUserByNameDTO)
         //{
