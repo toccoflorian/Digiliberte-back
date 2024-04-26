@@ -13,10 +13,11 @@ namespace DTO.Localization
     /// </summary>
     public class LocalizationWithCarpoolDTO
     {
+        public int Id { get; set; }
         public double Longitude { get; set; }
         public double Latitude { get; set; }
 
-        public List<CarPoolSimpleIdDTO>? CarPoolsStartingAt { get; set; }
-        public List<CarPoolSimpleIdDTO>? CarPoolsEndingAt { get; set; }
+        public List<CarpoolWithLocalizationIdDTO>? CarPoolsStartingAt { get; set; }
+        public List<CarpoolWithLocalizationIdDTO>? CarPoolsEndingAt { get; set; }
     }
 }

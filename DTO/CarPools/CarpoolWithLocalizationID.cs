@@ -9,7 +9,7 @@ namespace DTO.CarPools
     /// <summary>
     /// DTO made to get the carpool id and Localization ID, Start And End Coordinates 
     /// </summary>
-    public class CarpoolWithLocalizationID
+    public class CarpoolWithLocalizationIdDTO
     {
         public int Id { get; set; }
         public int StartLocalizationId { get; set; }

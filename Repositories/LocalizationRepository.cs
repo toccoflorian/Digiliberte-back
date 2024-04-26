@@ -92,12 +92,12 @@ namespace Repositories
         public async Task<List<LocalizationIdDTO>?> GetLocalizationsByCoordinatesAsync(double inputLongitude, double inputLatitude, double radius = 0.000135)
         {
             List<LocalizationIdDTO> localizations = await Context.Localizations
-                .Where(localization => 
-                Math.Abs(localization.Longitude - inputLongitude) <= radius && 
-                Math.Abs(localization.Latitude -inputLatitude) <= radius)   // Check the localization on the radius ! 
+                .Where(localization =>
+                Math.Abs(localization.Longitude - inputLongitude) <= radius &&
+                Math.Abs(localization.Latitude - inputLatitude) <= radius)   // Check the localization on the radius ! 
                 .Select(dto => new LocalizationIdDTO
                 {
-                    Id= dto.Id,
+                    Id = dto.Id,
                     Latitude = dto.Latitude,
                     Longitude = dto.Longitude,
                 }).ToListAsync();
@@ -152,7 +152,7 @@ namespace Repositories
                 return closestLocalizationDTO; // return the item
             }
 
-           
+
 
 
         }
@@ -163,24 +163,51 @@ namespace Repositories
         /// <param name="radius">double, radius around the coordinates , default is 0.0009 (around 100m)</param>
         /// <returns>Return a list that can be empty</returns>
 
-        public async Task<LocalizationWithCarpoolDTO> GetLocalizationAndCarpoolsAsync(LocalizationDTO localizationDTO, double radius = 0.0009)
+        public async Task<List<LocalizationWithCarpoolDTO>?> GetLocalizationAndCarpoolsAsync(LocalizationDTO localizationDTO,int paginationBegin, int paginationEnd, double radius = 0.0009)
         {
             // Check les localizations en fonction du radius 
-            var localizationWithCarpools = await Context.Localizations
-            .Where(localization =>
-                Math.Abs(localization.Longitude - localizationDTO.Logitude) <= radius &&
-                Math.Abs(localization.Latitude - localizationDTO.Latitude) <= radius)   // condition on the radius, will output the ones 100 meters arounds only 
+            // Making two requests for now
+            List<LocalizationWithCarpoolDTO> localizationWithCarpools = await Context.Localizations
             .Select(localization => new LocalizationWithCarpoolDTO
             {
                 Longitude = localization.Longitude,
                 Latitude = localization.Latitude,
-                CarPoolsStartingAt = localization.StartLocalizationCarPools != null ? localization.StartLocalizationCarPools.Select(v => new CarPoolSimpleIdDTO    // LONG CODE POUR EVITER LE RENVOIS DE NULL QUI
-                {                                                                                                      // qui pourrait faire planter tout      
-                    Id = v.Id,
-                }).ToList() : new List<CarPoolSimpleIdDTO>(),
-            }).ToListAsync();
-
-            return localizationWithCars;
+                CarPoolsStartingAt = Context.CarPools
+                    .Where(carpool => carpool.StartLocalizationID == localization.Id) != null ?   // GESTION DE NULL 
+                    Context.CarPools                                                              // DEVRAIS EVITER TOUT PROBLEME DE NULL
+                    .Where(carpool => carpool.StartLocalizationID == localization.Id)
+                    .Select(carpool => new CarpoolWithLocalizationIdDTO
+                    {
+                        Id = carpool.Id,
+                        StartLocalizationId = carpool.StartLocalizationID,
+                        StartLatitude = carpool.StartLocalization.Latitude,
+                        StartLongitude = carpool.StartLocalization.Longitude,
+                        EndLocalizationId = carpool.EndLocalizationID,
+                        EndLatitude = carpool.EndLocalization.Latitude,
+                        EndLongitude = carpool.EndLocalization.Longitude
+                    })
+                    .ToList() : new List<CarpoolWithLocalizationIdDTO>(), // Renvois liste vide si null
+                CarPoolsEndingAt = Context.CarPools
+                    .Where(carpool => carpool.EndLocalizationID == localization.Id) != null ? // GESTION DES NULLS
+                    Context.CarPools
+                    .Where(carpool => carpool.EndLocalizationID == localization.Id)
+                    .Select(carpool => new CarpoolWithLocalizationIdDTO
+                    {
+                        Id = carpool.Id,
+                        StartLocalizationId = carpool.StartLocalizationID,
+                        StartLatitude = carpool.StartLocalization.Latitude,
+                        StartLongitude = carpool.StartLocalization.Longitude,
+                        EndLocalizationId = carpool.EndLocalizationID,
+                        EndLatitude = carpool.EndLocalization.Latitude,
+                        EndLongitude = carpool.EndLocalization.Longitude
+                    })
+                    .ToList() : new List<CarpoolWithLocalizationIdDTO>() // Renvois liste vide si null 
+            })
+            .Where(localization =>
+                Math.Abs(localization.Longitude - localizationDTO.Logitude) <= radius &&
+                Math.Abs(localization.Latitude - localizationDTO.Latitude) <= radius)
+            .ToListAsync();
+            return localizationWithCarpools;
         }
     }
 }
