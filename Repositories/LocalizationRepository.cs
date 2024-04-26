@@ -1,4 +1,5 @@
-﻿using DTO.Localization;
+﻿using DTO.CarPools;
+using DTO.Localization;
 using DTO.Vehicles;
 using Microsoft.EntityFrameworkCore;
 using Models;
@@ -154,6 +155,32 @@ namespace Repositories
            
 
 
+        }
+        /// <summary>
+        /// Get Localizations List with their carpoools starting or ending here
+        /// </summary
+        /// <param name="localizationDTO">Coordinates Long and Lat</param>
+        /// <param name="radius">double, radius around the coordinates , default is 0.0009 (around 100m)</param>
+        /// <returns>Return a list that can be empty</returns>
+
+        public async Task<LocalizationWithCarpoolDTO> GetLocalizationAndCarpoolsAsync(LocalizationDTO localizationDTO, double radius = 0.0009)
+        {
+            // Check les localizations en fonction du radius 
+            var localizationWithCarpools = await Context.Localizations
+            .Where(localization =>
+                Math.Abs(localization.Longitude - localizationDTO.Logitude) <= radius &&
+                Math.Abs(localization.Latitude - localizationDTO.Latitude) <= radius)   // condition on the radius, will output the ones 100 meters arounds only 
+            .Select(localization => new LocalizationWithCarpoolDTO
+            {
+                Longitude = localization.Longitude,
+                Latitude = localization.Latitude,
+                CarPoolsStartingAt = localization.StartLocalizationCarPools != null ? localization.StartLocalizationCarPools.Select(v => new CarPoolSimpleIdDTO    // LONG CODE POUR EVITER LE RENVOIS DE NULL QUI
+                {                                                                                                      // qui pourrait faire planter tout      
+                    Id = v.Id,
+                }).ToList() : new List<CarPoolSimpleIdDTO>(),
+            }).ToListAsync();
+
+            return localizationWithCars;
         }
     }
 }

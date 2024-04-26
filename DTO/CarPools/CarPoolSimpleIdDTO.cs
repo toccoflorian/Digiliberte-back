@@ -11,5 +11,6 @@ namespace DTO.CarPools
     /// </summary>
     public class CarPoolSimpleIdDTO
     {
+        public int Id {  get; set; }
     }
 }
