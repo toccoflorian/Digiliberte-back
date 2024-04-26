@@ -1,6 +1,7 @@
 ﻿using DTO.CarPools;
 using DTO.Localization;
 using DTO.Vehicles;
+using IRepositories;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using System;
@@ -15,7 +16,7 @@ namespace Repositories
     /// <summary>
     /// Repository to create localizations
     /// </summary>
-    public class LocalizationRepository
+    public class LocalizationRepository : ILocalizationRepository
     {
         private readonly DatabaseContext Context;
         public LocalizationRepository(DatabaseContext context) { this.Context = context; } // Dependency injections

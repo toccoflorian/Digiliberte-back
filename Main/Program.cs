@@ -25,6 +25,8 @@ builder.Services.AddScoped<MotorizationRepository>();
 builder.Services.AddScoped<MotorizationServices>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ILocalizationRepository, LocalizationRepository>();
+
 
 // ------------------Ajoue de la database 
 builder.Services.AddDbContext<DatabaseContext>(dbContextBuilderOptions =>
