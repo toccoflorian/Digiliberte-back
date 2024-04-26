@@ -12,7 +12,7 @@ namespace Repositories
     /// <summary>
     /// Class for all Model Tools
     /// </summary>
-    public class ModelRepository
+    public class ModelRepository 
     {
         public DatabaseContext Context { get; set; }
         public ModelRepository(DatabaseContext databaseContext)  // Dependancy injections
