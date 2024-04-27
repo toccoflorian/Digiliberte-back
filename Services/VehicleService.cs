@@ -45,9 +45,12 @@ namespace Services
         /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
         public async Task<GetOneVehicleDTO> GetVehicleByIdAsync(int id)
         {
-            return await this.GetVehicleByIdAsync(id)
-                ??
+            GetOneVehicleDTO? vehicleDTO = await this._vehicleRepository.GetVehicleByIdAsync(id);
+            if (vehicleDTO == null)
+            {
                 throw new Exception("Aucun véhicule ne correspont à cette id !");
+            }
+            return vehicleDTO;
         }
 
         public Task<List<GetOneVehicleWithRentDTO>> GetAllReservedVehiclesAsync()
@@ -87,9 +90,12 @@ namespace Services
         /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
         public async Task<GetOneVehicleDTO> GetVehicleByImmatAsync(string immat)
         {
-            return await this._vehicleRepository.GetVehicleByImmatAsync(immat)
-                ??
+            GetOneVehicleDTO? vehicleDTO = await this._vehicleRepository.GetVehicleByImmatAsync(immat);
+            if(vehicleDTO == null)
+            {
                 throw new Exception("Acun véhicule ne porte cette immatriculation !");
+            }
+            return vehicleDTO;
         }
 
         public Task<List<GetOneVehicleDTO>> GetVehiclesByBrandAsync(int brandId)

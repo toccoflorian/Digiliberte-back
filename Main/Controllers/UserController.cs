@@ -69,7 +69,14 @@ namespace Main.Controllers
         //[Authorize]
         public async Task<ActionResult<GetOneUserDTO>> GetUserById(string userID)           // get user by Id
         {
-            return Ok(await this._userService.GetUserByIdAsync(userID));
+            try
+            {
+                return Ok(await this._userService.GetUserByIdAsync(userID));
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.InnerException.Message);
+            }
         }
 
         //public Task<GetOneUserDTO> GetUserByRent(int rentID)

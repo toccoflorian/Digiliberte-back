@@ -16,10 +16,10 @@ namespace Repositories
 {
     public class VehicleRepository : IVehicleRepository
     {
-        public DatabaseContext Context { get; set; }
+        private readonly DatabaseContext _context;
         public VehicleRepository(DatabaseContext databaseContext)  // Dependancy injections
         {
-            this.Context = databaseContext;
+            this._context = databaseContext;
         }
 
         /// <summary>
@@ -44,9 +44,9 @@ namespace Repositories
 
             };
 
-            EntityEntry<Vehicle> entityEntry = await Context.Vehicles.AddAsync(newVehicle);
+            EntityEntry<Vehicle> entityEntry = await _context.Vehicles.AddAsync(newVehicle);
             Vehicle? vehicle = entityEntry.Entity;
-            await Context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             return await this.GetVehicleByImmatAsync(createVehicleDTO.Immatriculation);
         }
@@ -59,7 +59,7 @@ namespace Repositories
         /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
         public async Task<GetOneVehicleDTO?> GetVehicleByImmatAsync(string immat)
         {
-            GetOneVehicleDTO? vehicleDTO = await Context.Vehicles
+            GetOneVehicleDTO? vehicleDTO = await _context.Vehicles
                 .Select(vehicle => 
                     new GetOneVehicleDTO
                     {
@@ -70,7 +70,7 @@ namespace Repositories
                         MotorizationName=vehicle.Motorization.Label,
                         StateName = vehicle.State.Label,
                         PictureUrl = vehicle.PictureURL,
-                        Localization = new LocalizationDTO { Latitude = 1, Logitude = 2},
+                        Localization = new LocalizationDTO { Latitude = 1, Logitude = 2},       // données en dur !!!
                         SeatsNumber = vehicle.Category.SeatsNumber,
                         Color = vehicle.ColorId.ToString(),
                         CO2 = vehicle.Model.CO2,
@@ -99,7 +99,7 @@ namespace Repositories
         /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
         public async Task<GetOneVehicleDTO?> GetVehicleByIdAsync(int id)
         {
-            GetOneVehicleDTO? vehicleDTO = await Context.Vehicles
+            GetOneVehicleDTO? vehicleDTO = await this._context.Vehicles
                 .Select(vehicle =>
                     new GetOneVehicleDTO
                     {
@@ -110,7 +110,11 @@ namespace Repositories
                         MotorizationName = vehicle.Motorization.Label,
                         StateName = vehicle.State.Label,
                         PictureUrl = vehicle.PictureURL,
-                        Localization = new LocalizationDTO { Latitude = 1, Logitude = 2 },
+                        Localization = new LocalizationDTO 
+                        { 
+                            Latitude = 1.5484584,        // données en dur !!!
+                            Logitude = 2.4949445 
+                        },
                         SeatsNumber = vehicle.Category.SeatsNumber,
                         Color = vehicle.ColorId.ToString(),
                         CO2 = vehicle.Model.CO2,
@@ -118,6 +122,7 @@ namespace Repositories
                         Immatriculation = vehicle.Immatriculation
                     })
                 .FirstOrDefaultAsync(vehicle => vehicle.VehicleId == id);
+                
 
             if(vehicleDTO != null)
             {

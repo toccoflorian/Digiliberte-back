@@ -59,15 +59,15 @@ namespace Main.Controllers
         //[Authorize]
         public async Task<ActionResult<GetOneVehicleDTO>> GetVehicleById(int id)
         {
-            try
-            {
-                return Ok(this._vehicleService.GetVehicleByIdAsync(id));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-}
+            //try
+            //{
+                return Ok(await this._vehicleService.GetVehicleByIdAsync(id));
+            //}
+            //catch (Exception ex)
+            //{
+            //    return BadRequest(ex.InnerException.Message);
+            //}
+        }
 
         //public Task<List<GetOneVehicleDTO>> GetAllVehicles()
         //{
