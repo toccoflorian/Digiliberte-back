@@ -1,4 +1,5 @@
 ﻿using DTO.Models;
+using IRepositories;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using System;
@@ -12,9 +13,9 @@ namespace Repositories
     /// <summary>
     /// Class for all Model Tools
     /// </summary>
-    public class ModelRepository
+    public class ModelRepository : IModelRepository
     {
-        public DatabaseContext Context { get; set; }
+        private readonly DatabaseContext Context;
         public ModelRepository(DatabaseContext databaseContext)  // Dependancy injections
         {
             this.Context = databaseContext;
@@ -45,7 +46,12 @@ namespace Repositories
                 Year = newModel.Year
             };
         }
-
+        /// <summary>
+        /// Update one model by async
+        /// </summary>
+        /// <param name="updatedModelDTO"> Take the model to update it and get the corresponding ID</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">Throwed if Id not found</exception>
         public async Task<GetOneModelDTO?> UpdateOneModelByIdAsync(GetOneModelDTO updatedModelDTO)
         {
             // Recherchez le modèle existant dans la base de données en fonction de son ID
@@ -75,5 +81,33 @@ namespace Repositories
                 Co2 = existingModel.CO2
             };
         }
+
+        /// <summary>
+        /// Delete a model by Id , used Id to know if  exists
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public async Task DeleteOneModelByIdAsync(int modelId)
+        {
+            var modelToDelete = await Context.Models.FindAsync(modelId);
+
+            if (modelToDelete != null)
+            {
+                Context.Models.Remove(modelToDelete);
+                await Context.SaveChangesAsync();
+            }
+            // Si le modèle n'existe pas, il n'y a rien à supprimer
+        }
+
+        /// <summary>
+        /// Get a model by Id , used Id to know if  exists already
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public async Task<Model?> GetOneModelByIdAsync(int Id)
+        {
+            return await Context.Models.FirstOrDefaultAsync(c=>c.Id == Id);
+        }
+
     }
 }

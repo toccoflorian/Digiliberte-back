@@ -1,4 +1,4 @@
-﻿using DTO.Auth;
+﻿using DTO.User;
 using IRepositories;
 using Microsoft.AspNetCore.Identity;
 using Models;
@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utils.Constants;
 
 namespace Repositories
 {
@@ -20,32 +21,40 @@ namespace Repositories
             this._userManager = userManager;
         }
 
-        public async Task RegisterAsync(RegisterDTO registerDTO)
+        /// <summary>
+        ///  registration of a new user
+        /// </summary>
+        /// <param name="createUserDTO"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task RegisterAsync(CreateUserDTO createUserDTO)
         {
             AppUser appUser = new AppUser{ 
-                UserName = registerDTO.Firstname + " " + registerDTO.Lastname, 
-                NormalizedUserName = registerDTO.Firstname.ToUpper() + " " + registerDTO.Lastname.ToUpper(),
-                Email = registerDTO.EMail,
-                NormalizedEmail = registerDTO.EMail.ToUpper()};
+                UserName = createUserDTO.EmailLogin.ToUpper(), 
+                NormalizedUserName = createUserDTO.EmailLogin.ToUpper(),
+                Email = createUserDTO.EmailLogin,
+                NormalizedEmail = createUserDTO.EmailLogin.ToUpper()};
 
-            IdentityResult? identityResult = await this._userManager.CreateAsync(appUser, registerDTO.Password);
+            IdentityResult? identityResult = await this._userManager.CreateAsync(appUser, createUserDTO.Password);
 
-            //if(identityResult.Succeeded) 
-            //{
-                await this._context.Users.AddAsync(new User
-                {
-                    Id = appUser.Id,
-                    Firstname = registerDTO.Firstname,
-                    Lastname = registerDTO.Lastname,
-                    AppUserId = appUser.Id,
-                    PictureURL = "https://defaultPhoto.com"
-                });
+            if (identityResult.Succeeded)
+            {
+                await this._userManager.AddToRoleAsync(appUser, ROLE.USER);
+                await this._context.Users.AddAsync(
+                    new User
+                    {
+                        Id = appUser.Id,
+                        Firstname = createUserDTO.Firstname,
+                        Lastname = createUserDTO.Lastname,
+                        AppUserId = appUser.Id,
+                        PictureURL = "https://defaultPhoto.com"
+                    });
                 await this._context.SaveChangesAsync();
-            //}
-            //else
-            //{
-            //    //throw new Exception(identityResult.Errors.ToString());
-            //}
+        }
+            else
+            {
+                throw new Exception(identityResult.Errors.ToString());
+            }
         }
     }
 }

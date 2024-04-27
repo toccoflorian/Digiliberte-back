@@ -91,8 +91,12 @@ namespace Repositories
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlite("DataSource=:memory");
+            }
             base.OnConfiguring(optionsBuilder);
+
         }
 
         public DatabaseContext(DbContextOptions optionsBuilder) : base(optionsBuilder) { }

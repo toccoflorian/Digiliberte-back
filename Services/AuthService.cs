@@ -1,4 +1,4 @@
-﻿using DTO.Auth;
+﻿using DTO.User;
 using IRepositories;
 using IServices;
 
@@ -13,18 +13,23 @@ namespace Services
             this._authRepository = authRepository;
         }
 
-
-        public async Task RegisterAsync(RegisterDTO registerDTO)
+        /// <summary>
+        /// registration of a new user
+        /// </summary>
+        /// <param name="registerDTO"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task RegisterAsync(CreateUserDTO createUserDTO)
         {
-            if(registerDTO.Password == null || registerDTO.Password != registerDTO.ConfirmPassword)
+            if(createUserDTO.Password == null || createUserDTO.Password != createUserDTO.ConfirmPassword) 
             {
                 throw new Exception("Le mot de passe et la confirmation du mot de passe doivent être identiques !");
             }
-            if(registerDTO.EMail == null || registerDTO.EMail == "" || registerDTO.EMail.Length < 3)
+            if(createUserDTO.EmailLogin == null || createUserDTO.EmailLogin == "" || createUserDTO.EmailLogin.Length < 3)
             {
                 throw new Exception("Le login est incorrect !");
             }
-            await this._authRepository.RegisterAsync(registerDTO);
+            await this._authRepository.RegisterAsync(createUserDTO);
         }
     }
 }

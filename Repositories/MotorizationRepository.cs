@@ -1,5 +1,7 @@
-﻿using DTO.Motorization;
+﻿using DTO.Dates;
+using DTO.Motorization;
 using DTO.Vehicles;
+using IRepositories;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using System;
@@ -10,21 +12,19 @@ using System.Threading.Tasks;
 
 namespace Repositories
 {
-    public class MotorizationRepository
+    public class MotorizationRepository : IMotorizationRepository
     {
-        public DatabaseContext Context { get; set; }
+        public DatabaseContext _context { get; set; }
         public MotorizationRepository(DatabaseContext databaseContext) // Dependancy injections
         {
-            this.Context = databaseContext;
+            this._context = databaseContext;
         }
+
         /// <summary>
         /// Create a Motorization Repository
         /// </summary>
         /// <param name="createOneMotorizationDTO">Gives a DTO as parameter with only needed values</param>
         /// <returns>Return Get One motorization DTO</returns>
-
-        
-        public async Task<GetOneMotorizationDTO> CreateOneMotorizationAsync(CreateOneMotorizationDTO createOneMotorizationDTO)
 
         public async Task<GetOneMotorizationDTO?> CreateOneMotorizationAsync(CreateOneMotorizationDTO createOneMotorizationDTO)
         {
@@ -32,12 +32,12 @@ namespace Repositories
             {
                 Label = createOneMotorizationDTO.Name,
             };
-            await Context.Motorizations.AddAsync(newMotorization);
-            await Context.SaveChangesAsync();
+            await _context.Motorizations.AddAsync(newMotorization);
+            await _context.SaveChangesAsync();
 
             return new GetOneMotorizationDTO
             {
-                Id = (await Context.Motorizations.FirstOrDefaultAsync(m=>m.Label == createOneMotorizationDTO.Name)).Id,
+                Id = (await _context.Motorizations.FirstOrDefaultAsync(m=>m.Label == createOneMotorizationDTO.Name)).Id,
                 Name = newMotorization.Label,
             };
         }
@@ -49,13 +49,85 @@ namespace Repositories
         /// <returns></returns>
         public async Task<string?> GetMotorizationByName(string Name)
         {
-            var motorization = await Context.Motorizations.FirstOrDefaultAsync(c => c.Label.ToUpper() == Name.ToUpper());
+            var motorization = await _context.Motorizations.FirstOrDefaultAsync(c => c.Label.ToUpper() == Name.ToUpper());
 
             if (motorization == null)
             {
                 return null;
             }
             return motorization.Label;
+        }
+
+        public async Task<GetOneMotorizationDTO?> UpdateOneMotorizationByIdAsync(GetOneMotorizationDTO updatedMotorizationDTO)
+        {
+            // Recherchez le motorization existant dans la base de données en fonction de son ID
+            var existingMotorization = await _context.Motorizations.FindAsync(updatedMotorizationDTO.Id);
+
+            if (existingMotorization == null)
+            {
+                // Si le motorization n'est pas trouvé, vous pouvez choisir de retourner null ou de lever une exception
+                // Ici, je choisis de retourner null
+                throw new Exception("Id not found");
+            }
+
+            // Mettez à jour les propriétés du motorization existant avec les nouvelles valeurs
+            existingMotorization.Label = updatedMotorizationDTO.Name;
+
+            // Enregistrez les modifications dans la base de données
+            _context.Update(existingMotorization);
+
+            await _context.SaveChangesAsync();
+
+            // Retournez le motorization mis à jour sous forme de DTO
+            return new GetOneMotorizationDTO
+            {
+                Id = existingMotorization.Id,
+                Name = existingMotorization.Label,
+            };
+        }
+        /// <summary>
+        /// Delete a motorization by Id , used Id to know if  exists
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns>Bool , true si modifié, false si non modifié </returns>
+        public async Task<bool> DeleteOneMotorizationByIdAsync(int motorizationId)
+        {
+            var motorizationToDelete = await _context.Categories.FindAsync(motorizationId);
+
+            if (motorizationToDelete != null)
+            {
+                _context.Categories.Remove(motorizationToDelete);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+
+            return false;
+            // Si le modèle n'existe pas, il n'y a rien à supprimer
+        }
+
+        /// <summary>
+        /// Get a motorization by Id , used Id to know if  exists already
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public async Task<GetOneMotorizationDTO?> GetOneMotorizationByIdAsync(int Id)
+        {
+            var getMotorization = await _context.Categories.FirstOrDefaultAsync(c => c.Id == Id);
+
+            if (getMotorization != null)
+            {
+                GetOneMotorizationDTO? getOneMotorizationDTO = new GetOneMotorizationDTO
+                {
+                    Id = getMotorization.Id,
+                    Name = getMotorization.Label,
+                };
+                return getOneMotorizationDTO;
+            }
+            else
+            {
+                return null;
+            }
+
         }
     }
 

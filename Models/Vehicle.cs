@@ -11,7 +11,7 @@ namespace Models
         // Variables propres à vehicule
         public int Id { get; set; }
         public string Immatriculation { get; set; }
-        public int? ColorId { get; set; }
+        public int ColorId { get; set; }
 
         // Localization 
 
@@ -51,6 +51,9 @@ namespace Models
 
         public string PictureURL { get; set; }
 
-
+        public override string ToString()
+        {
+            return $"{this.Category.Label}, {this.Motorization.Label}, {this.Category.Label} places, {this.Brand.Label}, {this.Model.Label}, {this.Model.Year}";
+        }
     }
 }

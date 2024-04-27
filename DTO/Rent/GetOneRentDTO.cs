@@ -9,6 +9,7 @@ namespace DTO.Rent
     public class GetOneRentDTO
     {
         public int Id { get; set; }
+        public string UserId { get; set; }
         public int VehiceId { get; set; }
         public string VehicleInfo { get; set; }
         public string Immatriculation { get; set; }

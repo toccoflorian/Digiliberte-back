@@ -1,21 +1,27 @@
-﻿using DTO.Vehicles;
+﻿using DTO.Dates;
+using DTO.Localization;
+using DTO.Vehicles;
+using IRepositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utils.Enum;
 
 namespace Repositories
 {
-    public class VehicleRepository
+    public class VehicleRepository : IVehicleRepository
     {
-        public DatabaseContext Context { get; set; }
+        private readonly DatabaseContext _context;
         public VehicleRepository(DatabaseContext databaseContext)  // Dependancy injections
         {
-            this.Context = databaseContext;
+            this._context = databaseContext;
         }
+
         /// <summary>
         /// Create a Vehicle Repository
         /// </summary>
@@ -37,81 +43,163 @@ namespace Repositories
                 LocalizationID = createVehicleDTO.LocalizationId,
 
             };
-            await Context.Vehicles.AddAsync(newVehicle);
-            await Context.SaveChangesAsync();
 
-            // Maps all the values of the created vehicle to getOneVehicleDTO as output
-            //var vehicleInfo = await Context.Vehicles
-            //    .Where(v => v.Immatriculation == createVehicleDTO.Immatriculation)
-            //    .Include(v => v.Brand)
-            //    .Include(v => v.Model)
-            //    .Include(v => v.Category)
-            //    .Include(v => v.Motorization)
-            //    .Include(v => v.State) // Assuming there's a navigation property for State
-            //    .Select(v => new GetOneVehicleDTO
-            //    {
-            //        VehicleId = v.Id,
-            //        BrandName = v.Brand.Label,
-            //        ModelName = v.Model.Label,
-            //        CategoryName = v.Category.Label,
-            //        MotorizationName = v.Motorization.Label,
-            //        StateName = v.State.Label, // This assumes there is a direct relation to State
-            //        CO2 = v.Model.CO2,
-            //        ModelYear = v.Model.Year
-            //    })
-            //    .FirstOrDefaultAsync();    
-            
-            
-            return await Context.Vehicles
-                .Where(v => v.Immatriculation == createVehicleDTO.Immatriculation)
-                .Include(v => v.Brand)
-                .Include(v => v.Model)
-                .Include(v => v.Category)
-                .Include(v => v.Motorization)
-                .Include(v => v.State) // Assuming there's a navigation property for State
-                .Select(v => new GetOneVehicleDTO
-                {
-                    VehicleId = v.Id,
-                    BrandName = v.Brand.Label,
-                    ModelName = v.Model.Label,
-                    CategoryName = v.Category.Label,
-                    MotorizationName = v.Motorization.Label,
-                    StateName = v.State.Label, // This assumes there is a direct relation to State
-                    CO2 = v.Model.CO2,
-                    ModelYear = v.Model.Year
-                })
-                .FirstOrDefaultAsync();
+            EntityEntry<Vehicle> entityEntry = await _context.Vehicles.AddAsync(newVehicle);
+            Vehicle? vehicle = entityEntry.Entity;
+            await _context.SaveChangesAsync();
 
-
-            //new GetOneVehicleDTO
-            //{
-            //    VehicleId = (await Context.Vehicles.FirstOrDefaultAsync(v => v.Immatriculation == createVehicleDTO.Immatriculation)).Id,
-            //    BrandName = (await Context.Brands.FirstOrDefaultAsync(b => b.Id == createVehicleDTO.BrandId)).Label,
-            //    ModelName = (await Context.Models.FirstOrDefaultAsync(m => m.Id == createVehicleDTO.ModelId)).Label,
-            //    CategoryName = (await Context.Categories.FirstOrDefaultAsync(c => c.Id == createVehicleDTO.CategoryId)).Label,
-            //    MotorizationName = (await Context.Motorizations.FirstOrDefaultAsync(m => m.Id == createVehicleDTO.MotorizationId)).Label,
-            //    StateName = (await Context.States.FirstOrDefaultAsync(c => c.Id == 1)).Label,
-            //    CO2 = (await Context.Models.FirstOrDefaultAsync(c => c.Id == createVehicleDTO.ModelId)).CO2,
-            //    ModelYear = (await Context.Models.FirstOrDefaultAsync(c => c.Id == createVehicleDTO.ModelId)).Year
-            //};
-
-
+            return await this.GetVehicleByImmatAsync(createVehicleDTO.Immatriculation);
         }
+
 
         /// <summary>
         /// Get a vehicle by immat , used to know if immat exists already
         /// </summary>
-        /// <param name="Immatriculation">string</param>
-        /// <returns></returns>
-        public async Task<string?> GetVehicleByImmat(string Immat)
+        /// <param name="immat">string</param>
+        /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
+        public async Task<GetOneVehicleDTO?> GetVehicleByImmatAsync(string immat)
         {
-            var vehicle = await Context.Vehicles.FirstOrDefaultAsync(c => c.Immatriculation.ToUpper() == Immat.ToUpper());
-
-            if (vehicle == null)
+            GetOneVehicleDTO? vehicleDTO = await _context.Vehicles
+                .Select(vehicle => 
+                    new GetOneVehicleDTO
+                    {
+                        VehicleId = vehicle.Id,
+                        BrandName = vehicle.Brand.Label,
+                        ModelName = vehicle.Model.Label,
+                        CategoryName=vehicle.Category.Label,
+                        MotorizationName=vehicle.Motorization.Label,
+                        StateName = vehicle.State.Label,
+                        PictureUrl = vehicle.PictureURL,
+                        Localization = new LocalizationDTO { Latitude = 1, Logitude = 2},       // données en dur !!!
+                        SeatsNumber = vehicle.Category.SeatsNumber,
+                        Color = vehicle.ColorId.ToString(),
+                        CO2 = vehicle.Model.CO2,
+                        ModelYear = vehicle.Model.Year,
+                        Immatriculation = vehicle.Immatriculation
+                    })
+                .FirstOrDefaultAsync(vehicle => vehicle.Immatriculation.ToUpper() == immat.ToUpper());
+            if(vehicleDTO != null)
             {
-                return null;
+                // recupreration du nom de la couleur - Important
+                vehicleDTO.Color = Enum.GetName(typeof(ColorEnum), int.Parse(vehicleDTO.Color));
             }
-            return vehicle.Immatriculation;
+            return vehicleDTO;
+        }
+
+
+        public Task<UpdateOneVehicleDTO> UpdateVehicleByIdAsync(UpdateOneVehicleDTO updateOneVehicleDTO)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Get a vehicle by id
+        /// </summary>
+        /// <param name="id">string</param>
+        /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
+        public async Task<GetOneVehicleDTO?> GetVehicleByIdAsync(int id)
+        {
+            GetOneVehicleDTO? vehicleDTO = await this._context.Vehicles
+                .Select(vehicle =>
+                    new GetOneVehicleDTO
+                    {
+                        VehicleId = vehicle.Id,
+                        BrandName = vehicle.Brand.Label,
+                        ModelName = vehicle.Model.Label,
+                        CategoryName = vehicle.Category.Label,
+                        MotorizationName = vehicle.Motorization.Label,
+                        StateName = vehicle.State.Label,
+                        PictureUrl = vehicle.PictureURL,
+                        Localization = new LocalizationDTO 
+                        { 
+                            Latitude = 1.5484584,        // données en dur !!!
+                            Logitude = 2.4949445 
+                        },
+                        SeatsNumber = vehicle.Category.SeatsNumber,
+                        Color = vehicle.ColorId.ToString(),
+                        CO2 = vehicle.Model.CO2,
+                        ModelYear = vehicle.Model.Year,
+                        Immatriculation = vehicle.Immatriculation
+                    })
+                .FirstOrDefaultAsync(vehicle => vehicle.VehicleId == id);
+                
+
+            if(vehicleDTO != null)
+            {
+                // recupreration du nom de la couleur - Important
+                vehicleDTO.Color = Enum.GetName(typeof(ColorEnum), int.Parse(vehicleDTO.Color));
+            }
+            return vehicleDTO;
+        }
+
+        public Task<List<GetOneVehicleDTO>> GetVehiclesByLocalizationAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteVehicleByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<GetOneVehicleDTO>> GetVehiclesByUserIdAsync(string userID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<GetOneVehicleDTO>> GetVehiclesByStateAsync(int stateId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<GetOneVehicleDTO>> GetVehiclesByMotorizationAsync(int motorizationId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<GetOneVehicleDTO>> GetVehiclesByCategoryAsync(int categoryId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<GetOneVehicleDTO>> GetVehiclesByBrandAsync(int brandId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<GetOneVehicleDTO>> GetVehiclesByModelAsync(int modelId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<GetOneVehicleDTO>> GetAllUnreservedVehiclesAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<GetOneVehicleWithRentDTO>> GetAllReservedVehiclesAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<GetOneVehicleDTO>> GetReservedVehicleByDatesAsync(DateForkDTO dateForkDTO)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<GetOneVehicleDTO>> GetUnreservedVehicleByDatesAsync(DateForkDTO dateForkDTO)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<GetOneVehicleDTO>> GetAllVehiclesAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<GetOneVehicleWithRentDTO> GetVehicleByIdWithRentAsync(int vehicleId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using DTO.Rent;
+﻿using DTO.Localization;
+using DTO.Rent;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,9 +17,9 @@ namespace DTO.Vehicles
         public string MotorizationName { get; set; }
         public string StateName { get; set; }
         public string PictureUrl { get; set; }
-        public string Localization { get; set; }
-        public string Color { get; set; }
-        public string SeatsNumber { get; set; }
+        public LocalizationDTO Localization { get; set; }
+        public string? Color { get; set; }
+        public int SeatsNumber { get; set; }
         public double CO2 { get; set; }
         public int ModelYear { get; set; }
         public string Immatriculation { get; set; }
