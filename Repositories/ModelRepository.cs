@@ -46,7 +46,12 @@ namespace Repositories
                 Year = newModel.Year
             };
         }
-
+        /// <summary>
+        /// Update one model by async
+        /// </summary>
+        /// <param name="updatedModelDTO"> Take the model to update it and get the corresponding ID</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">Throwed if Id not found</exception>
         public async Task<GetOneModelDTO?> UpdateOneModelByIdAsync(GetOneModelDTO updatedModelDTO)
         {
             // Recherchez le modèle existant dans la base de données en fonction de son ID

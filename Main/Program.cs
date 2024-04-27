@@ -33,6 +33,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRentService, RentService>();
 builder.Services.AddScoped<IRentRepository, RentRepository>();
 builder.Services.AddScoped<IDateRepository, DateRepository>();
+builder.Services.AddScoped<ILocalizationRepository, LocalizationRepository>();
+
 
 
 // ------------------Ajoue de la database 
