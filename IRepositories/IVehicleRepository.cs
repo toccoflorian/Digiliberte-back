@@ -9,6 +9,7 @@ namespace IRepositories
         public Task<GetOneVehicleDTO> CreateVehicleAsync(CreateVehicleDTO createVehicleDTO);
         public Task<UpdateOneVehicleDTO> UpdateVehicleByIdAsync(UpdateOneVehicleDTO updateOneVehicleDTO);
         public Task DeleteVehicleByIdAsync(int id);
+        public Task<GetOneVehicleDTO?> GetVehicleByIdAsync(int id);
         public Task<GetOneVehicleDTO?> GetVehicleByImmatAsync(string immat);
         public Task<List<GetOneVehicleDTO>> GetVehiclesByLocalizationAsync(int id);
         public Task<List<GetOneVehicleDTO>> GetVehiclesByUserIdAsync(string userID);
@@ -21,7 +22,6 @@ namespace IRepositories
         public Task<List<GetOneVehicleWithRentDTO>> GetAllReservedVehiclesAsync();
         public Task<List<GetOneVehicleDTO>> GetReservedVehicleByDatesAsync(DateForkDTO dateForkDTO);
         public Task<List<GetOneVehicleDTO>> GetUnreservedVehicleByDatesAsync(DateForkDTO dateForkDTO);
-        public Task<GetOneVehicleDTO> GetVehicleByIdAsync(int id);
         public Task<List<GetOneVehicleDTO>> GetAllVehiclesAsync();
         public Task<GetOneVehicleWithRentDTO> GetVehicleByIdWithRentAsync(int vehicleId);
     }

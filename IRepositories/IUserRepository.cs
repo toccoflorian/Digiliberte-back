@@ -12,7 +12,7 @@ namespace IRepositories
     public interface IUserRepository
     {
         public Task<List<GetOneUserDTO>> GetAllUsersAsync();
-        public Task<GetOneUserDTO> GetUserByIdAsync(string userId);
+        public Task<GetOneUserDTO?> GetUserByIdAsync(string userId);
         public Task<List<GetOneUserDTO?>> GetUserByRoleAsync(string role);
         public Task<GetOneUserDTO> GetUserByRentAsync(int rentId);
         public Task<List<GetOneUserDTO>> GetUserByCarPoolAsync(int carPoolId);

@@ -44,7 +44,12 @@ namespace Services
         /// <returns>one user formated with GetOneUserDTO</returns>
         public async Task<GetOneUserDTO> GetUserByIdAsync(string userId)                // get user by Id
         {
-            return await this._userRepository.GetUserByIdAsync(userId);
+            GetOneUserDTO userDTO = await this._userRepository.GetUserByIdAsync(userId);
+            if(userDTO == null)
+            {
+                throw new Exception("L'utilisateur est introuvable !");
+            }
+            return userDTO;
         }
 
         public Task<GetOneUserDTO> GetUserByRentAsync(int rentId)
