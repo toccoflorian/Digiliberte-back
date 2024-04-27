@@ -1,4 +1,5 @@
-﻿using DTO.User;
+﻿using DTO.Rent;
+using DTO.User;
 using IRepositories;
 using IServices;
 
@@ -6,11 +7,13 @@ namespace Services
 {
     public class UserService : IUserService
     {
-        private IUserRepository _userRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IRentRepository _rentRepository;
 
-        public UserService(IUserRepository userRepository )
+        public UserService(IUserRepository userRepository, IRentRepository rentRepository)
         {
             this._userRepository = userRepository;
+            this._rentRepository = rentRepository;
         }
 
         /// <summary>
@@ -44,7 +47,7 @@ namespace Services
         /// <returns>one user formated with GetOneUserDTO</returns>
         public async Task<GetOneUserDTO> GetUserByIdAsync(string userId)                // get user by Id
         {
-            GetOneUserDTO userDTO = await this._userRepository.GetUserByIdAsync(userId);
+            GetOneUserDTO? userDTO = await this._userRepository.GetUserByIdAsync(userId);
             if(userDTO == null)
             {
                 throw new Exception("L'utilisateur est introuvable !");
@@ -52,9 +55,24 @@ namespace Services
             return userDTO;
         }
 
-        public Task<GetOneUserDTO> GetUserByRentAsync(int rentId)
+        /// <summary>
+        /// Get the user of one rent
+        /// </summary>
+        /// <param name="rentId"></param>
+        /// <returns>one user formated with GetOneUserDTO</returns>
+        public async Task<GetOneUserDTO> GetUserByRentAsync(int rentId)
         {
-            throw new NotImplementedException();
+            GetOneRentDTO? rentDTO = await this._rentRepository.GetRentByIdAsync(rentId);
+            if(rentDTO == null)
+            {
+                throw new Exception("Aucune location avec cette id !");
+            }
+            GetOneUserDTO? userDTO = await this._userRepository.GetUserByIdAsync(rentDTO.UserId);
+            if(userDTO == null)
+            {
+                throw new Exception("Une erreur s'est produite, location sans utilisateur referencé, merci de contater le dev back-end !");
+            }
+            return userDTO;
         }
 
         /// <summary>

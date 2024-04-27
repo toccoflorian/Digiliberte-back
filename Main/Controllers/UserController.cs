@@ -79,10 +79,24 @@ namespace Main.Controllers
             }
         }
 
-        //public Task<GetOneUserDTO> GetUserByRent(int rentID)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        /// <summary>
+        /// Get the user of one rent
+        /// </summary>
+        /// <param name="rentId"></param>
+        /// <returns>one user formated with GetOneUserDTO</returns>
+        [HttpGet]
+        //[Authorize]
+        public async Task<ActionResult<GetOneUserDTO>> GetUserByRent(int rentId)
+        {
+            try
+            {
+                return Ok(await this._userService.GetUserByRentAsync(rentId));
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         /// <summary>
         /// Get list of user in the role

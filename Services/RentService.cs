@@ -47,7 +47,11 @@ namespace Services
             }
 
             // récuperation des informations de Vehicle
-            GetOneVehicleDTO vehicleDTO = await this._vehicleRepository.GetVehicleByIdAsync(createOneRentDTO.VehiceId);
+            GetOneVehicleDTO? vehicleDTO = await this._vehicleRepository.GetVehicleByIdAsync(createOneRentDTO.VehiceId);
+            if(vehicleDTO == null)
+            {
+                throw new Exception("Aucun véhicule ne correspond à l'id spécifier !");
+            }
             createOneRentDTO.VehicleInfos = $"{vehicleDTO.CategoryName}, {vehicleDTO.SeatsNumber} places, {vehicleDTO.BrandName}, {vehicleDTO.ModelName}, {vehicleDTO.ModelYear}";
             createOneRentDTO.Immatriculation = vehicleDTO.Immatriculation;
 
@@ -88,9 +92,14 @@ namespace Services
             throw new NotImplementedException();
         }
 
-        public Task<GetOneRentWithCarPoolDTO> GetRentByIdAsync(int rentID)
+        public async Task<GetOneRentDTO> GetRentByIdAsync(int rentID)
         {
-            throw new NotImplementedException();
+            GetOneRentDTO? rentDTO = await this._rentRepository.GetRentByIdAsync(rentID);
+            if (rentDTO == null)
+            {
+                throw new Exception("Aucune location ne correspond à cette id !");
+            }
+            return rentDTO;
         }
 
         public Task<List<GetOneRentDTO>> GetRentByVehicleIdAsync(int vehicleId)

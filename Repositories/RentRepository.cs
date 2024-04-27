@@ -88,9 +88,30 @@ namespace Repositories
             throw new NotImplementedException();
         }
 
-        public Task<GetOneRentWithCarPoolDTO> GetRentByIdAsync(int rentID)
+        public Task<GetOneRentDTO?> GetRentByIdAsync(int rentID)
         {
-            throw new NotImplementedException();
+            return this._context.Rents
+                .Include(rent => rent.User)
+                .Include(rent => rent.Vehicle)
+                .ThenInclude(vehicle => vehicle.Brand)
+                .Include(rent => rent.Vehicle)
+                .ThenInclude(vehicle => vehicle.Model)
+                .Include(rent => rent.StartDate)
+                .Include(rent => rent.ReturnDate)
+                .Select(rent =>
+                    new GetOneRentDTO
+                    {
+                        Id = rent.Id,
+                        UserId = rent.User.Id,
+                        UserFirstname = rent.User.Firstname,
+                        UserLastname = rent.User.Lastname,
+                        StartDate = rent.StartDate.Date,
+                        ReturnDate = rent.ReturnDate.Date,
+                        VehiceId = rent.VehicleId,
+                        VehicleInfo = $"{rent.Vehicle.Brand.Label} {rent.Vehicle.Model.Label} {rent.Vehicle.Model.Year}",
+                        Immatriculation = rent.Vehicle.Immatriculation
+                    })
+                .FirstOrDefaultAsync(rentDTO => rentDTO.Id == rentID);
         }
 
         public Task<List<GetOneRentDTO>> GetRentByVehicleIdAsync(int vehicleId)
