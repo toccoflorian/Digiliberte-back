@@ -52,7 +52,10 @@ namespace Services
             createOneRentDTO.Immatriculation = vehicleDTO.Immatriculation;
 
             // récuperation des informations de User
-            GetOneUserDTO userDTO = await this._userRepository.GetUserByIdAsync(createOneRentDTO.UserID);
+            GetOneUserDTO? userDTO = await this._userRepository.GetUserByIdAsync(createOneRentDTO.UserID) 
+                ?? 
+                throw new Exception("L'utilisateur est introuvable !");
+            
             createOneRentDTO.UserFirstname = userDTO.Firstname;
             createOneRentDTO.UserLastname = userDTO.Lastname;
 

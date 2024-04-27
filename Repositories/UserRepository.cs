@@ -60,9 +60,9 @@ namespace Repositories
         /// </summary>
         /// <param name="userID"></param>
         /// <returns>one user formated with GetOneUserDTO</returns>
-        public async Task<GetOneUserDTO> GetUserByIdAsync(string userId)                // get user by id
+        public async Task<GetOneUserDTO?> GetUserByIdAsync(string userId)                // get user by id
         {
-            GetOneUserDTO? userDTO = await this._context.Users.Select(user =>
+            return await this._context.Users.Select(user =>
                 new GetOneUserDTO
                 {
                     Id = user.Id,
@@ -70,14 +70,6 @@ namespace Repositories
                     Lastname= user.Lastname,
                     PictureURL = user.PictureURL
                 }).FirstOrDefaultAsync(user => user.Id == userId);
-            if(userDTO == null)
-            {
-                throw new Exception("L'utilisateur est introuvable !");
-            }
-            else
-            {
-                return userDTO;
-            }
         }
 
         public Task<GetOneUserDTO> GetUserByRentAsync(int rentId)

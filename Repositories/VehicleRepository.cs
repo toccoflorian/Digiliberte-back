@@ -27,7 +27,7 @@ namespace Repositories
         /// </summary>
         /// <param name="createVehicleDTO">Gives a DTO as parameter with only needed values</param>
         /// <returns>Return Get One vehicle DTO</returns>
-        public async Task<GetOneVehicleDTO> CreateVehicleAsync(CreateVehicleDTO createVehicleDTO)
+        public async Task<GetOneVehicleDTO?> CreateVehicleAsync(CreateVehicleDTO createVehicleDTO)
         {
             //Create the vehicle Based on CreateDTO
             Vehicle newVehicle = new Vehicle
@@ -78,8 +78,11 @@ namespace Repositories
                         Immatriculation = vehicle.Immatriculation
                     })
                 .FirstOrDefaultAsync(vehicle => vehicle.Immatriculation.ToUpper() == immat.ToUpper());
-            // recupreration du nom de la couleur - Important
-            vehicleDTO.Color = Enum.GetName(typeof(ColorEnum), int.Parse(vehicleDTO.Color));
+            if(vehicleDTO != null)
+            {
+                // recupreration du nom de la couleur - Important
+                vehicleDTO.Color = Enum.GetName(typeof(ColorEnum), int.Parse(vehicleDTO.Color));
+            }
             return vehicleDTO;
         }
 
@@ -94,7 +97,7 @@ namespace Repositories
         /// </summary>
         /// <param name="id">string</param>
         /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
-        public async Task<GetOneVehicleDTO> GetVehicleByIdAsync(int id)
+        public async Task<GetOneVehicleDTO?> GetVehicleByIdAsync(int id)
         {
             GetOneVehicleDTO? vehicleDTO = await Context.Vehicles
                 .Select(vehicle =>
@@ -116,12 +119,11 @@ namespace Repositories
                     })
                 .FirstOrDefaultAsync(vehicle => vehicle.VehicleId == id);
 
-            if(vehicleDTO == null)
+            if(vehicleDTO != null)
             {
-                throw new Exception("Aucun véhicule touvé avec cette id !");
+                // recupreration du nom de la couleur - Important
+                vehicleDTO.Color = Enum.GetName(typeof(ColorEnum), int.Parse(vehicleDTO.Color));
             }
-            // recupreration du nom de la couleur - Important
-            vehicleDTO.Color = Enum.GetName(typeof(ColorEnum), int.Parse(vehicleDTO.Color));
             return vehicleDTO;
         }
 
