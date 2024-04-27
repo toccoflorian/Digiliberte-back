@@ -18,8 +18,8 @@ WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 //----------------SERVICES ADDING ------------------
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
-builder.Services.AddScoped<VehicleServices>();
-builder.Services.AddScoped<VehicleRepository>();
+builder.Services.AddScoped<IVehicleService, VehicleService>();
+builder.Services.AddScoped<IVehicleRepository, VehicleRepository>();
 builder.Services.AddScoped<IModelRepository, ModelRepository>();
 builder.Services.AddScoped<IModelService, ModelServices>();
 builder.Services.AddScoped<IBrandRepository,BrandRepository>();
@@ -30,6 +30,9 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRentService, RentService>();
+builder.Services.AddScoped<IRentRepository, RentRepository>();
+builder.Services.AddScoped<IDateRepository, DateRepository>();
 
 
 // ------------------Ajoue de la database 
