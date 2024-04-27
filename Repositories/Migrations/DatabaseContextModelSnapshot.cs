@@ -451,6 +451,23 @@ namespace Repositories.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("States");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Label = "En service"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Label = "En réparation"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Label = "Hors service"
+                        });
                 });
 
             modelBuilder.Entity("Models.User", b =>

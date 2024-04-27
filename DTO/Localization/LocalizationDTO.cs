@@ -14,8 +14,5 @@ namespace DTO.Localization
     {
         public double Logitude {  get; set; }
         public double Latitude { get; set; }
-        //public string City { get; set; }
-        //public string RoadName { get; set; }
-        //public int RoadNumber { get; set; }
     }
 }
