@@ -14,8 +14,9 @@ namespace IRepositories
         public Task<List<GetOneUserDTO>> GetAllUsersAsync();
         public Task<GetOneUserDTO?> GetUserByIdAsync(string userId);
         public Task<List<GetOneUserDTO?>> GetUserByRoleAsync(string role);
+        public Task<List<GetOneUserDTO>> GetUserByCarPoolAsync(int carPoolId);
         public Task<List<GetOneUserDTO>> GetUsersByNameAsync(GetUserByNameDTO getUserByNameDTO);
-        public Task UpdateUserByIdAsync(UpdateUserDTO updateOneUserDTO);
+        public Task<GetOneUserDTO> UpdateUserByIdAsync(CreateUserDTO updateOneUserDTO);
         public Task DeleteUserByIdAsync(string userId);
     }
 }
