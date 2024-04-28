@@ -30,9 +30,15 @@ namespace Main.Controllers
         /// <param name="createOneRentDTO"></param>
         /// <returns>the created rent formated with GetOneRentDTO</returns>
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public async Task<ActionResult<GetOneRentDTO>> CreateOneRent(CreateRentDTO createOneRentDTO)
         {
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if(userId == null)
+            {
+                return BadRequest("Identifier vous !");
+            }
+            createOneRentDTO.UserID = userId;
             try
             {
                 return Ok(await this._rentService.CreateOneRentAsync(createOneRentDTO));
@@ -71,10 +77,19 @@ namespace Main.Controllers
         //    throw new NotImplementedException();
         //}
 
-        //public GetOneRentWithCarPoolDTO GetRentById(int rentID)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        [HttpGet]
+        //[Authorize]
+        public async Task<ActionResult<GetOneRentWithCarPoolDTO>> GetRentById(int rentID)
+        {
+            try
+            {
+                return Ok(await this._rentService.GetRentByIdAsync(rentID));
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         //public List<GetOneRentDTO> GetRentByVehicleId(int vehicleId)
         //{

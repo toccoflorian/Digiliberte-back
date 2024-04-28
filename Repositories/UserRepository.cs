@@ -50,10 +50,6 @@ namespace Repositories
                 }).ToListAsync();
         }
 
-        public Task<List<GetOneUserDTO>> GetUserByCarPoolAsync(int carPoolId)
-        {
-            throw new NotImplementedException();
-        }
 
         /// <summary>
         /// Get one User with User.Id
@@ -72,16 +68,6 @@ namespace Repositories
                 }).FirstOrDefaultAsync(user => user.Id == userId);
         }
 
-        public Task<GetOneUserDTO> GetUserByRentAsync(int rentId)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Get list of user in the role
-        /// </summary>
-        /// <param name="role"></param>
-        /// <returns>List of user formated with GetOneUserDTO</returns>
         public async Task<List<GetOneUserDTO?>> GetUserByRoleAsync(string role)         
         {
             List<GetOneUserDTO?> userDTOs = new List<GetOneUserDTO?>();

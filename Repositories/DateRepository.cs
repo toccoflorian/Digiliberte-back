@@ -20,7 +20,7 @@ namespace Repositories
 
         public async Task<GetOneDateDTO> CreateAsync(DateTime date)
         {
-            EntityEntry<DatesClass> entityEntry = await this._context.AddAsync(new DatesClass{Date = date});
+            EntityEntry<DatesClass> entityEntry = await this._context.Dates.AddAsync(new DatesClass{Date = date});
             await this._context.SaveChangesAsync();
             return new GetOneDateDTO{ Id = entityEntry.Entity.Id, Date = entityEntry.Entity.Date};
         }
@@ -30,7 +30,7 @@ namespace Repositories
             DatesClass? date = await this._context.Dates.FindAsync(id);
             if (date == null)
             {
-                throw new Exception("Cette Id de date n'est pas enregistré !");
+                throw new Exception("Aucune date avec cette id !");
             }
             return new GetOneDateDTO { Id = date.Id, Date = date.Date };
         }
