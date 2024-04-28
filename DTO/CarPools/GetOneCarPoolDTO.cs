@@ -11,6 +11,8 @@ namespace DTO.CarPools
     public class GetOneCarPoolDTO
     {
         public int CarPoolId { get; set; }
+        public int RentId { get; set; }
+        public string UserId { get; set; }
         public int VehicleId { get; set; }
         public string VehicleBrand { get; set; }
         public string VehicleModel { get; set; }
@@ -27,6 +29,6 @@ namespace DTO.CarPools
     public class GetOneCarPoolWithPassengersDTO : GetOneCarPoolDTO
     {
         public int FreeSeats { get; set; }
-        public List<GetOneCarPoolPassengerDTO> Passengers { get; set; }
+        public List<GetOneCarPoolPassengerDTO>? Passengers { get; set; }
     }
 }
