@@ -1,7 +1,11 @@
-﻿using DTO.Rent;
+﻿using DTO.CarPools;
+using DTO.Rent;
 using DTO.User;
 using IRepositories;
 using IServices;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Models;
 
 namespace Services
 {
@@ -9,11 +13,18 @@ namespace Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IRentRepository _rentRepository;
-
-        public UserService(IUserRepository userRepository, IRentRepository rentRepository)
+        private readonly ICarPoolRepository _carPoolRepository;
+        private readonly UserManager<AppUser> _userManager;
+        public UserService(
+            IUserRepository userRepository, 
+            IRentRepository rentRepository,
+            ICarPoolRepository carPoolRepository,
+            UserManager<AppUser> userManager)
         {
             this._userRepository = userRepository;
             this._rentRepository = rentRepository;
+            this._carPoolRepository = carPoolRepository;
+            this._userManager = userManager;
         }
 
         /// <summary>
@@ -35,9 +46,28 @@ namespace Services
             return await this._userRepository.GetAllUsersAsync();
         }
 
-        public async Task<List<GetOneUserDTO>> GetUserByCarPoolAsync(int carPoolId)
+        /// <summary>
+        /// Get the user in origin of the carpool
+        /// </summary>
+        /// <param name="carPoolID"></param>
+        /// <returns>one user formated with GetOneUserDTO</returns>
+        public async Task<GetOneUserDTO> GetUserByCarPoolAsync(int carPoolId)
         {
-            throw new NotImplementedException();
+            if(carPoolId == 0)
+            {
+                throw new ArgumentException("Merci de renseigner un id valide");
+            }
+            GetOneCarPoolWithPassengersDTO? carpool = await this._carPoolRepository.GetCarPoolByIdAsync(carPoolId);
+            if(carpool == null)
+            {
+                throw new ArgumentException("Le covoiturage n'existe pas !");
+            }
+            GetOneUserDTO? user = await this._userRepository.GetUserByIdAsync(carpool.UserId);
+            if (user == null)
+            {   // une location devrais forcement avoir un user createur
+                throw new Exception("Une erreur s'est produite, merci de contacter le développeur back-end");
+            }
+            return user;
         }
 
         /// <summary>
@@ -96,9 +126,36 @@ namespace Services
             return await this._userRepository.GetUsersByNameAsync(getUserByNameDTO);
         }
 
-        public Task<GetOneUserDTO> UpdateUserByIdAsync(CreateUserDTO updateOneUserDTO)
+        public async Task<GetOneUserDTO> UpdateUserByIdAsync(UpdateUserDTO updateOneUserDTO)
         {
-            throw new NotImplementedException();
+            AppUser appUser = (await this._userManager.Users
+                .Include(appuser => appuser.User)
+                .FirstOrDefaultAsync(appuser => appuser.Id == updateOneUserDTO.UserId))!;
+            if (updateOneUserDTO.EmailLogin != null && updateOneUserDTO.EmailLogin != "" && updateOneUserDTO.EmailLogin != "string")
+            {
+                string? emailToken = await this._userManager.GenerateChangeEmailTokenAsync(appUser, updateOneUserDTO.EmailLogin);
+                await this._userManager.ChangeEmailAsync(appUser, updateOneUserDTO.EmailLogin, emailToken);
+                appUser.NormalizedUserName = updateOneUserDTO.EmailLogin.ToUpper();
+                appUser.UserName = updateOneUserDTO.EmailLogin;
+                await this._userManager.UpdateAsync(appUser);
+            }
+            if (updateOneUserDTO.Password != null && updateOneUserDTO.Password != "" && updateOneUserDTO.Password != "string") 
+            {
+                if(updateOneUserDTO.Password != updateOneUserDTO.ConfirmPassword)
+                {
+                    throw new ArgumentException("Le mot de passe et la confirmation de mot de passe doivent être identiques !");
+                }
+                await this._userManager.ChangePasswordAsync(appUser, updateOneUserDTO.OldPassword, updateOneUserDTO.Password);
+            }
+            if(updateOneUserDTO.Firstname != null && updateOneUserDTO.Firstname != "" && updateOneUserDTO.Firstname != "string"
+                ||
+                updateOneUserDTO.Lastname != null && updateOneUserDTO.Lastname != "" && updateOneUserDTO.Lastname != "string"
+                ||
+                updateOneUserDTO.PictureURL != null && updateOneUserDTO.PictureURL != "" && updateOneUserDTO.PictureURL != "string")
+            {
+                await this._userRepository.UpdateUserByIdAsync(updateOneUserDTO);
+            }
+            return (await this._userRepository.GetUserByIdAsync(appUser.Id))!;
         }
     }
 }

@@ -50,10 +50,6 @@ namespace Repositories
                 }).ToListAsync();
         }
 
-        public Task<List<GetOneUserDTO>> GetUserByCarPoolAsync(int carPoolId)
-        {
-            throw new NotImplementedException();
-        }
 
         /// <summary>
         /// Get one User with User.Id
@@ -154,9 +150,22 @@ namespace Repositories
             
         }
 
-        public Task<GetOneUserDTO> UpdateUserByIdAsync(CreateUserDTO updateOneUserDTO)
+        public async Task UpdateUserByIdAsync(UpdateUserDTO updateOneUserDTO)
         {
-            throw new NotImplementedException();
+            User user = (await this._context.Users.FindAsync(updateOneUserDTO.UserId))!;   
+            if(updateOneUserDTO.Firstname != null)
+            {
+                user.Firstname = updateOneUserDTO.Firstname;
+            }
+            if(updateOneUserDTO.Lastname != null)
+            {
+                user.Lastname = updateOneUserDTO.Lastname;
+            }
+            if(updateOneUserDTO.PictureURL != null)
+            {
+                user.PictureURL = updateOneUserDTO.PictureURL;
+            }
+            await this._context.SaveChangesAsync();
         }
     }
 }
