@@ -2,6 +2,7 @@
 using IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Utils.Constants;
 
 
@@ -136,7 +137,7 @@ namespace Main.Controllers
         /// </summary>
         /// <param name="getUserByNameDTO"></param>
         /// <returns>List of users formated with GetUserByNameDTO</returns>
-        [HttpPost]
+        [HttpGet]
         //[Authorize(Roles = ROLE.ADMIN)]
         public async Task<ActionResult<List<GetOneUserDTO>>> GetUsersByName(GetUserByNameDTO getUserByNameDTO)     // get users by name
         {
@@ -150,9 +151,20 @@ namespace Main.Controllers
             }
         }
 
-        //public Task<GetOneUserDTO> UpdateUserById(CreateUserDTO updateOneUserDTO)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        [HttpPut]
+        [Authorize]
+        public async Task<ActionResult<GetOneUserDTO>> UpdateUserById(UpdateUserDTO updateOneUserDTO)
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            updateOneUserDTO.UserId = userId;
+            try
+            {
+                return await this._userService.UpdateUserByIdAsync(updateOneUserDTO);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
