@@ -1,5 +1,4 @@
-﻿using DTO.CarPools;
-using DTO.Rent;
+﻿using DTO.Rent;
 using DTO.User;
 using IRepositories;
 using IServices;
@@ -10,16 +9,11 @@ namespace Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IRentRepository _rentRepository;
-        private readonly ICarPoolRepository _carPoolRepository;
 
-        public UserService(
-            IUserRepository userRepository, 
-            IRentRepository rentRepository,
-            ICarPoolRepository carPoolRepository)
+        public UserService(IUserRepository userRepository, IRentRepository rentRepository)
         {
             this._userRepository = userRepository;
             this._rentRepository = rentRepository;
-            this._carPoolRepository = carPoolRepository;
         }
 
         /// <summary>
@@ -41,28 +35,9 @@ namespace Services
             return await this._userRepository.GetAllUsersAsync();
         }
 
-        /// <summary>
-        /// Get the user in origin of the carpool
-        /// </summary>
-        /// <param name="carPoolID"></param>
-        /// <returns>one user formated with GetOneUserDTO</returns>
-        public async Task<GetOneUserDTO> GetUserByCarPoolAsync(int carPoolId)
+        public async Task<List<GetOneUserDTO>> GetUserByCarPoolAsync(int carPoolId)
         {
-            if(carPoolId == 0)
-            {
-                throw new ArgumentException("Merci de renseigner un id valide");
-            }
-            GetOneCarPoolWithPassengersDTO? carpool = await this._carPoolRepository.GetCarPoolByIdAsync(carPoolId);
-            if(carpool == null)
-            {
-                throw new ArgumentException("Le covoiturage n'existe pas !");
-            }
-            GetOneUserDTO? user = await this._userRepository.GetUserByIdAsync(carpool.UserId);
-            if (user == null)
-            {   // une location devrais forcement avoir un user createur
-                throw new Exception("Une erreur s'est produite, merci de contacter le développeur back-end");
-            }
-            return user;
+            throw new NotImplementedException();
         }
 
         /// <summary>

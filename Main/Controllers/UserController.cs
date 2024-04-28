@@ -55,24 +55,10 @@ namespace Main.Controllers
             }
         }
 
-        /// <summary>
-        /// Get the user in origin of the carpool
-        /// </summary>
-        /// <param name="carPoolID"></param>
-        /// <returns>one user formated with GetOneUserDTO</returns>
-        [HttpGet]
-        [Authorize]
-        public async Task<ActionResult<List<GetOneUserDTO>>> GetUserByCarPool(int carPoolID)
-        {
-            try
-            {   
-                return Ok(await this._userService.GetUserByCarPoolAsync(carPoolID));
-            }
-            catch (Exception ex)    
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+        //public Task<List<GetOneUserDTO>> GetUserByCarPool(int carPoolID)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         /// <summary>
         /// Get one User with User.Id

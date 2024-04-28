@@ -34,10 +34,6 @@ builder.Services.AddScoped<IRentService, RentService>();
 builder.Services.AddScoped<IRentRepository, RentRepository>();
 builder.Services.AddScoped<IDateRepository, DateRepository>();
 builder.Services.AddScoped<ILocalizationRepository, LocalizationRepository>();
-builder.Services.AddScoped<ICarPoolRepository, CarPoolRepository>();
-builder.Services.AddScoped<ICarPoolService, CarPoolService>();
-builder.Services.AddScoped<ICarPoolPassengerRepository, CarPoolPassengerRepository>();
-builder.Services.AddScoped<ICarPoolPassengerService, CarPoolPassengerService>();
 
 
 
