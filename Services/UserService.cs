@@ -34,7 +34,12 @@ namespace Services
         /// <returns>void</returns>
         public async Task DeleteUserByIdAsync(string userId)                // delete user
         {
-            await this._userRepository.DeleteUserByIdAsync(userId);
+            AppUser? appUser = await this._userManager.FindByIdAsync(userId);
+            if (appUser == null)
+            {
+                throw new Exception("Utilisateur introuvable ! Aucune suppression n'a été éffectuée !");
+            }
+            await this._userRepository.DeleteUserByIdAsync(appUser);
         }
 
         /// <summary>

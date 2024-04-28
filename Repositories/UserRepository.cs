@@ -21,17 +21,9 @@ namespace Repositories
         /// </summary>
         /// <param name="userID"></param>
         /// <returns>void</returns>
-        public async Task DeleteUserByIdAsync(string userId)                    // delete user
+        public async Task DeleteUserByIdAsync(AppUser appUser)                    // delete user
         {
-            AppUser? appUser = await this._userManager.FindByIdAsync(userId);
-            if (appUser == null)
-            {
-                throw new Exception("Utilisateur introuvable ! Aucune suppression n'a été éffectuée !");
-            }
-            else
-            {
                 await this._userManager.DeleteAsync(appUser);
-            }
         }
 
         /// <summary>
