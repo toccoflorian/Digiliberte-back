@@ -3,9 +3,6 @@ using DTO.Rent;
 using DTO.User;
 using IRepositories;
 using IServices;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Models;
 
 namespace Services
 {
@@ -14,17 +11,15 @@ namespace Services
         private readonly IUserRepository _userRepository;
         private readonly IRentRepository _rentRepository;
         private readonly ICarPoolRepository _carPoolRepository;
-        private readonly UserManager<AppUser> _userManager;
+
         public UserService(
             IUserRepository userRepository, 
             IRentRepository rentRepository,
-            ICarPoolRepository carPoolRepository,
-            UserManager<AppUser> userManager)
+            ICarPoolRepository carPoolRepository)
         {
             this._userRepository = userRepository;
             this._rentRepository = rentRepository;
             this._carPoolRepository = carPoolRepository;
-            this._userManager = userManager;
         }
 
         /// <summary>
@@ -126,36 +121,9 @@ namespace Services
             return await this._userRepository.GetUsersByNameAsync(getUserByNameDTO);
         }
 
-        public async Task<GetOneUserDTO> UpdateUserByIdAsync(UpdateUserDTO updateOneUserDTO)
+        public Task<GetOneUserDTO> UpdateUserByIdAsync(CreateUserDTO updateOneUserDTO)
         {
-            AppUser appUser = (await this._userManager.Users
-                .Include(appuser => appuser.User)
-                .FirstOrDefaultAsync(appuser => appuser.Id == updateOneUserDTO.UserId))!;
-            if (updateOneUserDTO.EmailLogin != null && updateOneUserDTO.EmailLogin != "" && updateOneUserDTO.EmailLogin != "string")
-            {
-                string? emailToken = await this._userManager.GenerateChangeEmailTokenAsync(appUser, updateOneUserDTO.EmailLogin);
-                await this._userManager.ChangeEmailAsync(appUser, updateOneUserDTO.EmailLogin, emailToken);
-                appUser.NormalizedUserName = updateOneUserDTO.EmailLogin.ToUpper();
-                appUser.UserName = updateOneUserDTO.EmailLogin;
-                await this._userManager.UpdateAsync(appUser);
-            }
-            if (updateOneUserDTO.Password != null && updateOneUserDTO.Password != "" && updateOneUserDTO.Password != "string") 
-            {
-                if(updateOneUserDTO.Password != updateOneUserDTO.ConfirmPassword)
-                {
-                    throw new ArgumentException("Le mot de passe et la confirmation de mot de passe doivent être identiques !");
-                }
-                await this._userManager.ChangePasswordAsync(appUser, updateOneUserDTO.OldPassword, updateOneUserDTO.Password);
-            }
-            if(updateOneUserDTO.Firstname != null && updateOneUserDTO.Firstname != "" && updateOneUserDTO.Firstname != "string"
-                ||
-                updateOneUserDTO.Lastname != null && updateOneUserDTO.Lastname != "" && updateOneUserDTO.Lastname != "string"
-                ||
-                updateOneUserDTO.PictureURL != null && updateOneUserDTO.PictureURL != "" && updateOneUserDTO.PictureURL != "string")
-            {
-                await this._userRepository.UpdateUserByIdAsync(updateOneUserDTO);
-            }
-            return (await this._userRepository.GetUserByIdAsync(appUser.Id))!;
+            throw new NotImplementedException();
         }
     }
 }

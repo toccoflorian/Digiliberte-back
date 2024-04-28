@@ -150,22 +150,9 @@ namespace Repositories
             
         }
 
-        public async Task UpdateUserByIdAsync(UpdateUserDTO updateOneUserDTO)
+        public Task<GetOneUserDTO> UpdateUserByIdAsync(CreateUserDTO updateOneUserDTO)
         {
-            User user = (await this._context.Users.FindAsync(updateOneUserDTO.UserId))!;   
-            if(updateOneUserDTO.Firstname != null)
-            {
-                user.Firstname = updateOneUserDTO.Firstname;
-            }
-            if(updateOneUserDTO.Lastname != null)
-            {
-                user.Lastname = updateOneUserDTO.Lastname;
-            }
-            if(updateOneUserDTO.PictureURL != null)
-            {
-                user.PictureURL = updateOneUserDTO.PictureURL;
-            }
-            await this._context.SaveChangesAsync();
+            throw new NotImplementedException();
         }
     }
 }
