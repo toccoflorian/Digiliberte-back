@@ -50,10 +50,6 @@ namespace Repositories
                 }).ToListAsync();
         }
 
-        public Task<List<GetOneUserDTO>> GetUserByCarPoolAsync(int carPoolId)
-        {
-            throw new NotImplementedException();
-        }
 
         /// <summary>
         /// Get one User with User.Id

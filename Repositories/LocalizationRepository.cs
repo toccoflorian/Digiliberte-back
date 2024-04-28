@@ -50,11 +50,11 @@ namespace Repositories
                 {
                     Longitude = localization.Longitude,
                     Latitude = localization.Latitude,
-                    Vehicles = Context.Vehicles.Select(v => new VehicleSimpleIdDTO
+                    Vehicles = Context.Vehicles.Select(v => new VehicleSimpleIdDTO  // Vehicles est une propriete de navigation
                     {
-                        Id = v.Id,
+                        Id = v.Id,        // on ne veut pas tout les vehicles
                     }
-                    ).ToList(),
+                    ).ToList(),     // ce n'est pas asynchrone
                 }).ToListAsync();
 
             return localizationWithCars;
