@@ -114,10 +114,10 @@ namespace Repositories
         /// Get all models
         /// </summary>
         /// <returns>List of model DTOs</returns>
-        public async Task<List<GetOneModelDTO>> GetAllModelsAsync()
+        public async Task<List<GetOneModelDTO>> GetAllModelsAsync(int paginationIndex = 0, int pageSize = 10)
         {
             // Interrogez la base de données pour obtenir toutes les motorisations
-            var models = await Context.Models.ToListAsync();
+            var models = await Context.Models.Skip(pageSize * paginationIndex).Take(pageSize).ToListAsync();
 
             // Convertissez les objets Model en DTOs
             var modelDTOs = models.Select(m => new GetOneModelDTO

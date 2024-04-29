@@ -13,7 +13,7 @@ namespace IServices
         public Task<GetOneMotorizationDTO?> GetOneMotorizationByIdAsync(int modelId);
         public Task<GetOneMotorizationDTO?> UpdateOneMotorizationByIdAsync(GetOneMotorizationDTO getOneMotorizationDTO);
         //public Task<bool> DeleteOneMotorizationByIdAsync(int modelId);
-        public Task<List<GetOneMotorizationDTO>> GetAllMotorizationsAsync();
+        public Task<List<GetOneMotorizationDTO>> GetAllMotorizationsAsync(int paginationIndex = 0, int pageSize = 10);
 
     }
 }

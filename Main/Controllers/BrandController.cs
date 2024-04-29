@@ -90,5 +90,23 @@ namespace Main.Controllers
                 return NotFound();
             }
         }
+
+        /// <summary>
+        /// Get all brands
+        /// </summary>
+        /// <returns>List of brand DTOs</returns>
+        [HttpGet("all")]
+        public async Task<ActionResult<List<GetOneBrandDTO>>> GetAllBrandsAsync()
+        {
+            try
+            {
+                var brands = await brandService.GetAllBrandsAsync();
+                return Ok(brands);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
