@@ -79,5 +79,19 @@ namespace Services
                 return null;
             }
         }
+
+        public async Task<List<GetOneBrandDTO>> GetAllBrandsAsync(int paginationIndex = 0, int pageSize = 10)
+        {
+            try
+            {
+                var brands = await brandRepository.GetAllBrandsAsync(paginationIndex, pageSize);
+                return brands;
+            }
+            catch (Exception ex)
+            {
+                // Gérer les exceptions appropriées
+                throw new Exception("Failed to retrieve brands", ex);
+            }
+        }
     }
 }

@@ -15,5 +15,6 @@ namespace IRepositories
         public Task<GetOneBrandDTO?> UpdateOneBrandByIdAsync(GetOneBrandDTO updatedBrandDTO);
         public Task DeleteOneBrandByIdAsync(int brandId);
         public Task<Brand?> GetOneBrandByIdAsync(int Id);
+        public Task<List<GetOneBrandDTO>> GetAllBrandsAsync(int paginationIndex = 0, int pageSize = 10);
     }
 }
