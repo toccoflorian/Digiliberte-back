@@ -80,6 +80,20 @@ namespace Services
             }
         }
 
+        public async Task<List<GetOneModelDTO>> GetAllModelsAsync()
+        {
+            try
+            {
+                var models = await ModelRepository.GetAllModelsAsync();
+                return models;
+            }
+            catch (Exception ex)
+            {
+                // Gérer les exceptions appropriées
+                throw new Exception("Failed to retrieve models", ex);
+            }
+        }
+
     }
 }
 
