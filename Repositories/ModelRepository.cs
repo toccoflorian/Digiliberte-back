@@ -109,5 +109,25 @@ namespace Repositories
             return await Context.Models.FirstOrDefaultAsync(c=>c.Id == Id);
         }
 
+
+        /// <summary>
+        /// Get all models
+        /// </summary>
+        /// <returns>List of model DTOs</returns>
+        public async Task<List<GetOneModelDTO>> GetAllModelsAsync()
+        {
+            // Interrogez la base de données pour obtenir toutes les motorisations
+            var models = await Context.Models.ToListAsync();
+
+            // Convertissez les objets Model en DTOs
+            var modelDTOs = models.Select(m => new GetOneModelDTO
+            {
+                Id = m.Id,
+                Name = m.Label
+            }).ToList();
+
+            return modelDTOs;
+        }
+
     }
 }
