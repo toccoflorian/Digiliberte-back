@@ -55,7 +55,7 @@ namespace Services
             }
 
             // vérification de la validité des dates
-            if (createOneCarPoolDTO.StartDate.Date >= DateTime.Now)
+            if (createOneCarPoolDTO.StartDate.Date <= DateTime.Now)
             {
                 throw new Exception("La date de début de covoiturage dois être dans le futur !");
             }

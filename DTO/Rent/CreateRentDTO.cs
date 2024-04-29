@@ -8,7 +8,7 @@ namespace DTO.Rent
 {
     public class CreateRentDTO
     {
-        public string UserID { get; set; }
+        public string? UserID { get; set; }
         public string? UserFirstname { get; set; }
         public string? UserLastname { get; set; }
         public int VehiceId { get; set; }
