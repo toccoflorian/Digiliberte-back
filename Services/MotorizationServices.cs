@@ -37,23 +37,23 @@ namespace Services
             return existingMotorization;
         }
 
-        public async Task<bool> DeleteOneMotorizationByIdAsync(int modelId)
-        {
+        //public async Task<bool> DeleteOneMotorizationByIdAsync(int modelId)
+        //{
 
-            // Vérifiez d'abord si un categorie avec le même id existe déjà dans la base de données
-            var existingMotorization = await _motorizationRepository.GetOneMotorizationByIdAsync(modelId);
+        //    // Vérifiez d'abord si un categorie avec le même id existe déjà dans la base de données
+        //    var existingMotorization = await _motorizationRepository.GetOneMotorizationByIdAsync(modelId);
 
-            // Si le categorie existe, procédez à sa suppression
-            if (existingMotorization != null)
-            {
-                await _motorizationRepository.DeleteOneMotorizationByIdAsync(modelId);
-                return true; // Indique que la suppression a été effectuée avec succès
-            }
-            else
-            {
-                throw new Exception("Id Not Found"); // Indique que le categorie n'a pas été trouvé, donc la suppression n'a pas été effectuée
-            }
-        }
+        //    // Si le categorie existe, procédez à sa suppression
+        //    if (existingMotorization != null)
+        //    {
+        //        await _motorizationRepository.DeleteOneMotorizationByIdAsync(modelId);
+        //        return true; // Indique que la suppression a été effectuée avec succès
+        //    }
+        //    else
+        //    {
+        //        throw new Exception("Id Not Found"); // Indique que le categorie n'a pas été trouvé, donc la suppression n'a pas été effectuée
+        //    }
+        //}
 
         public async Task<GetOneMotorizationDTO?> GetOneMotorizationByIdAsync(int modelId)
         {

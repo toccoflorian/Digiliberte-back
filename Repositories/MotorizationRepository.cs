@@ -85,25 +85,25 @@ namespace Repositories
                 Name = existingMotorization.Label,
             };
         }
-        /// <summary>
-        /// Delete a motorization by Id , used Id to know if  exists
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns>Bool , true si modifié, false si non modifié </returns>
-        public async Task<bool> DeleteOneMotorizationByIdAsync(int motorizationId)
-        {
-            var motorizationToDelete = await _context.Motorizations.FindAsync(motorizationId);
+        ///// <summary>
+        ///// Delete a motorization by Id , used Id to know if  exists
+        ///// </summary>
+        ///// <param name="Id"></param>
+        ///// <returns>Bool , true si modifié, false si non modifié </returns>
+        //public async Task<bool> DeleteOneMotorizationByIdAsync(int motorizationId)
+        //{
+        //    var motorizationToDelete = await _context.Motorizations.FindAsync(motorizationId);
 
-            if (motorizationToDelete != null)
-            {
-                _context.Motorizations.Remove(motorizationToDelete);
-                await _context.SaveChangesAsync();
-                return true;
-            }
+        //    if (motorizationToDelete != null)
+        //    {
+        //        _context.Motorizations.Remove(motorizationToDelete);
+        //        await _context.SaveChangesAsync();
+        //        return true;
+        //    }
 
-            return false;
-            // Si le modèle n'existe pas, il n'y a rien à supprimer
-        }
+        //    return false;
+        //    // Si le modèle n'existe pas, il n'y a rien à supprimer
+        //}
 
         /// <summary>
         /// Get a motorization by Id , used Id to know if  exists already

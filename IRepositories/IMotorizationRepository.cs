@@ -12,7 +12,7 @@ namespace IRepositories
         public Task<GetOneMotorizationDTO?> CreateOneMotorizationAsync(CreateOneMotorizationDTO createMotorizationDTO);
         public Task<string?> GetMotorizationByName(string Name);
         public Task<GetOneMotorizationDTO?> UpdateOneMotorizationByIdAsync(GetOneMotorizationDTO updatedMotorizationDTO);
-        public Task<bool> DeleteOneMotorizationByIdAsync(int motorizationId);
+        //public Task<bool> DeleteOneMotorizationByIdAsync(int motorizationId);
         public Task<GetOneMotorizationDTO?> GetOneMotorizationByIdAsync(int Id);
         public Task<List<GetOneMotorizationDTO>> GetAllMotorizationsAsync();
     }
