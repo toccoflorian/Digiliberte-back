@@ -98,5 +98,24 @@ namespace Repositories
             return await Context.Brands.FirstOrDefaultAsync(c => c.Id == Id);
         }
 
+        /// <summary>
+        /// Get all brands
+        /// </summary>
+        /// <returns>List of brand DTOs</returns>
+        public async Task<List<GetOneBrandDTO>> GetAllBrandsAsync(int paginationIndex = 0, int pageSize = 1)
+        {
+            // Interrogez la base de données pour obtenir toutes les motorisations
+            var brands = await Context.Brands.Skip(pageSize * paginationIndex).Take(pageSize).ToListAsync();
+
+            // Convertissez les objets Brand en DTOs
+            var brandDTOs = brands.Select(m => new GetOneBrandDTO
+            {
+                Id = m.Id,
+                Name = m.Label
+            }).ToList();
+
+            return brandDTOs;
+        }
+
     }
 }

@@ -103,11 +103,11 @@ namespace Main.Controllers
         /// </summary>
         /// <returns>List of model DTOs</returns>
         [HttpGet("all")]
-        public async Task<ActionResult<List<GetOneModelDTO>>> GetAllModelsAsync()
+        public async Task<ActionResult<List<GetOneModelDTO>>> GetAllModelsAsync(int paginationIndex = 0, int pageSize = 10)
         {
             try
             {
-                var models = await _modelServices.GetAllModelsAsync();
+                var models = await _modelServices.GetAllModelsAsync(paginationIndex,pageSize) ;
                 return Ok(models);
             }
             catch (Exception ex)
