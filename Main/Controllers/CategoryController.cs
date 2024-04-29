@@ -49,21 +49,21 @@ namespace Main.Controllers
             catch (Exception ex) { return BadRequest(ex.Message); }
         }
 
-        /// <summary>
-        /// Dlete a Category into the db, use a DTO for delete        
-        /// 
-        /// /// </summary>
-        /// <param name="deleteOneCategory">DTO of Category for delete</param>
-        /// <returns>Returns a DTO of the deleted category</returns>
-        [HttpDelete]
-        public async Task<ActionResult<GetOneCategoryDTO?>> DeleteOneCategoryByIdAsync(int Id)
-        {
-            try
-            {
-                return Ok(await _categoryServices.DeleteOneCategoryByIdAsync(Id));
-            }
-            catch(Exception ex) { return BadRequest(ex.Message) ; }
-        }
+        ///// <summary>
+        ///// Dlete a Category into the db, use a DTO for delete        
+        ///// 
+        ///// /// </summary>
+        ///// <param name="deleteOneCategory">DTO of Category for delete</param>
+        ///// <returns>Returns a DTO of the deleted category</returns>
+        //[HttpDelete]
+        //public async Task<ActionResult<GetOneCategoryDTO?>> DeleteOneCategoryByIdAsync(int Id)
+        //{
+        //    try
+        //    {
+        //        return Ok(await _categoryServices.DeleteOneCategoryByIdAsync(Id));
+        //    }
+        //    catch(Exception ex) { return BadRequest(ex.Message) ; }
+        //}
 
         /// <summary>
         /// Get a Category By Id into the db, use a Id       

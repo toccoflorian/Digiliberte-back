@@ -40,23 +40,23 @@ namespace Services
             return existingCategory;
         }
 
-        public async Task<bool> DeleteOneCategoryByIdAsync(int modelId)
-        {
+        //public async Task<bool> DeleteOneCategoryByIdAsync(int modelId)
+        //{
 
-            // Vérifiez d'abord si un categorie avec le même id existe déjà dans la base de données
-            var existingCategory = await _categoryRepository.GetOneCategoryByIdAsync(modelId);
+        //    // Vérifiez d'abord si un categorie avec le même id existe déjà dans la base de données
+        //    var existingCategory = await _categoryRepository.GetOneCategoryByIdAsync(modelId);
 
-            // Si le categorie existe, procédez à sa suppression
-            if (existingCategory != null)
-            {
-                await _categoryRepository.DeleteOneCategoryByIdAsync(modelId);
-                return true; // Indique que la suppression a été effectuée avec succès
-            }
-            else
-            {
-                throw new Exception("Id Not Found"); // Indique que le categorie n'a pas été trouvé, donc la suppression n'a pas été effectuée
-            }
-        }
+        //    // Si le categorie existe, procédez à sa suppression
+        //    if (existingCategory != null)
+        //    {
+        //        await _categoryRepository.DeleteOneCategoryByIdAsync(modelId);
+        //        return true; // Indique que la suppression a été effectuée avec succès
+        //    }
+        //    else
+        //    {
+        //        throw new Exception("Id Not Found"); // Indique que le categorie n'a pas été trouvé, donc la suppression n'a pas été effectuée
+        //    }
+        //}
 
         public async Task<GetOneCategoryDTO?> GetOneCategoryByIdAsync(int modelId)
         {
