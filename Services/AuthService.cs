@@ -21,7 +21,7 @@ namespace Services
         /// <exception cref="Exception"></exception>
         public async Task RegisterAsync(CreateUserDTO createUserDTO)
         {
-            if(createUserDTO.Password == null || createUserDTO.Password != createUserDTO.ConfirmPassword)
+            if(createUserDTO.Password == null || createUserDTO.Password != createUserDTO.ConfirmPassword) 
             {
                 throw new Exception("Le mot de passe et la confirmation du mot de passe doivent être identiques !");
             }

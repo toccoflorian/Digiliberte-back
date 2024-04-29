@@ -1,20 +1,30 @@
-﻿using DTO.User;
+﻿using DTO.CarPools;
+using DTO.Rent;
+using DTO.User;
 using IRepositories;
 using IServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Models;
 
 namespace Services
 {
     public class UserService : IUserService
     {
-        private IUserRepository _userRepository;
-        public UserService(IUserRepository userRepository)
+        private readonly IUserRepository _userRepository;
+        private readonly IRentRepository _rentRepository;
+        private readonly ICarPoolRepository _carPoolRepository;
+        private readonly UserManager<AppUser> _userManager;
+        public UserService(
+            IUserRepository userRepository, 
+            IRentRepository rentRepository,
+            ICarPoolRepository carPoolRepository,
+            UserManager<AppUser> userManager)
         {
             this._userRepository = userRepository;
+            this._rentRepository = rentRepository;
+            this._carPoolRepository = carPoolRepository;
+            this._userManager = userManager;
         }
 
         /// <summary>
@@ -22,9 +32,14 @@ namespace Services
         /// </summary>
         /// <param name="userId"></param>
         /// <returns>void</returns>
-        public async Task DeleteUserByIdAsync(string userId)
+        public async Task DeleteUserByIdAsync(string userId)                // delete user
         {
-            await this._userRepository.DeleteUserByIdAsync(userId);
+            AppUser? appUser = await this._userManager.FindByIdAsync(userId);
+            if (appUser == null)
+            {
+                throw new Exception("Utilisateur introuvable ! Aucune suppression n'a été éffectuée !");
+            }
+            await this._userRepository.DeleteUserByIdAsync(appUser);
         }
 
         /// <summary>
@@ -36,9 +51,28 @@ namespace Services
             return await this._userRepository.GetAllUsersAsync();
         }
 
-        public async Task<List<GetOneUserDTO>> GetUserByCarPoolAsync(int carPoolId)
+        /// <summary>
+        /// Get the user in origin of the carpool
+        /// </summary>
+        /// <param name="carPoolID"></param>
+        /// <returns>one user formated with GetOneUserDTO</returns>
+        public async Task<GetOneUserDTO> GetUserByCarPoolAsync(int carPoolId)
         {
-            throw new NotImplementedException();
+            if(carPoolId == 0)
+            {
+                throw new ArgumentException("Merci de renseigner un id valide");
+            }
+            GetOneCarPoolWithPassengersDTO? carpool = await this._carPoolRepository.GetCarPoolByIdAsync(carPoolId);
+            if(carpool == null)
+            {
+                throw new ArgumentException("Le covoiturage n'existe pas !");
+            }
+            GetOneUserDTO? user = await this._userRepository.GetUserByIdAsync(carpool.UserId);
+            if (user == null)
+            {   // une location devrais forcement avoir un user createur
+                throw new Exception("Une erreur s'est produite, merci de contacter le développeur back-end");
+            }
+            return user;
         }
 
         /// <summary>
@@ -46,29 +80,87 @@ namespace Services
         /// </summary>
         /// <param name="userID"></param>
         /// <returns>one user formated with GetOneUserDTO</returns>
-        public async Task<GetOneUserDTO> GetUserByIdAsync(string userId)
+        public async Task<GetOneUserDTO> GetUserByIdAsync(string userId)                // get user by Id
         {
-            return await this._userRepository.GetUserByIdAsync(userId);
+            GetOneUserDTO? userDTO = await this._userRepository.GetUserByIdAsync(userId);
+            if(userDTO == null)
+            {
+                throw new Exception("L'utilisateur est introuvable !");
+            }
+            return userDTO;
         }
 
-        public Task<GetOneUserDTO> GetUserByRentAsync(int rentId)
+        /// <summary>
+        /// Get the user of one rent
+        /// </summary>
+        /// <param name="rentId"></param>
+        /// <returns>one user formated with GetOneUserDTO</returns>
+        public async Task<GetOneUserDTO> GetUserByRentAsync(int rentId)
         {
-            throw new NotImplementedException();
+            GetOneRentDTO? rentDTO = await this._rentRepository.GetRentByIdAsync(rentId);
+            if(rentDTO == null)
+            {
+                throw new Exception("Aucune location avec cette id !");
+            }
+            GetOneUserDTO? userDTO = await this._userRepository.GetUserByIdAsync(rentDTO.UserId);
+            if(userDTO == null)
+            {
+                throw new Exception("Une erreur s'est produite, location sans utilisateur referencé, merci de contater le dev back-end !");
+            }
+            return userDTO;
         }
 
-        public Task<List<GetOneUserDTO>> GetUserByRoleAsync(int rentId)
+        /// <summary>
+        /// Get list of user in the role
+        /// </summary>
+        /// <param name="role"></param>
+        /// <returns>List of user formated with GetOneUserDTO</returns>
+        public async Task<List<GetOneUserDTO?>> GetUserByRoleAsync(string role)                 // get user by role
         {
-            throw new NotImplementedException();
+            return await this._userRepository.GetUserByRoleAsync(role);
         }
 
-        public Task<List<GetOneUserDTO>> GetUsersByNameAsync(GetUserByNameDTO getUserByNameDTO)
+
+        /// <summary>
+        /// get a list of users by name
+        /// </summary>
+        /// <param name="getUserByNameDTO"></param>
+        /// <returns>List of users formated with GetUserByNameDTO</returns>
+        public async Task<List<GetOneUserDTO>> GetUsersByNameAsync(GetUserByNameDTO getUserByNameDTO)     // get users by name
         {
-            throw new NotImplementedException();
+            return await this._userRepository.GetUsersByNameAsync(getUserByNameDTO);
         }
 
-        public Task<GetOneUserDTO> UpdateUserByIdAsync(CreateUserDTO updateOneUserDTO)
+        public async Task<GetOneUserDTO> UpdateUserByIdAsync(UpdateUserDTO updateOneUserDTO)
         {
-            throw new NotImplementedException();
+            AppUser appUser = (await this._userManager.Users
+                .Include(appuser => appuser.User)
+                .FirstOrDefaultAsync(appuser => appuser.Id == updateOneUserDTO.UserId))!;
+            if (updateOneUserDTO.EmailLogin != null && updateOneUserDTO.EmailLogin != "" && updateOneUserDTO.EmailLogin != "string")
+            {
+                string? emailToken = await this._userManager.GenerateChangeEmailTokenAsync(appUser, updateOneUserDTO.EmailLogin);
+                await this._userManager.ChangeEmailAsync(appUser, updateOneUserDTO.EmailLogin, emailToken);
+                appUser.NormalizedUserName = updateOneUserDTO.EmailLogin.ToUpper();
+                appUser.UserName = updateOneUserDTO.EmailLogin;
+                await this._userManager.UpdateAsync(appUser);
+            }
+            if (updateOneUserDTO.Password != null && updateOneUserDTO.Password != "" && updateOneUserDTO.Password != "string") 
+            {
+                if(updateOneUserDTO.Password != updateOneUserDTO.ConfirmPassword)
+                {
+                    throw new ArgumentException("Le mot de passe et la confirmation de mot de passe doivent être identiques !");
+                }
+                await this._userManager.ChangePasswordAsync(appUser, updateOneUserDTO.OldPassword, updateOneUserDTO.Password);
+            }
+            if(updateOneUserDTO.Firstname != null && updateOneUserDTO.Firstname != "" && updateOneUserDTO.Firstname != "string"
+                ||
+                updateOneUserDTO.Lastname != null && updateOneUserDTO.Lastname != "" && updateOneUserDTO.Lastname != "string"
+                ||
+                updateOneUserDTO.PictureURL != null && updateOneUserDTO.PictureURL != "" && updateOneUserDTO.PictureURL != "string")
+            {
+                await this._userRepository.UpdateUserByIdAsync(updateOneUserDTO);
+            }
+            return (await this._userRepository.GetUserByIdAsync(appUser.Id))!;
         }
     }
 }
