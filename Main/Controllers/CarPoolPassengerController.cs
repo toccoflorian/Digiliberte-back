@@ -1,4 +1,5 @@
 ﻿using DTO.CarPoolPassenger;
+using DTO.Pagination;
 using IRepositories;
 using IServices;
 using Microsoft.AspNetCore.Authorization;
@@ -57,10 +58,22 @@ namespace Main.Controllers
             }
         }
 
-        //public Task<List<GetOneCarPoolPassengerDTO>> GetAllPassengers()
-        //{
-        //    throw new NotImplementedException();
-        //}
+        [HttpGet]
+        public async Task<ActionResult<List<GetOneCarPoolPassengerDTO>>> GetAllPassengers(int? pageIndex, int? pageSize)
+        {
+            try
+            {
+                return Ok(await this._carPoolPassengerService.GetAllPassengersAsync(new PageForkDTO
+                {
+                    PageIndex = pageIndex != null ? (int)pageIndex : 0,
+                    PageSize = pageSize != null ? (int)pageSize : 10
+                }));
+            }
+            catch (Exception ex) 
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         //public Task<List<GetOneCarPoolPassengerDTO>> GetPassengerByDescriptionDate(DateTime dateTime)
         //{

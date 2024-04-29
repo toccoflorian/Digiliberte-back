@@ -23,7 +23,9 @@ namespace Repositories
         /// <returns>void</returns>
         public async Task DeleteUserByIdAsync(AppUser appUser)                    // delete user
         {
-                await this._userManager.DeleteAsync(appUser);
+            await this._userManager.DeleteAsync(appUser);
+            this._context.Users.Remove((await this._context.Users.FindAsync(appUser.Id))!);
+            await this._context.SaveChangesAsync();
         }
 
         /// <summary>

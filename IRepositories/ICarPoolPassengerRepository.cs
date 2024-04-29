@@ -1,4 +1,5 @@
 ﻿using DTO.CarPoolPassenger;
+using DTO.Pagination;
 using Models;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace IRepositories
         public Task<List<GetOneCarPoolPassengerDTO>> GetPassengerByDescriptionDateAsync(DateTime dateTime);
         public Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByUserAsync(string userID);
         public Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByCarPoolAsync(int carPoolID);
-        public Task<List<GetOneCarPoolPassengerDTO>> GetAllPassengersAsync();
+        public Task<List<GetOneCarPoolPassengerDTO>> GetAllPassengersAsync(PageForkDTO pageForkDTO);
         public Task<GetOneCarPoolPassengerDTO> GetPassengerByIdAsync(int carPoolPassengerID);
     }
 }
