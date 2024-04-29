@@ -87,11 +87,11 @@ namespace Main.Controllers
         /// </summary>
         /// <returns>List of motorization DTOs</returns>
         [HttpGet("all")]
-        public async Task<ActionResult<List<GetOneMotorizationDTO>>> GetAllMotorizationsAsync()
+        public async Task<ActionResult<List<GetOneMotorizationDTO>>> GetAllMotorizationsAsync(int paginationIndex = 0, int pageSize = 10)
         {
             try
             {
-                var motorizations = await _motorizationServices.GetAllMotorizationsAsync();
+                var motorizations = await _motorizationServices.GetAllMotorizationsAsync(paginationIndex, pageSize);
                 return Ok(motorizations);
             }
             catch (Exception ex)

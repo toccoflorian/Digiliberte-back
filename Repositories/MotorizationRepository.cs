@@ -135,10 +135,10 @@ namespace Repositories
         /// Get all motorizations
         /// </summary>
         /// <returns>List of motorization DTOs</returns>
-        public async Task<List<GetOneMotorizationDTO>> GetAllMotorizationsAsync()
+        public async Task<List<GetOneMotorizationDTO>> GetAllMotorizationsAsync(int paginationIndex = 0, int pageSize = 10)
         {
             // Interrogez la base de données pour obtenir toutes les motorisations
-            var motorizations = await _context.Motorizations.ToListAsync();
+            var motorizations = await _context.Motorizations.Skip(pageSize * paginationIndex).Take(pageSize).ToListAsync();
 
             // Convertissez les objets Motorization en DTOs
             var motorizationDTOs = motorizations.Select(m => new GetOneMotorizationDTO
