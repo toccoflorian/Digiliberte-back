@@ -7,6 +7,8 @@ using Models;
 using Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Utils.Constants;
+using DTO.Motorization;
+using Services;
 
 namespace Main.Controllers
 {
@@ -100,6 +102,22 @@ namespace Main.Controllers
         //{
         //    throw new NotImplementedException();
         //}
+
+        /// <summary>
+        /// Put a Vehicule into the db, use a DTO for update        
+        /// </summary>
+        /// <param name="updateOneVehicle">DTO of Motorization for update</param>
+        /// <returns>Returns a DTO of the updated motorization</returns>
+        [HttpPut]
+
+        public async Task<ActionResult<GetOneVehicleDTO?>> UpdateVehicleByIdAsync(UpdateOneVehicleDTO UpdateOneVehicleDTO)
+        {
+            try
+            {
+                return Ok(await _vehicleService.UpdateVehicleByIdAsync(UpdateOneVehicleDTO));
+            }
+            catch (Exception ex) { return BadRequest(ex.Message); }
+        }
 
         /// <summary>
         /// Get a vehicle by immat , used to know if immat exists already
