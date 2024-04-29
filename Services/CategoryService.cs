@@ -77,15 +77,14 @@ namespace Services
 
         public async Task<List<GetOneCategoryDTO>> GetAllCategorysAsync(int paginationIndex = 0, int pageSize = 10)
         {
-            try
-            {
                 var categorys = await _categoryRepository.GetAllCategorysAsync(paginationIndex, pageSize);
-                return categorys;
-            }
-            catch (Exception ex)
+            if(categorys ==null || categorys.Count==0)
             {
-                // Gérer les exceptions appropriées
-                throw new Exception("Failed to retrieve categorys", ex);
+                throw new Exception("Failed to retrieve categorys");
+            }
+           else
+            {
+                return categorys;
             }
         }
     }

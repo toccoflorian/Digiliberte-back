@@ -80,14 +80,14 @@ namespace Main.Controllers
             var brandDto = await brandService.GetOneBrandByIdAsync(Id);
 
             // Si le modèle est trouvé, retournez-le en tant que réponse HTTP 200 OK
-            if (brandDto != null)
+            try
             {
                 return Ok(brandDto);
             }
-            else
+            catch
+             (Exception ex)
             {
-                // Si le modèle n'est pas trouvé, retournez une réponse HTTP 404 Not Found
-                return NotFound();
+                return BadRequest(ex.Message);
             }
         }
 

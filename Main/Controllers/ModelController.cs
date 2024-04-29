@@ -83,18 +83,15 @@ namespace Main.Controllers
         [HttpGet]
         public async Task<ActionResult<GetOneModelDTO?>> GetOneModelByIdAsync(int Id)
         {
-            // Utilisez le service pour récupérer le modèle par son ID
-            var modelDto = await _modelServices.GetOneModelByIdAsync(Id);
-
             // Si le modèle est trouvé, retournez-le en tant que réponse HTTP 200 OK
-            if (modelDto != null)
+            try
             {
+                var modelDto = await _modelServices.GetOneModelByIdAsync(Id);
                 return Ok(modelDto);
-            }
-            else
+            }catch(Exception ex) 
             {
                 // Si le modèle n'est pas trouvé, retournez une réponse HTTP 404 Not Found
-                return NotFound();
+                return BadRequest(ex.Message);
             }
         }
 
