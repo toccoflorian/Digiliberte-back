@@ -14,5 +14,6 @@ namespace IRepositories
         public Task<GetOneMotorizationDTO?> UpdateOneMotorizationByIdAsync(GetOneMotorizationDTO updatedMotorizationDTO);
         public Task<bool> DeleteOneMotorizationByIdAsync(int motorizationId);
         public Task<GetOneMotorizationDTO?> GetOneMotorizationByIdAsync(int Id);
+        public Task<List<GetOneMotorizationDTO>> GetAllMotorizationsAsync();
     }
 }

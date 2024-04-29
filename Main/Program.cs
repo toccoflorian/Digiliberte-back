@@ -18,8 +18,8 @@ WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 //----------------SERVICES ADDING ------------------
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
-builder.Services.AddScoped<VehicleServices>();
-builder.Services.AddScoped<VehicleRepository>();
+builder.Services.AddScoped<IVehicleService, VehicleServices>();
+builder.Services.AddScoped<IVehicleRepository, VehicleRepository>();
 builder.Services.AddScoped<IModelRepository, ModelRepository>();
 builder.Services.AddScoped<IModelService, ModelServices>();
 builder.Services.AddScoped<IBrandRepository,BrandRepository>();

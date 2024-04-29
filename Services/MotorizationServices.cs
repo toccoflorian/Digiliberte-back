@@ -71,5 +71,18 @@ namespace Services
                 throw new Exception("Motorization not found");
             }
         }
+        public async Task<List<GetOneMotorizationDTO>> GetAllMotorizationsAsync()
+        {
+            try
+            {
+                var motorizations = await _motorizationRepository.GetAllMotorizationsAsync();
+                return motorizations;
+            }
+            catch (Exception ex)
+            {
+                // Gérer les exceptions appropriées
+                throw new Exception("Failed to retrieve motorizations", ex);
+            }
+        }
     }
 }

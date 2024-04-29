@@ -92,11 +92,11 @@ namespace Repositories
         /// <returns>Bool , true si modifié, false si non modifié </returns>
         public async Task<bool> DeleteOneMotorizationByIdAsync(int motorizationId)
         {
-            var motorizationToDelete = await _context.Categories.FindAsync(motorizationId);
+            var motorizationToDelete = await _context.Motorizations.FindAsync(motorizationId);
 
             if (motorizationToDelete != null)
             {
-                _context.Categories.Remove(motorizationToDelete);
+                _context.Motorizations.Remove(motorizationToDelete);
                 await _context.SaveChangesAsync();
                 return true;
             }
@@ -110,9 +110,9 @@ namespace Repositories
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public async Task<GetOneMotorizationDTO?> GetOneMotorizationByIdAsync(int Id)
+        public async Task<GetOneMotorizationDTO?> GetOneMotorizationByIdAsync(int MotorizationId)
         {
-            var getMotorization = await _context.Categories.FirstOrDefaultAsync(c => c.Id == Id);
+            var getMotorization = await _context.Motorizations.FirstOrDefaultAsync(c => c.Id == MotorizationId);
 
             if (getMotorization != null)
             {
@@ -129,6 +129,28 @@ namespace Repositories
             }
 
         }
+        // Autres méthodes existantes ...
+
+        /// <summary>
+        /// Get all motorizations
+        /// </summary>
+        /// <returns>List of motorization DTOs</returns>
+        public async Task<List<GetOneMotorizationDTO>> GetAllMotorizationsAsync()
+        {
+            // Interrogez la base de données pour obtenir toutes les motorisations
+            var motorizations = await _context.Motorizations.ToListAsync();
+
+            // Convertissez les objets Motorization en DTOs
+            var motorizationDTOs = motorizations.Select(m => new GetOneMotorizationDTO
+            {
+                Id = m.Id,
+                Name = m.Label
+            }).ToList();
+
+            return motorizationDTOs;
+        }
+
+
     }
 
 }

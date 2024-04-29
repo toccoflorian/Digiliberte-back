@@ -33,6 +33,7 @@ namespace Main.Controllers
             }
 
             }
+
         /// <summary>
         /// Put a Motorization into the db, use a DTO for update        
         /// </summary>
@@ -79,6 +80,24 @@ namespace Main.Controllers
                 return Ok(await _motorizationServices.GetOneMotorizationByIdAsync(Id));
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
+        }
+
+        /// <summary>
+        /// Get all motorizations
+        /// </summary>
+        /// <returns>List of motorization DTOs</returns>
+        [HttpGet("all")]
+        public async Task<ActionResult<List<GetOneMotorizationDTO>>> GetAllMotorizationsAsync()
+        {
+            try
+            {
+                var motorizations = await _motorizationServices.GetAllMotorizationsAsync();
+                return Ok(motorizations);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
     }
