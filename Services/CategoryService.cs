@@ -14,7 +14,7 @@ namespace Services
     public class CategoryService : ICategoryService
     {
         private readonly ICategoryRepository _categoryRepository;
-        public CategoryService(ICategoryRepository categoryRepository) 
+        public CategoryService(ICategoryRepository categoryRepository)
         {
             this._categoryRepository = categoryRepository;
         }
@@ -35,28 +35,28 @@ namespace Services
             // Vérifiez d'abord si un categorie avec le même id existe déjà dans la base de données
             var existingCategory = await _categoryRepository.UpdateOneCategoryByIdAsync(getOneCategoryDTO);
 
-            
+
             // Si aucun categorie avec le même id n'existe, vous pouvez procéder à la mise à jour
             return existingCategory;
         }
 
-        public async Task<bool> DeleteOneCategoryByIdAsync(int modelId)
-        {
+        //public async Task<bool> DeleteOneCategoryByIdAsync(int modelId)
+        //{
 
-            // Vérifiez d'abord si un categorie avec le même id existe déjà dans la base de données
-            var existingCategory = await _categoryRepository.GetOneCategoryByIdAsync(modelId);
+        //    // Vérifiez d'abord si un categorie avec le même id existe déjà dans la base de données
+        //    var existingCategory = await _categoryRepository.GetOneCategoryByIdAsync(modelId);
 
-            // Si le categorie existe, procédez à sa suppression
-            if (existingCategory != null)
-            {
-                await _categoryRepository.DeleteOneCategoryByIdAsync(modelId);
-                return true; // Indique que la suppression a été effectuée avec succès
-            }
-            else
-            {
-                throw new Exception("Id Not Found"); // Indique que le categorie n'a pas été trouvé, donc la suppression n'a pas été effectuée
-            }
-        }
+        //    // Si le categorie existe, procédez à sa suppression
+        //    if (existingCategory != null)
+        //    {
+        //        await _categoryRepository.DeleteOneCategoryByIdAsync(modelId);
+        //        return true; // Indique que la suppression a été effectuée avec succès
+        //    }
+        //    else
+        //    {
+        //        throw new Exception("Id Not Found"); // Indique que le categorie n'a pas été trouvé, donc la suppression n'a pas été effectuée
+        //    }
+        //}
 
         public async Task<GetOneCategoryDTO?> GetOneCategoryByIdAsync(int modelId)
         {
@@ -72,6 +72,20 @@ namespace Services
             {
                 // Si le categorie n'existe pas, retournez null
                 throw new Exception("Category not found");
+            }
+        }
+
+        public async Task<List<GetOneCategoryDTO>> GetAllCategorysAsync(int paginationIndex = 0, int pageSize = 10)
+        {
+            try
+            {
+                var categorys = await _categoryRepository.GetAllCategorysAsync(paginationIndex, pageSize);
+                return categorys;
+            }
+            catch (Exception ex)
+            {
+                // Gérer les exceptions appropriées
+                throw new Exception("Failed to retrieve categorys", ex);
             }
         }
     }
