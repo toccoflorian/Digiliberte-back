@@ -46,27 +46,27 @@ namespace Main.Controllers
             catch (Exception ex) { return BadRequest(ex.Message); }
         }
 
-        /// <summary>
-        /// Dlete a Brand into the db, use a DTO for delete        
-        /// 
-        /// /// </summary>
-        /// <param name="deleteOneBrand">DTO of Brand for delete</param>
-        /// <returns>Returns a DTO of the deleted Brand</returns>
-        [HttpDelete]
-        public async Task<ActionResult<GetOneBrandDTO?>> DeleteOneBrandByIdAsync(int Id)
-        {
-            var brand = await brandService.GetOneBrandByIdAsync(Id);
+        ///// <summary>
+        ///// Dlete a Brand into the db, use a DTO for delete        
+        ///// 
+        ///// /// </summary>
+        ///// <param name="deleteOneBrand">DTO of Brand for delete</param>
+        ///// <returns>Returns a DTO of the deleted Brand</returns>
+        //[HttpDelete]
+        //public async Task<ActionResult<GetOneBrandDTO?>> DeleteOneBrandByIdAsync(int Id)
+        //{
+        //    var brand = await brandService.GetOneBrandByIdAsync(Id);
 
-            if (brand != null)
-            {
-                await brandService.DeleteOneBrandByIdAsync(Id);
-                return Ok($"Modèle {Id} delete ");
-            }
-            else
-            {
-                return null; // Indique que le modèle n'a pas été trouvé, donc la suppression n'a pas été effectuée
-            }
-        }
+        //    if (brand != null)
+        //    {
+        //        await brandService.DeleteOneBrandByIdAsync(Id);
+        //        return Ok($"Modèle {Id} delete ");
+        //    }
+        //    else
+        //    {
+        //        return null; // Indique que le modèle n'a pas été trouvé, donc la suppression n'a pas été effectuée
+        //    }
+        //}
 
         /// <summary>
         /// Get a Brand By Id into the db, use a Id       
