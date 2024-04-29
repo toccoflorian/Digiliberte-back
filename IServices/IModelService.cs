@@ -11,7 +11,7 @@ namespace IServices
     {
         public Task<GetOneModelDTO?> CreateModelAsync(CreateOneModelDTO createOneModel);
         public Task<GetOneModelDTO?> UpdateModelAsync(GetOneModelDTO getOneModel);
-        public Task<bool> DeleteOneModelByIdAsync(int modelId);
+        //public Task<bool> DeleteOneModelByIdAsync(int modelId);
         public Task<GetOneModelDTO?> GetOneModelByIdAsync(int Id);
         public Task<List<GetOneModelDTO>> GetAllModelsAsync(int paginationIndex = 0, int pageSize = 10);
     }
