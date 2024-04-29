@@ -7,7 +7,6 @@ using Models;
 using Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Utils.Constants;
-using DTO.Motorization;
 using Services;
 
 namespace Main.Controllers
@@ -64,12 +63,12 @@ namespace Main.Controllers
             try
             {
                 return Ok(await this._vehicleService.GetVehicleByIdAsync(id));
-        }
+            }
             catch (Exception ex)
             {
-                return BadRequest(ex.InnerException.Message);
-    }
-}
+                return BadRequest(ex.Message);
+                }
+        }
 
         //public Task<List<GetOneVehicleDTO>> GetAllVehicles()
         //{
@@ -107,7 +106,7 @@ namespace Main.Controllers
         /// Put a Vehicule into the db, use a DTO for update        
         /// </summary>
         /// <param name="updateOneVehicle">DTO of Motorization for update</param>
-        /// <returns>Returns a DTO of the updated motorization</returns>
+        /// <returns>Returns a DTO of the updated vehicle</returns>
         [HttpPut]
 
         public async Task<ActionResult<GetOneVehicleDTO?>> UpdateVehicleByIdAsync(UpdateOneVehicleDTO UpdateOneVehicleDTO)
@@ -157,7 +156,7 @@ namespace Main.Controllers
         //    throw new NotImplementedException();
         //}
 
-        //public Task<List<GetOneVehicleDTO>> GetVehiclesByMotorization(int motorizationId)
+        //public Task<List<GetOneVehicleDTO>> GetVehiclesByMotorization(int vehicleId)
         //{
         //    throw new NotImplementedException();
         //}
@@ -172,6 +171,23 @@ namespace Main.Controllers
         //    throw new NotImplementedException();
         //}
 
+        /// <summary>
+        /// Get all vehicles
+        /// </summary>
+        /// <returns>List of vehicle DTOs</returns>
+        [HttpGet("all")]
+        public async Task<ActionResult<List<GetOneVehicleDTO>>> GetAllVehiclesAsync(int paginationIndex = 0, int pageSize = 10)
+        {
+            try
+            {
+                var vehicles = await _vehicleService.GetAllVehiclesAsync(paginationIndex, pageSize);
+                return Ok(vehicles);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
     }
 }
