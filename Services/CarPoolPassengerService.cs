@@ -1,5 +1,6 @@
 ﻿using DTO.CarPoolPassenger;
 using DTO.CarPools;
+using DTO.Pagination;
 using IRepositories;
 using IServices;
 using Models;
@@ -67,9 +68,9 @@ namespace Services
             }
         }
 
-        public Task<List<GetOneCarPoolPassengerDTO>> GetAllPassengersAsync()
+        public async Task<List<GetOneCarPoolPassengerDTO>> GetAllPassengersAsync(PageForkDTO pageKorkDTO)
         {
-            throw new NotImplementedException();
+            return await this._carPoolPassengerRepository.GetAllPassengersAsync(pageKorkDTO);
         }
 
         public Task<List<GetOneCarPoolPassengerDTO>> GetPassengerByDescriptionDateAsync(DateTime dateTime)

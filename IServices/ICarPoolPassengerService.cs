@@ -1,4 +1,5 @@
-﻿using DTO.CarPoolPassenger;
+using DTO.CarPoolPassenger;
+using DTO.Pagination;
 
 namespace IServices
 {
@@ -11,7 +12,7 @@ namespace IServices
         public Task<List<GetOneCarPoolPassengerDTO>> GetPassengerByDescriptionDateAsync(DateTime dateTime);
         public Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByUserAsync(string userID);
         public Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByCarPoolAsync(int carPoolID);
-        public Task<List<GetOneCarPoolPassengerDTO>> GetAllPassengersAsync();
+        public Task<List<GetOneCarPoolPassengerDTO>> GetAllPassengersAsync(PageForkDTO pageKorkDTO);
         public Task<GetOneCarPoolPassengerDTO> GetPassengerByIdAsync(int carPoolPassengerID);
     }
 }

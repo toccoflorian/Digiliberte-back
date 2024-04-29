@@ -1,4 +1,5 @@
 ﻿using DTO.CarPoolPassenger;
+using DTO.Pagination;
 using DTO.User;
 using IRepositories;
 using Microsoft.EntityFrameworkCore;
@@ -34,9 +35,26 @@ namespace Repositories
             return await this._context.SaveChangesAsync();
         }
 
-        public Task<List<GetOneCarPoolPassengerDTO>> GetAllPassengersAsync()
+        public async Task<List<GetOneCarPoolPassengerDTO>> GetAllPassengersAsync(PageForkDTO pageForkDTO)
         {
-            throw new NotImplementedException();
+            return await this._context.CarPoolPassengers
+                .Skip(pageForkDTO.PageIndex * pageForkDTO.PageSize)
+                .Take(pageForkDTO.PageSize)
+                .Select(carpoolPassenger => 
+                    new GetOneCarPoolPassengerDTO
+                    {
+                        Id = carpoolPassenger.Id,
+                        CarPoolId = carpoolPassenger.CarPoolID,
+                        Description = carpoolPassenger.Description,
+                        UserDTO = 
+                            new GetOneUserDTO 
+                            {
+                                Id = carpoolPassenger.UserID,
+                                Firstname = carpoolPassenger.User.Firstname,
+                                Lastname = carpoolPassenger.User.Lastname,
+                                PictureURL = carpoolPassenger.User.PictureURL
+                            }})
+                .ToListAsync();
         }
 
         public Task<List<GetOneCarPoolPassengerDTO>> GetPassengerByDescriptionDateAsync(DateTime dateTime)
