@@ -70,10 +70,20 @@ namespace Main.Controllers
             }
         }
 
-        //public Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolByDriverIdAsync(string userId)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult<List<GetOneCarPoolWithPassengersDTO>>> GetCarPoolByDriverIdAsync()
+        {
+            string? currentUser = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            try
+            {
+                return Ok(await this._carPoolService.GetCarPoolByDriverIdAsync(currentUser));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         //public Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolByEndDateAsync(DateTime date)
         //{

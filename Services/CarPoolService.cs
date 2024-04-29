@@ -12,16 +12,19 @@ namespace Services
         private readonly IRentRepository _rentRepository;
         private readonly ILocalizationRepository _localizationRepository;
         private readonly IDateRepository _dateRepository;
+        private readonly IUserRepository _userRepository;
         public CarPoolService(
             ICarPoolRepository carPoolRepository,
             IRentRepository rentRepository, 
             ILocalizationRepository localizationRepository, 
-            IDateRepository dateRepository)
+            IDateRepository dateRepository,
+            IUserRepository userRepository)
         {
             this._carPoolRepository = carPoolRepository;
             this._rentRepository = rentRepository;
             this._localizationRepository = localizationRepository;
             this._dateRepository = dateRepository;
+            this._userRepository = userRepository;
         }
 
 
@@ -55,7 +58,7 @@ namespace Services
             }
 
             // vérification de la validité des dates
-            if (createOneCarPoolDTO.StartDate.Date >= DateTime.Now)
+            if (createOneCarPoolDTO.StartDate.Date <= DateTime.Now)
             {
                 throw new Exception("La date de début de covoiturage dois être dans le futur !");
             }
@@ -110,9 +113,19 @@ namespace Services
             return await this._carPoolRepository.GetAllCarPoolAsync();
         }
 
-        public Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolByDriverIdAsync(string userId)
+        public async Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolByDriverIdAsync(string userId)
         {
-            throw new NotImplementedException();
+            if ((await _userRepository.GetUserByIdAsync(userId)) == null)
+            {
+                throw new Exception($"Could not find {userId}");
+            }
+            var carPools = await _carPoolRepository.GetCarPoolByDriverIdAsync(userId);
+            if( carPools == null || carPools.Count() == 0)
+            {
+                throw new Exception("Could not find any CarPools for this user");
+            }
+
+            return carPools;
         }
 
         public Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolByEndDateAsync(DateTime date)
