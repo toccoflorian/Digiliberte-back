@@ -3,10 +3,6 @@ using IRepositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Models;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Repositories
 {
@@ -25,17 +21,9 @@ namespace Repositories
         /// </summary>
         /// <param name="userID"></param>
         /// <returns>void</returns>
-        public async Task DeleteUserByIdAsync(string userId)
+        public async Task DeleteUserByIdAsync(AppUser appUser)                    // delete user
         {
-            AppUser? appUser = await this._userManager.FindByIdAsync(userId);
-            if (appUser == null)
-            {
-                throw new Exception("Utilisateur introuvable ! Aucune suppression n'a été éffectuée !");
-            }
-            else
-            {
                 await this._userManager.DeleteAsync(appUser);
-            }
         }
 
         /// <summary>
@@ -54,19 +42,15 @@ namespace Repositories
                 }).ToListAsync();
         }
 
-        public Task<List<GetOneUserDTO>> GetUserByCarPoolAsync(int carPoolId)
-        {
-            throw new NotImplementedException();
-        }
 
         /// <summary>
         /// Get one User with User.Id
         /// </summary>
         /// <param name="userID"></param>
         /// <returns>one user formated with GetOneUserDTO</returns>
-        public async Task<GetOneUserDTO> GetUserByIdAsync(string userId)
+        public async Task<GetOneUserDTO?> GetUserByIdAsync(string userId)                // get user by id
         {
-            GetOneUserDTO? userDTO = await this._context.Users.Select(user =>
+            return await this._context.Users.Select(user =>
                 new GetOneUserDTO
                 {
                     Id = user.Id,
@@ -74,34 +58,106 @@ namespace Repositories
                     Lastname= user.Lastname,
                     PictureURL = user.PictureURL
                 }).FirstOrDefaultAsync(user => user.Id == userId);
-            if(userDTO == null)
+        }
+
+        public async Task<List<GetOneUserDTO?>> GetUserByRoleAsync(string role)         
+        {
+            List<GetOneUserDTO?> userDTOs = new List<GetOneUserDTO?>();
+            List<IdentityUserRole<string>>? userRoles = await this._context.UserRoles.ToListAsync();
+
+            foreach (IdentityUserRole<string> userRole in userRoles)
             {
-                throw new Exception("L'utilisateur est introuvable !");
+                AppUser? appUser = await this._userManager.FindByIdAsync(userRole.UserId);
+                if (await this._userManager.IsInRoleAsync(appUser, role))
+                {
+                    userDTOs
+                        .Add(await this._context.Users
+                            .Select(user =>
+                                new GetOneUserDTO
+                                {
+                                    Id = user.Id,
+                                    Firstname = user.Firstname,
+                                    Lastname = user.Lastname,
+                                    PictureURL  = user.PictureURL
+                                })
+                            .FirstOrDefaultAsync(user => user.Id == userRole.UserId));
+                }
+            }
+            return userDTOs;
+        }
+
+
+        /// <summary>
+        /// get a list of users by name
+        /// </summary>
+        /// <param name="getUserByNameDTO"></param>
+        /// <returns>List of users formated with GetUserByNameDTO</returns>
+        public async Task<List<GetOneUserDTO>> GetUsersByNameAsync(GetUserByNameDTO getUserByNameDTO)     // get users by name
+        {
+            if (getUserByNameDTO.Firstname != null && getUserByNameDTO.Lastname == null)
+            {
+                return await this._context.Users
+                .Select(user =>
+                    new GetOneUserDTO
+                    {
+                        Id = user.Id,
+                        Firstname = user.Firstname,
+                        Lastname = user.Lastname,
+                        PictureURL = user.PictureURL
+                    })
+                .Where(user => user.Firstname == getUserByNameDTO.Firstname)
+                .ToListAsync();
+            }
+            else if (getUserByNameDTO.Firstname == null && getUserByNameDTO.Lastname != null)
+            {
+                return await this._context.Users
+                .Select(user =>
+                    new GetOneUserDTO
+                    {
+                        Id = user.Id,
+                        Firstname = user.Firstname,
+                        Lastname = user.Lastname,
+                        PictureURL = user.PictureURL
+                    })
+                .Where(user => user.Lastname == getUserByNameDTO.Lastname)
+                .ToListAsync();
             }
             else
             {
-                return userDTO;
+                return await this._context.Users
+                .Select(user =>
+                    new GetOneUserDTO
+                    {
+                        Id = user.Id,
+                        Firstname = user.Firstname,
+                        Lastname = user.Lastname,
+                        PictureURL = user.PictureURL
+                    })
+                .Where(user => 
+                    user.Firstname == getUserByNameDTO.Firstname
+                    &&
+                    user.Lastname == getUserByNameDTO.Lastname)
+                .ToListAsync();
             }
+            
         }
 
-        public Task<GetOneUserDTO> GetUserByRentAsync(int rentId)
+        public async Task UpdateUserByIdAsync(UpdateUserDTO updateOneUserDTO)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<GetOneUserDTO>> GetUserByRoleAsync(int rentId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<GetOneUserDTO>> GetUsersByNameAsync(GetUserByNameDTO getUserByNameDTO)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<GetOneUserDTO> UpdateUserByIdAsync(CreateUserDTO updateOneUserDTO)
-        {
-            throw new NotImplementedException();
+            User user = (await this._context.Users.FindAsync(updateOneUserDTO.UserId))!;   
+            if(updateOneUserDTO.Firstname != null)
+            {
+                user.Firstname = updateOneUserDTO.Firstname;
+            }
+            if(updateOneUserDTO.Lastname != null)
+            {
+                user.Lastname = updateOneUserDTO.Lastname;
+            }
+            if(updateOneUserDTO.PictureURL != null)
+            {
+                user.PictureURL = updateOneUserDTO.PictureURL;
+            }
+            await this._context.SaveChangesAsync();
         }
     }
 }

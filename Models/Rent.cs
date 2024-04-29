@@ -18,6 +18,7 @@ namespace Models
         public DatesClass ReturnDate { get; set; }
         public string UserID { get; set; }
         public User User { get; set; }
+        public int VehicleId { get; set; }
         public Vehicle Vehicle {  get; set; }
         public List<CarPool>? CarPools {  get; set; }
 

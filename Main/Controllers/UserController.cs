@@ -1,9 +1,10 @@
 ﻿using DTO.User;
-using IRepositories;
 using IServices;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Models;
+using System.Security.Claims;
+using Utils.Constants;
+
 
 namespace Main.Controllers
 {
@@ -23,7 +24,8 @@ namespace Main.Controllers
         /// <param name="userID"></param>
         /// <returns>void</returns>
         [HttpDelete]
-        public async Task<ActionResult> DeleteUserById(string userID)
+        //[Authorize]
+        public async Task<ActionResult> DeleteUserById(string userID)           // delete user
         {
             try
             {
@@ -41,6 +43,7 @@ namespace Main.Controllers
         /// </summary>
         /// <returns>List of users formated with GetOneUserDTO</returns>
         [HttpGet]
+        //[Authorize(Roles = ROLE.ADMIN)]
         public async Task<ActionResult<List<GetOneUserDTO>>> GetAllUsers()         // get all users
         {
             try
@@ -53,10 +56,24 @@ namespace Main.Controllers
             }
         }
 
-        //public Task<List<GetOneUserDTO>> GetUserByCarPool(int carPoolID)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        /// <summary>
+        /// Get the user in origin of the carpool
+        /// </summary>
+        /// <param name="carPoolID"></param>
+        /// <returns>one user formated with GetOneUserDTO</returns>
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult<List<GetOneUserDTO>>> GetUserByCarPool(int carPoolID)
+        {
+            try
+            {   
+                return Ok(await this._userService.GetUserByCarPoolAsync(carPoolID));
+            }
+            catch (Exception ex)    
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         /// <summary>
         /// Get one User with User.Id
@@ -64,29 +81,90 @@ namespace Main.Controllers
         /// <param name="userID"></param>
         /// <returns>one user formated with GetOneUserDTO</returns>
         [HttpGet]
-        public async Task<ActionResult<GetOneUserDTO>> GetUserById(string userID)
+        //[Authorize]
+        public async Task<ActionResult<GetOneUserDTO>> GetUserById(string userID)           // get user by Id
         {
-            return Ok(await this._userService.GetUserByIdAsync(userID));
+            try
+            {
+                return Ok(await this._userService.GetUserByIdAsync(userID));
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.InnerException.Message);
+            }
         }
 
-        //public Task<GetOneUserDTO> GetUserByRent(int rentID)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        /// <summary>
+        /// Get the user of one rent
+        /// </summary>
+        /// <param name="rentId"></param>
+        /// <returns>one user formated with GetOneUserDTO</returns>
+        [HttpGet]
+        //[Authorize]
+        public async Task<ActionResult<GetOneUserDTO>> GetUserByRent(int rentId)
+        {
+            try
+            {
+                return Ok(await this._userService.GetUserByRentAsync(rentId));
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
-        //public Task<List<GetOneUserDTO>> GetUserByRole(int rentID)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        /// <summary>
+        /// Get list of user in the role
+        /// </summary>
+        /// <param name="role"></param>
+        /// <returns>List of user formated with GetOneUserDTO</returns>
+        [HttpGet]
+        //[Authorize(Roles = ROLE.ADMIN)]
+        public async Task<ActionResult<List<GetOneUserDTO>>> GetUserByRole(string role)         // get user by role
+        {
+            try
+            {
+                return Ok(await this._userService.GetUserByRoleAsync(role));
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            }
 
-        //public Task<List<GetOneUserDTO>> GetUsersByName(GetUserByNameDTO getUserByNameDTO)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        /// <summary>
+        /// get a list of users by name
+        /// </summary>
+        /// <param name="getUserByNameDTO"></param>
+        /// <returns>List of users formated with GetUserByNameDTO</returns>
+        [HttpGet]
+        //[Authorize(Roles = ROLE.ADMIN)]
+        public async Task<ActionResult<List<GetOneUserDTO>>> GetUsersByName(GetUserByNameDTO getUserByNameDTO)     // get users by name
+        {
+            try
+            {
+                return await this._userService.GetUsersByNameAsync(getUserByNameDTO);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
-        //public Task<GetOneUserDTO> UpdateUserById(CreateUserDTO updateOneUserDTO)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        [HttpPut]
+        [Authorize]
+        public async Task<ActionResult<GetOneUserDTO>> UpdateUserById(UpdateUserDTO updateOneUserDTO)
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            updateOneUserDTO.UserId = userId;
+            try
+            {
+                return await this._userService.UpdateUserByIdAsync(updateOneUserDTO);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

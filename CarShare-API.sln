@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DTO", "DTO\DTO.csproj", "{2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Projects", "Projects", "{15DCA06B-2F3B-4A04-A4FB-5E1C427FAFDD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "Utils\Utils.csproj", "{0D7D96CB-3377-4789-A013-C593801B1910}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utils", "Utils\Utils.csproj", "{0D7D96CB-3377-4789-A013-C593801B1910}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositoriesTests", "RepositoriesTests\RepositoriesTests.csproj", "{DADCB752-4997-4A53-9674-9EA63DDA9C20}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +61,10 @@ Global
 		{0D7D96CB-3377-4789-A013-C593801B1910}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D7D96CB-3377-4789-A013-C593801B1910}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D7D96CB-3377-4789-A013-C593801B1910}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DADCB752-4997-4A53-9674-9EA63DDA9C20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DADCB752-4997-4A53-9674-9EA63DDA9C20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DADCB752-4997-4A53-9674-9EA63DDA9C20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DADCB752-4997-4A53-9674-9EA63DDA9C20}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
