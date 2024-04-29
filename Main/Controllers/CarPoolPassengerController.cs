@@ -38,10 +38,24 @@ namespace Main.Controllers
             }
         }
 
-        //public Task DeleteCarPoolPassengerById(int carPoolPassengerId)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        [HttpDelete]
+        //[Authorize]
+        public async Task<ActionResult> DeleteCarPoolPassengerById(DeleteCarpoolPassengerDTO deleteCarPoolPassengerDTO)
+        {
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string? userRole = User.FindFirstValue(ClaimTypes.Role);
+            deleteCarPoolPassengerDTO.ConnectedUserId = userId;
+            deleteCarPoolPassengerDTO.ConnectedUserRole = userRole;
+            try
+            {
+                await this._carPoolPassengerService.DeleteCarPoolPassengerByIdAsync(deleteCarPoolPassengerDTO);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         //public Task<List<GetOneCarPoolPassengerDTO>> GetAllPassengers()
         //{
@@ -71,11 +85,11 @@ namespace Main.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByCarPool(int carPoolID)
-        {
-            throw new NotImplementedException();
-        }
+        //[HttpGet]
+        //public async Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByCarPool(int carPoolID)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         //public Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByUser(string userID)
         //{

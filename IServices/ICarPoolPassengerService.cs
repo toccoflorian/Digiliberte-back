@@ -1,16 +1,11 @@
 ﻿using DTO.CarPoolPassenger;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IServices
 {
     public interface ICarPoolPassengerService
     {
         public Task<GetOneCarPoolPassengerDTO> CreateCarPoolPassengerAsync(CreateCarPoolPassengerDTO createCarPoolPassengerDTO);
-        public Task DeleteCarPoolPassengerByIdAsync(int carPoolPassengerId);
+        public Task DeleteCarPoolPassengerByIdAsync(DeleteCarpoolPassengerDTO deleteCarpoolPassengerDTO);
         public Task<GetOneCarPoolPassengerDTO> UpdateCarPoolPassengerByIdAsync(int carPoolPassengerId);
         public Task<List<GetOneCarPoolPassengerDTO>> GetPassengerByDescriptionLocalizationAsync(int localizationID);
         public Task<List<GetOneCarPoolPassengerDTO>> GetPassengerByDescriptionDateAsync(DateTime dateTime);

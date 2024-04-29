@@ -28,9 +28,10 @@ namespace Repositories
             return entityEntry.Entity.Id;
         }
 
-        public Task DeleteCarPoolPassengerByIdAsync(int carPoolPassengerId)
+        public async Task<int> DeleteCarPoolPassengerByIdAsync(int carpoolPassengerId)
         {
-            throw new NotImplementedException();
+            this._context.CarPoolPassengers.Remove((await this._context.CarPoolPassengers.FindAsync(carpoolPassengerId))!);
+            return await this._context.SaveChangesAsync();
         }
 
         public Task<List<GetOneCarPoolPassengerDTO>> GetAllPassengersAsync()

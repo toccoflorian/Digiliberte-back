@@ -11,7 +11,7 @@ namespace IRepositories
     public interface ICarPoolPassengerRepository
     {
         public Task<int> CreateCarPoolPassengerAsync(CreateCarPoolPassengerDTO createCarPoolPassengerDTO);
-        public Task DeleteCarPoolPassengerByIdAsync(int carPoolPassengerId);
+        public Task<int> DeleteCarPoolPassengerByIdAsync(int carpoolPassengerId);
         public Task<GetOneCarPoolPassengerDTO> UpdateCarPoolPassengerByIdAsync(int carPoolPassengerId);
         public Task<List<GetOneCarPoolPassengerDTO>> GetPassengerByDescriptionLocalizationAsync(int localizationID);
         public Task<List<GetOneCarPoolPassengerDTO>> GetPassengerByDescriptionDateAsync(DateTime dateTime);
