@@ -23,10 +23,19 @@ namespace Main.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<GetOneCarPoolDTO>> CreateCarpool(CreateOneCarPoolDTO createOneCarPoolDTO)
+        public async Task<ActionResult<GetOneCarPoolDTO>> CreateCarpool(CreateCarpoolRequestDTO createRequestCarPoolDTO)
         {
             string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            createOneCarPoolDTO.UserId = userId;
+            CreateOneCarPoolDTO createOneCarPoolDTO = new CreateOneCarPoolDTO
+            {
+                CarpoolName = createRequestCarPoolDTO.CarpoolName,
+                UserId = userId,
+                StartDate = new GetOneDateDTO { Date = createRequestCarPoolDTO.StartDate },
+                EndDate = new GetOneDateDTO { Date = createRequestCarPoolDTO.EndDate },
+                StartLocalization = createRequestCarPoolDTO.StartLocalization,
+                EndLocalization = createRequestCarPoolDTO.EndLocalization,
+                RentId = createRequestCarPoolDTO.RentId,
+            };
             try
             {
                 return Ok(await this._carPoolService.CreateCarpoolAsync(createOneCarPoolDTO));
