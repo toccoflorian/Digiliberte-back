@@ -1,7 +1,8 @@
 ﻿using DTO.Dates;
 using DTO.Models;
+
 using IServices;
-using IServices;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repositories;
@@ -94,6 +95,24 @@ namespace Main.Controllers
             {
                 // Si le modèle n'est pas trouvé, retournez une réponse HTTP 404 Not Found
                 return NotFound();
+            }
+        }
+
+        /// <summary>
+        /// Get all models
+        /// </summary>
+        /// <returns>List of model DTOs</returns>
+        [HttpGet("all")]
+        public async Task<ActionResult<List<GetOneModelDTO>>> GetAllModelsAsync()
+        {
+            try
+            {
+                var models = await _modelServices.GetAllModelsAsync();
+                return Ok(models);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }
