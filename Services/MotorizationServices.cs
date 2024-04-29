@@ -71,11 +71,11 @@ namespace Services
                 throw new Exception("Motorization not found");
             }
         }
-        public async Task<List<GetOneMotorizationDTO>> GetAllMotorizationsAsync()
+        public async Task<List<GetOneMotorizationDTO>> GetAllMotorizationsAsync(int paginationIndex = 0, int pageSize = 10)
         {
             try
             {
-                var motorizations = await _motorizationRepository.GetAllMotorizationsAsync();
+                var motorizations = await _motorizationRepository.GetAllMotorizationsAsync(paginationIndex, pageSize);
                 return motorizations;
             }
             catch (Exception ex)

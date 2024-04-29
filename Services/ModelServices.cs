@@ -80,11 +80,11 @@ namespace Services
             }
         }
 
-        public async Task<List<GetOneModelDTO>> GetAllModelsAsync()
+        public async Task<List<GetOneModelDTO>> GetAllModelsAsync(int paginationIndex = 0, int pageSize = 10)
         {
             try
             {
-                var models = await ModelRepository.GetAllModelsAsync();
+                var models = await ModelRepository.GetAllModelsAsync(paginationIndex,pageSize);
                 return models;
             }
             catch (Exception ex)
