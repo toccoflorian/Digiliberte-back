@@ -47,6 +47,7 @@ namespace Repositories
                 SeatsNumber = newCategory.SeatsNumber
             };
         }
+
         /// <summary>
         /// Update une categorie avec DTO en entree qui cherche sur l'id 
         /// </summary>
