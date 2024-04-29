@@ -76,22 +76,18 @@ namespace Services
             else
             {
                 // Si le modèle n'existe pas, retournez null
-                return null;
+                throw new Exception($"brand not found with id :{brandId}");
             }
         }
 
         public async Task<List<GetOneBrandDTO>> GetAllBrandsAsync(int paginationIndex = 0, int pageSize = 10)
         {
-            try
-            {
                 var brands = await brandRepository.GetAllBrandsAsync(paginationIndex, pageSize);
-                return brands;
-            }
-            catch (Exception ex)
+            if(brands == null || brands.Count == 0)
             {
-                // Gérer les exceptions appropriées
-                throw new Exception("Failed to retrieve brands", ex);
+                throw new Exception("Brand not found");
             }
+                return brands;   
         }
     }
 }

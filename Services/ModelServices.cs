@@ -82,15 +82,15 @@ namespace Services
 
         public async Task<List<GetOneModelDTO>> GetAllModelsAsync(int paginationIndex = 0, int pageSize = 10)
         {
-            try
-            {
                 var models = await ModelRepository.GetAllModelsAsync(paginationIndex,pageSize);
-                return models;
-            }
-            catch (Exception ex)
+            if(models == null || models.Count == 0)
             {
                 // Gérer les exceptions appropriées
-                throw new Exception("Failed to retrieve models", ex);
+                throw new Exception("Failed to retrieve models");
+            }
+            else
+            {
+                return models;
             }
         }
 
