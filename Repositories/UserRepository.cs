@@ -21,17 +21,9 @@ namespace Repositories
         /// </summary>
         /// <param name="userID"></param>
         /// <returns>void</returns>
-        public async Task DeleteUserByIdAsync(string userId)                    // delete user
+        public async Task DeleteUserByIdAsync(AppUser appUser)                    // delete user
         {
-            AppUser? appUser = await this._userManager.FindByIdAsync(userId);
-            if (appUser == null)
-            {
-                throw new Exception("Utilisateur introuvable ! Aucune suppression n'a été éffectuée !");
-            }
-            else
-            {
                 await this._userManager.DeleteAsync(appUser);
-            }
         }
 
         /// <summary>
@@ -150,9 +142,22 @@ namespace Repositories
             
         }
 
-        public Task<GetOneUserDTO> UpdateUserByIdAsync(CreateUserDTO updateOneUserDTO)
+        public async Task UpdateUserByIdAsync(UpdateUserDTO updateOneUserDTO)
         {
-            throw new NotImplementedException();
+            User user = (await this._context.Users.FindAsync(updateOneUserDTO.UserId))!;   
+            if(updateOneUserDTO.Firstname != null)
+            {
+                user.Firstname = updateOneUserDTO.Firstname;
+            }
+            if(updateOneUserDTO.Lastname != null)
+            {
+                user.Lastname = updateOneUserDTO.Lastname;
+            }
+            if(updateOneUserDTO.PictureURL != null)
+            {
+                user.PictureURL = updateOneUserDTO.PictureURL;
+            }
+            await this._context.SaveChangesAsync();
         }
     }
 }

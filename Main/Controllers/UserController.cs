@@ -2,6 +2,7 @@
 using IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Utils.Constants;
 
 
@@ -134,25 +135,41 @@ namespace Main.Controllers
         /// <summary>
         /// get a list of users by name
         /// </summary>
-        /// <param name="getUserByNameDTO"></param>
+        /// <param name="firstname"></param>
+        /// <param name="lastname"></param>
         /// <returns>List of users formated with GetUserByNameDTO</returns>
-        [HttpPost]
+        [HttpGet]
         //[Authorize(Roles = ROLE.ADMIN)]
-        public async Task<ActionResult<List<GetOneUserDTO>>> GetUsersByName(GetUserByNameDTO getUserByNameDTO)     // get users by name
+        public async Task<ActionResult<List<GetOneUserDTO>>> GetUsersByName(string? firstname, string? lastname)     // get users by name
         {
             try
             {
-                return await this._userService.GetUsersByNameAsync(getUserByNameDTO);
+                return await this._userService.GetUsersByNameAsync(new GetUserByNameDTO
+                {
+                    Firstname = firstname,
+                    Lastname = lastname
+                });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
-        //public Task<GetOneUserDTO> UpdateUserById(CreateUserDTO updateOneUserDTO)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        [HttpPut]
+        [Authorize]
+        public async Task<ActionResult<GetOneUserDTO>> UpdateUserById(UpdateUserDTO updateOneUserDTO)
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            updateOneUserDTO.UserId = userId;
+            try
+            {
+                return await this._userService.UpdateUserByIdAsync(updateOneUserDTO);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
