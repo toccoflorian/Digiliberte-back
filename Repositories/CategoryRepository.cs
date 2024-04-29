@@ -129,5 +129,23 @@ namespace Repositories
             }
 
         }
+        /// <summary>
+        /// Get all categorys
+        /// </summary>
+        /// <returns>List of category DTOs</returns>
+        public async Task<List<GetOneCategoryDTO>> GetAllCategorysAsync(int paginationIndex = 0, int pageSize = 10)
+        {
+            // Interrogez la base de données pour obtenir toutes les motorisations
+            var categorys = await _context.Categories.Skip(pageSize * paginationIndex).Take(pageSize).ToListAsync();
+
+            // Convertissez les objets Category en DTOs
+            var categoryDTOs = categorys.Select(m => new GetOneCategoryDTO
+            {
+                ID = m.Id,
+                Name = m.Label
+            }).ToList();
+
+            return categoryDTOs;
+        }
     }
 }
