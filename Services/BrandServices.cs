@@ -41,23 +41,23 @@ namespace Services
             return existingBrand;
         }
 
-        public async Task<bool> DeleteOneBrandByIdAsync(int brandId)
-        {
+        //public async Task<bool> DeleteOneBrandByIdAsync(int brandId)
+        //{
 
-            // Vérifiez d'abord si un modèle avec le même id existe déjà dans la base de données
-            var existingBrand = await brandRepository.GetOneBrandByIdAsync(brandId);
+        //    // Vérifiez d'abord si un modèle avec le même id existe déjà dans la base de données
+        //    var existingBrand = await brandRepository.GetOneBrandByIdAsync(brandId);
 
-            // Si le brand existe, procédez à sa suppression
-            if (existingBrand != null)
-            {
-                await brandRepository.DeleteOneBrandByIdAsync(brandId);
-                return true; // Indique que la suppression a été effectuée avec succès
-            }
-            else
-            {
-                return false; // Indique que le modèle n'a pas été trouvé, donc la suppression n'a pas été effectuée
-            }
-        }
+        //    // Si le brand existe, procédez à sa suppression
+        //    if (existingBrand != null)
+        //    {
+        //        await brandRepository.DeleteOneBrandByIdAsync(brandId);
+        //        return true; // Indique que la suppression a été effectuée avec succès
+        //    }
+        //    else
+        //    {
+        //        return false; // Indique que le modèle n'a pas été trouvé, donc la suppression n'a pas été effectuée
+        //    }
+        //}
 
         public async Task<GetOneBrandDTO?> GetOneBrandByIdAsync(int brandId)
         {
@@ -76,22 +76,18 @@ namespace Services
             else
             {
                 // Si le modèle n'existe pas, retournez null
-                return null;
+                throw new Exception($"brand not found with id :{brandId}");
             }
         }
 
         public async Task<List<GetOneBrandDTO>> GetAllBrandsAsync(int paginationIndex = 0, int pageSize = 10)
         {
-            try
-            {
                 var brands = await brandRepository.GetAllBrandsAsync(paginationIndex, pageSize);
-                return brands;
-            }
-            catch (Exception ex)
+            if(brands == null || brands.Count == 0)
             {
-                // Gérer les exceptions appropriées
-                throw new Exception("Failed to retrieve brands", ex);
+                throw new Exception("Brand not found");
             }
+                return brands;   
         }
     }
 }

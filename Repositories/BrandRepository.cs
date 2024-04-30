@@ -71,22 +71,22 @@ namespace Repositories
             };
         }
 
-        /// <summary>
-        /// Delete a brand by Id , used Id to know if  exists
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public async Task DeleteOneBrandByIdAsync(int brandId)
-        {
-            var brandToDelete = await Context.Brands.FindAsync(brandId);
+        ///// <summary>
+        ///// Delete a brand by Id , used Id to know if  exists
+        ///// </summary>
+        ///// <param name="Id"></param>
+        ///// <returns></returns>
+        //public async Task DeleteOneBrandByIdAsync(int brandId)
+        //{
+        //    var brandToDelete = await Context.Brands.FindAsync(brandId);
 
-            if (brandToDelete != null)
-            {
-                Context.Brands.Remove(brandToDelete);
-                await Context.SaveChangesAsync();
-            }
-            // Si le brand n'existe pas, il n'y a rien à supprimer
-        }
+        //    if (brandToDelete != null)
+        //    {
+        //        Context.Brands.Remove(brandToDelete);
+        //        await Context.SaveChangesAsync();
+        //    }
+        //    // Si le brand n'existe pas, il n'y a rien à supprimer
+        //}
 
         /// <summary>
         /// Get a brand by Id , used Id to know if  exists already

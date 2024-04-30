@@ -2,6 +2,8 @@
 using IRepositories;
 using IServices;
 using DTO.Dates;
+using Microsoft.EntityFrameworkCore;
+using Repositories;
 
 namespace Services
 {
@@ -63,9 +65,18 @@ namespace Services
             throw new NotImplementedException();
         }
 
-        public Task<List<GetOneVehicleDTO>> GetAllVehiclesAsync()
+        public async Task<List<GetOneVehicleDTO>> GetAllVehiclesAsync(int paginationIndex = 0, int pageSize = 10)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var vehicles = await _vehicleRepository.GetAllVehiclesAsync(paginationIndex, pageSize);
+                return vehicles;
+            }
+            catch (Exception ex)
+            {
+                // Gérer les exceptions appropriées
+                throw new Exception("Failed to retrieve vehicles", ex);
+            }
         }
 
         public Task<List<GetOneVehicleDTO>> GetReservedVehicleByDatesAsync(DateForkDTO dateForkDTO)
@@ -123,19 +134,38 @@ namespace Services
             throw new NotImplementedException();
         }
 
-        public Task<List<GetOneVehicleDTO>> GetVehiclesByStateAsync(int stateId)
+        public async Task<List<GetOneVehicleDTO>> GetVehiclesByStateAsync(int stateId, int paginationIndex = 0, int pageSize = 10)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var vehicles = await _vehicleRepository.GetVehiclesByStateAsync(stateId, paginationIndex, pageSize);
+                return vehicles;
+            }
+            catch (Exception ex)
+            {
+                // Gérer les exceptions appropriées
+                throw new Exception("Failed to retrieve vehicles", ex);
+            }
         }
+    
 
         public Task<List<GetOneVehicleDTO>> GetVehiclesByUserIdAsync(string userID)
         {
             throw new NotImplementedException();
         }
 
-        public Task<UpdateOneVehicleDTO> UpdateVehicleByIdAsync(UpdateOneVehicleDTO updateOneVehicleDTO)
+        public async Task<GetOneVehicleDTO> UpdateVehicleByIdAsync(UpdateOneVehicleDTO updateOneVehicleDTO)
         {
-            throw new NotImplementedException();
+            // Vérifiez d'abord si un véhicule avec le même ID existe déjà dans la base de données
+            GetOneVehicleDTO? existingVehicle = await _vehicleRepository.GetVehicleByIdAsync(updateOneVehicleDTO.VehicleId);
+
+            // Si aucun véhicule avec le même ID n'existe, retournez null ou lancez une exception selon vos besoins
+            if (existingVehicle == null)
+            {
+                throw new Exception("Vehicle with provided ID not found");
+            }
+            await this._vehicleRepository.UpdateVehicleByIdAsync(updateOneVehicleDTO);
+            return (await this._vehicleRepository.GetVehicleByIdAsync(updateOneVehicleDTO.VehicleId))!;
         }
     }
 }

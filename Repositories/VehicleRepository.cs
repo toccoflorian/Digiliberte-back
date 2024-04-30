@@ -1,5 +1,6 @@
 ﻿using DTO.Dates;
 using DTO.Localization;
+using DTO.Motorization;
 using DTO.Vehicles;
 using IRepositories;
 using Microsoft.EntityFrameworkCore;
@@ -87,9 +88,18 @@ namespace Repositories
         }
 
 
-        public Task<UpdateOneVehicleDTO> UpdateVehicleByIdAsync(UpdateOneVehicleDTO updateOneVehicleDTO)
+        public async Task UpdateVehicleByIdAsync(UpdateOneVehicleDTO updateOneVehicleDTO)
         {
-            throw new NotImplementedException();
+            Vehicle vehicle= (await this._context.Vehicles.FindAsync(updateOneVehicleDTO.VehicleId))!;
+            if(updateOneVehicleDTO.StateId != null)
+            {
+                vehicle.StateID = (int) updateOneVehicleDTO.StateId;
+            }
+            if (updateOneVehicleDTO.PictureURL != null)
+            {
+                vehicle.PictureURL = (string)updateOneVehicleDTO.PictureURL;
+            }
+            await this._context.SaveChangesAsync();
         }
 
         /// <summary>
@@ -147,10 +157,55 @@ namespace Repositories
             throw new NotImplementedException();
         }
 
-        public Task<List<GetOneVehicleDTO>> GetVehiclesByStateAsync(int stateId)
+
+       public async Task<List<GetOneVehicleDTO>> GetVehiclesByStateAsync(int stateId, int paginationIndex = 0, int pageSize = 10)
         {
-            throw new NotImplementedException();
+            try
+            {
+                // Interrogez la base de données pour obtenir les véhicules avec l'ID de l'état spécifié
+                var vehicles = await _context.Vehicles
+                    .Where(v => v.StateID == stateId)
+                    .Include(v => v.Brand)
+                    .Include(v => v.Model)
+                    .Include(v => v.Category)
+                    .Include(v => v.Motorization)
+                    .Include(v => v.State)
+                    .Skip(pageSize * paginationIndex)
+                    .Take(pageSize)
+                    .ToListAsync();
+
+                // Convertissez les objets Vehicle en DTOs
+                var vehiclesDTOs = vehicles.Select(v => new GetOneVehicleDTO
+                {
+                    VehicleId = v.Id,
+                    BrandName = v.Brand?.Label,
+                    ModelName = v.Model?.Label,
+                    CategoryName = v.Category?.Label,
+                    MotorizationName = v.Motorization?.Label,
+                    StateName = v.State?.Label,
+                    PictureUrl = v.PictureURL,
+                    Localization = new LocalizationDTO
+                    {
+                        Latitude = 1.5484584,        // données en dur !!!
+                        Logitude = 2.4949445
+                    },
+                    SeatsNumber = v.Category.SeatsNumber,
+                    Color = v.ColorId.ToString(),
+                    CO2 = v.Model.CO2,
+                    ModelYear = v.Model.Year,
+                    Immatriculation = v.Immatriculation
+
+                }).ToList();
+
+                return vehiclesDTOs;
+            }
+            catch (Exception ex)
+            {
+                // Gérer les exceptions appropriées
+                throw new Exception("Failed to retrieve vehicles by state", ex);
+            }
         }
+
 
         public Task<List<GetOneVehicleDTO>> GetVehiclesByMotorizationAsync(int motorizationId)
         {
@@ -192,9 +247,51 @@ namespace Repositories
             throw new NotImplementedException();
         }
 
-        public Task<List<GetOneVehicleDTO>> GetAllVehiclesAsync()
+        public async Task<List<GetOneVehicleDTO>> GetAllVehiclesAsync(int paginationIndex = 0, int pageSize = 10)
         {
-            throw new NotImplementedException();
+            try
+            {
+                // Interrogez la base de données pour obtenir toutes les vehicles
+                List<Vehicle> vehicles = await _context.Vehicles
+                    .Include(v => v.Brand)
+                    .Include(v => v.Model)
+                    .Include(v => v.Category)
+                    .Include(v => v.Motorization)
+                    .Include(v => v.State)
+                    .Skip(pageSize * paginationIndex)
+                    .Take(pageSize)
+                    .ToListAsync();
+
+                // Convertissez les objets Vehicle en DTOs
+                List<GetOneVehicleDTO> vehiclesDTOs = vehicles.Select(v => new GetOneVehicleDTO
+                {
+                    VehicleId = v.Id,
+                    BrandName = v.Brand.Label,
+                    ModelName = v.Model.Label,
+                    CategoryName = v.Category.Label,
+                    MotorizationName = v.Motorization.Label,
+                    StateName = v.State.Label,
+                    PictureUrl = v.PictureURL,
+                    Localization = new LocalizationDTO
+                    {
+                        Latitude = 1.5484584,        // données en dur !!!
+                        Logitude = 2.4949445
+                    },
+                    SeatsNumber = v.Category.SeatsNumber,
+                    Color = v.ColorId.ToString(),
+                    CO2 = v.Model.CO2,
+                    ModelYear = v.Model.Year,
+                    Immatriculation = v.Immatriculation
+
+                }).ToList();
+
+                return vehiclesDTOs;
+            }
+            catch (Exception ex)
+            {
+                // Gérer les exceptions appropriées
+                throw new Exception("Failed to retrieve vehicles", ex);
+            }
         }
 
         public Task<GetOneVehicleWithRentDTO> GetVehicleByIdWithRentAsync(int vehicleId)

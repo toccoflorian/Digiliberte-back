@@ -1,6 +1,7 @@
 ﻿using DTO.Dates;
 using IServices;
 using Microsoft.AspNetCore.Mvc;
+using Services;
 
 namespace Main.Controllers
 {
@@ -48,21 +49,21 @@ namespace Main.Controllers
             catch (Exception ex) { return BadRequest(ex.Message); }
         }
 
-        /// <summary>
-        /// Dlete a Category into the db, use a DTO for delete        
-        /// 
-        /// /// </summary>
-        /// <param name="deleteOneCategory">DTO of Category for delete</param>
-        /// <returns>Returns a DTO of the deleted category</returns>
-        [HttpDelete]
-        public async Task<ActionResult<GetOneCategoryDTO?>> DeleteOneCategoryByIdAsync(int Id)
-        {
-            try
-            {
-                return Ok(await _categoryServices.DeleteOneCategoryByIdAsync(Id));
-            }
-            catch(Exception ex) { return BadRequest(ex.Message) ; }
-        }
+        ///// <summary>
+        ///// Dlete a Category into the db, use a DTO for delete        
+        ///// 
+        ///// /// </summary>
+        ///// <param name="deleteOneCategory">DTO of Category for delete</param>
+        ///// <returns>Returns a DTO of the deleted category</returns>
+        //[HttpDelete]
+        //public async Task<ActionResult<GetOneCategoryDTO?>> DeleteOneCategoryByIdAsync(int Id)
+        //{
+        //    try
+        //    {
+        //        return Ok(await _categoryServices.DeleteOneCategoryByIdAsync(Id));
+        //    }
+        //    catch(Exception ex) { return BadRequest(ex.Message) ; }
+        //}
 
         /// <summary>
         /// Get a Category By Id into the db, use a Id       
@@ -78,6 +79,24 @@ namespace Main.Controllers
                 return Ok(await _categoryServices.GetOneCategoryByIdAsync(Id));
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
+        }
+
+        /// <summary>
+        /// Get all categorys
+        /// </summary>
+        /// <returns>List of category DTOs</returns>
+        [HttpGet("all")]
+        public async Task<ActionResult<List<GetOneCategoryDTO>>> GetAllCategorysAsync(int paginationIndex = 0, int pageSize = 10)
+        {
+            try
+            {
+                var categorys = await _categoryServices.GetAllCategorysAsync(paginationIndex, pageSize);
+                return Ok(categorys);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

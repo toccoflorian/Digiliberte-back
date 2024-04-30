@@ -84,25 +84,25 @@ namespace Repositories
             };
         }
 
-        /// <summary>
-        /// Delete a category by Id , used Id to know if  exists
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns>Bool , true si modifié, false si non modifié </returns>
-        public async Task<bool> DeleteOneCategoryByIdAsync(int categoryId)
-        {
-            var categoryToDelete = await _context.Categories.FindAsync(categoryId);
+        ///// <summary>
+        ///// Delete a category by Id , used Id to know if  exists
+        ///// </summary>
+        ///// <param name="Id"></param>
+        ///// <returns>Bool , true si modifié, false si non modifié </returns>
+        //public async Task<bool> DeleteOneCategoryByIdAsync(int categoryId)
+        //{
+        //    var categoryToDelete = await _context.Categories.FindAsync(categoryId);
 
-            if (categoryToDelete != null)
-            {
-                _context.Categories.Remove(categoryToDelete);
-                await _context.SaveChangesAsync();
-                return true;
-            }
+        //    if (categoryToDelete != null)
+        //    {
+        //        _context.Categories.Remove(categoryToDelete);
+        //        await _context.SaveChangesAsync();
+        //        return true;
+        //    }
 
-            return false;
-            // Si le modèle n'existe pas, il n'y a rien à supprimer
-        }
+        //    return false;
+        //    // Si le modèle n'existe pas, il n'y a rien à supprimer
+        //}
 
         /// <summary>
         /// Get a category by Id , used Id to know if  exists already
@@ -128,6 +128,24 @@ namespace Repositories
                 return null;
             }
 
+        }
+        /// <summary>
+        /// Get all categorys
+        /// </summary>
+        /// <returns>List of category DTOs</returns>
+        public async Task<List<GetOneCategoryDTO>> GetAllCategorysAsync(int paginationIndex = 0, int pageSize = 10)
+        {
+            // Interrogez la base de données pour obtenir toutes les motorisations
+            var categorys = await _context.Categories.Skip(pageSize * paginationIndex).Take(pageSize).ToListAsync();
+
+            // Convertissez les objets Category en DTOs
+            var categoryDTOs = categorys.Select(m => new GetOneCategoryDTO
+            {
+                ID = m.Id,
+                Name = m.Label
+            }).ToList();
+
+            return categoryDTOs;
         }
     }
 }

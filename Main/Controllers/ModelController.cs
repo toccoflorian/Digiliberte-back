@@ -53,27 +53,27 @@ namespace Main.Controllers
             }catch (Exception ex) { return BadRequest(ex.Message); }
         }
 
-        /// <summary>
-        /// Dlete a Model into the db, use a DTO for delete        
-        /// 
-        /// /// </summary>
-        /// <param name="deleteOneModel">DTO of Model for delete</param>
-        /// <returns>Returns a DTO of the deleted Vehicle</returns>
-        [HttpDelete]
-        public async Task<ActionResult<GetOneModelDTO?>> DeleteOneModelByIdAsync(int Id)
-        {
-            var model = await _modelServices.GetOneModelByIdAsync(Id);
+        ///// <summary>
+        ///// Dlete a Model into the db, use a DTO for delete        
+        ///// 
+        ///// /// </summary>
+        ///// <param name="deleteOneModel">DTO of Model for delete</param>
+        ///// <returns>Returns a DTO of the deleted Vehicle</returns>
+        //[HttpDelete]
+        //public async Task<ActionResult<GetOneModelDTO?>> DeleteOneModelByIdAsync(int Id)
+        //{
+        //    var model = await _modelServices.GetOneModelByIdAsync(Id);
 
-            if (model != null)
-            {
-                await _modelServices.DeleteOneModelByIdAsync(Id); 
-                return Ok($"Le modèle avec le id : {Id} à été supprimé ");
-            }
-            else
-            {
-                return null; // Indique que le modèle n'a pas été trouvé, donc la suppression n'a pas été effectuée
-            }
-        }
+        //    if (model != null)
+        //    {
+        //        await _modelServices.DeleteOneModelByIdAsync(Id); 
+        //        return Ok($"Le modèle avec le id : {Id} à été supprimé ");
+        //    }
+        //    else
+        //    {
+        //        return null; // Indique que le modèle n'a pas été trouvé, donc la suppression n'a pas été effectuée
+        //    }
+        //}
 
         /// <summary>
         /// Get a Model By Id into the db, use a Id       
@@ -83,18 +83,15 @@ namespace Main.Controllers
         [HttpGet]
         public async Task<ActionResult<GetOneModelDTO?>> GetOneModelByIdAsync(int Id)
         {
-            // Utilisez le service pour récupérer le modèle par son ID
-            var modelDto = await _modelServices.GetOneModelByIdAsync(Id);
-
             // Si le modèle est trouvé, retournez-le en tant que réponse HTTP 200 OK
-            if (modelDto != null)
+            try
             {
+                var modelDto = await _modelServices.GetOneModelByIdAsync(Id);
                 return Ok(modelDto);
-            }
-            else
+            }catch(Exception ex) 
             {
                 // Si le modèle n'est pas trouvé, retournez une réponse HTTP 404 Not Found
-                return NotFound();
+                return BadRequest(ex.Message);
             }
         }
 
