@@ -11,7 +11,7 @@ namespace IServices
         public Task<GetOneVehicleDTO?> GetVehicleByImmatAsync(string immat);
         public Task<List<GetOneVehicleDTO>> GetVehiclesByLocalizationAsync(int id);
         public Task<List<GetOneVehicleDTO>> GetVehiclesByUserIdAsync(string userID);
-        public Task<List<GetOneVehicleDTO>> GetVehiclesByStateAsync(int stateId);
+        public Task<List<GetOneVehicleDTO>> GetVehiclesByStateAsync(int stateId, int paginationIndex = 0, int pageSize = 10);
         public Task<List<GetOneVehicleDTO>> GetVehiclesByMotorizationAsync(int motorizationId);
         public Task<List<GetOneVehicleDTO>> GetVehiclesByCategoryAsync(int categoryId);
         public Task<List<GetOneVehicleDTO>> GetVehiclesByBrandAsync(int brandId);
