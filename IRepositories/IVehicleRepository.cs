@@ -22,7 +22,7 @@ namespace IRepositories
         public Task<List<GetOneVehicleWithRentDTO>> GetAllReservedVehiclesAsync();
         public Task<List<GetOneVehicleDTO>> GetReservedVehicleByDatesAsync(DateForkDTO dateForkDTO);
         public Task<List<GetOneVehicleDTO>> GetUnreservedVehicleByDatesAsync(DateForkDTO dateForkDTO);
-        public Task<GetOneVehicleWithRentDTO> GetVehicleByIdWithRentAsync(int vehicleId);
+        //public Task<GetOneVehicleWithRentDTO> GetVehicleByIdWithRentAsync(int vehicleId);
         public Task<List<GetOneVehicleDTO>> GetAllVehiclesAsync(int paginationIndex = 0, int pageSize = 10);
     }
 }

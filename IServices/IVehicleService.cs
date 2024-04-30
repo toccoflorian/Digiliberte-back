@@ -22,6 +22,6 @@ namespace IServices
         public Task<List<GetOneVehicleDTO>> GetUnreservedVehicleByDatesAsync(DateForkDTO dateForkDTO);
         public Task<GetOneVehicleDTO> GetVehicleByIdAsync(int id);
         public Task<List<GetOneVehicleDTO>> GetAllVehiclesAsync(int paginationIndex = 0, int pageSize = 10);
-        public Task<GetOneVehicleWithRentDTO> GetVehicleByIdWithRentAsync(int vehicleId);
+        //public Task<GetOneVehicleWithRentDTO> GetVehicleByIdWithRentAsync(int vehicleId);
     }
 }
