@@ -15,7 +15,7 @@ namespace IRepositories
         public Task<List<GetOneVehicleDTO>> GetVehiclesByUserIdAsync(string userID);
         public Task<List<GetOneVehicleDTO>> GetVehiclesByStateAsync(int stateId, int paginationIndex = 0, int pageSize = 10);
         public Task<List<GetOneVehicleDTO>> GetVehiclesByMotorizationAsync(int motorizationId, int paginationIndex = 0, int pageSize = 10);
-        public Task<List<GetOneVehicleDTO>> GetVehiclesByCategoryAsync(int categoryId);
+        public Task<List<GetOneVehicleDTO>> GetVehiclesByCategoryAsync(int categoryId, int paginationIndex = 0, int pageSize = 10);
         public Task<List<GetOneVehicleDTO>> GetVehiclesByBrandAsync(int brandId);
         public Task<List<GetOneVehicleDTO>> GetVehiclesByModelAsync(int modelId);
         public Task<List<GetOneVehicleDTO>> GetAllUnreservedVehiclesAsync();

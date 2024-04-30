@@ -142,10 +142,23 @@ namespace Main.Controllers
         //    throw new NotImplementedException();
         //}
 
-        //public Task<List<GetOneVehicleDTO>> GetVehiclesByCategory(int categoryId)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        /// <summary>
+        /// Get a vehicle by category , used to know if state exists already
+        /// </summary>
+        /// <param name="GetOneVehicleDTO">string</param>
+        /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
+        [HttpGet]
+        public async Task<ActionResult<List<GetOneVehicleDTO>>> GetVehiclesByCategoryAsync(int categoryId, int paginationIndex = 0, int pageSize = 10)
+        {
+            try
+            {
+                return await this._vehicleService.GetVehiclesByCategoryAsync(categoryId, paginationIndex, pageSize);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         //public Task<List<GetOneVehicleDTO>> GetVehiclesByLocalization(int id)
         //{

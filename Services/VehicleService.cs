@@ -115,9 +115,18 @@ namespace Services
             throw new NotImplementedException();
         }
 
-        public Task<List<GetOneVehicleDTO>> GetVehiclesByCategoryAsync(int categoryId)
+        public async Task<List<GetOneVehicleDTO>> GetVehiclesByCategoryAsync(int categoryId, int paginationIndex = 0, int pageSize = 10)
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<GetOneVehicleDTO>? vehicles = await _vehicleRepository.GetVehiclesByCategoryAsync(categoryId, paginationIndex, pageSize);
+                return vehicles;
+            }
+            catch (Exception ex)
+            {
+                // Gérer les exceptions appropriées
+                throw new Exception("Failed to retrieve vehicles", ex);
+            }
         }
 
         public Task<List<GetOneVehicleDTO>> GetVehiclesByLocalizationAsync(int id)
