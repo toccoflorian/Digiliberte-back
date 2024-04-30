@@ -109,12 +109,30 @@ namespace Services
             }
             return vehicleDTO;
         }
-
-        public Task<List<GetOneVehicleDTO>> GetVehiclesByBrandAsync(int brandId)
+        /// <summary>
+        /// Get a vehicle by brand , used to know if immat exists already
+        /// </summary>
+        /// <param name="immat">string</param>
+        /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
+        public async Task<List<GetOneVehicleDTO>> GetVehiclesByBrandAsync(int brandId, int paginationIndex = 0, int pageSize = 10)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var vehicles = await _vehicleRepository.GetVehiclesByBrandAsync(brandId, paginationIndex, pageSize);
+                return vehicles;
+            }
+            catch (Exception ex)
+            {
+                // Gérer les exceptions appropriées
+                throw new Exception("Failed to retrieve vehicles", ex);
+            }
         }
 
+        /// <summary>
+        /// Get a vehicle by category , used to know if immat exists already
+        /// </summary>
+        /// <param name="immat">string</param>
+        /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
         public async Task<List<GetOneVehicleDTO>> GetVehiclesByCategoryAsync(int categoryId, int paginationIndex = 0, int pageSize = 10)
         {
             try
