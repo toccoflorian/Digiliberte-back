@@ -89,6 +89,13 @@ namespace Repositories
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Asynchronously retrieves rental information by the specified rental ID.
+        /// </summary>
+        /// <param name="rentID">The ID of the rental to retrieve.</param>
+        /// <returns>
+        /// A task representing the asynchronous operation. The task result contains a <see cref="GetOneRentDTO"/> object representing the rental information, or null if not found.
+        /// </returns>
         public Task<GetOneRentDTO?> GetRentByIdAsync(int rentID)
         {
             return this._context.Rents
@@ -115,9 +122,9 @@ namespace Repositories
                 .FirstOrDefaultAsync(rentDTO => rentDTO.Id == rentID);
         }
 
-        public Task<List<GetOneRentDTO>> GetRentByVehicleIdAsync(int vehicleId)
+        public async Task<List<GetOneRentByVehicleIdDTO>> GetRentByVehicleIdAsync(int vehicleId)
         {
-            throw new NotImplementedException();
+            
         }
 
         public Task<List<GetOneRentDTO>> GetRentsByDateForkAsync(DateForkDTO dateForkDTO)
@@ -153,10 +160,10 @@ namespace Repositories
             updatingRent.StartDateID = updatingRent.StartDateID;
             updatingRent.StartDate = updatingRent.StartDate;
             updatingRent.ReturnDate = updatingRent.ReturnDate;
-            
+
             _context.Update(updatingRent);
 
-            return await _context.SaveChangesAsync();;
-        }   
+            return await _context.SaveChangesAsync(); ;
+        }
     }
 }

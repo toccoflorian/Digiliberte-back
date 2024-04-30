@@ -141,17 +141,21 @@ namespace Services
             if(updateRentRequestDTO.ReturnDate == updateRentRequestDTO.StartDate) { throw new Exception("New dates cannot be the sames"); }
             if((updateRentRequestDTO.ReturnDate - updateRentRequestDTO.StartDate) > TimeSpan.FromDays(60)) { throw new Exception("Rent duration cannot exceed 2 months!"); }
             if((updateRentRequestDTO.ReturnDate - updateRentRequestDTO.StartDate) < TimeSpan.FromMinutes(30)) { throw new Exception("Your rent must be at least 30 minutes"); }
+            if(updateRentRequestDTO.StartDate <= DateTime.Now) { throw new Exception("The new Start Date must be in the future"); }
+            if(updateRentRequestDTO.ReturnDate <= DateTime.Now) { throw new Exception("The new Return Date must be in the future"); }
+
 
             // check si le rentEntity est valide / pas nul
             GetOneRentDTO? getRent = await this._rentRepository.GetRentByIdAsync(updateRentRequestDTO.Id);
             if (getRent == null)
             {
-                throw new Exception("Aucune location ne correspond à cette id !");
+                throw new Exception("No Rentals found for this Id!");
             }
-
-            var getStartDate = await._this
-
-            // check sur les propriétés saisis :
+            // check si les dates saisies existent dans la BDD
+            int? getStartDateId = await this._dateRepository.GetCloseDateAsync(updateRentRequestDTO.StartDate);
+            int? getReturnDateId = await this._dateRepository.GetCloseDateAsync(updateRentRequestDTO.ReturnDate);
+            
+            
 
 
 

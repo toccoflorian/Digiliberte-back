@@ -63,11 +63,11 @@ namespace Repositories
         /// </summary>
         /// <param name="targetDate">The date to check</param>
         /// <returns>the id of the date found or null</returns>
-        public async Task<int?> GetCloseDate(DateTime targetDate)
+        public async Task<int?> GetCloseDateAsync(DateTime targetDate)
         {
             // Define the time range: one minute before and one minute after the target date
-            var minDate = targetDate.AddMinutes(-1);
-            var maxDate = targetDate.AddMinutes(1);
+            var minDate = targetDate.AddMinutes(-0.5);
+            var maxDate = targetDate.AddMinutes(0.5);
 
             // Query the database to find a close date
             var closeDate = await _context.Dates

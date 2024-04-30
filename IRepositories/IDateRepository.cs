@@ -43,6 +43,6 @@ namespace IRepositories
         /// returns the ID of the closest date if such a date is found within one minute of <paramref name="targetDate"/>;
         /// otherwise, returns null if no close date is found.</returns>
 
-        public Task<int?> GetCloseDate(DateTime targetDate);
+        public Task<int?> GetCloseDateAsync(DateTime targetDate);
     }
 }
