@@ -31,7 +31,7 @@ namespace Services
             if (await this._vehicleRepository.GetVehicleByImmatAsync(createVehicleDTO.Immatriculation) != null)
             {   
                 // si l'immatriculation existe
-                throw new Exception("Cette immatriculation existe déjà !");
+                throw new Exception("Vehicle already exist");
             }
             return await this._vehicleRepository.CreateVehicleAsync(createVehicleDTO);
         }
@@ -51,7 +51,7 @@ namespace Services
             GetOneVehicleDTO? vehicleDTO = await this._vehicleRepository.GetVehicleByIdAsync(id);
             if (vehicleDTO == null)
             {
-                throw new Exception("Aucun véhicule ne correspont à cette id !");
+                throw new Exception("Vehicle with provided Id not found");
             }
             return vehicleDTO;
         }
@@ -68,16 +68,12 @@ namespace Services
 
         public async Task<List<GetOneVehicleDTO>> GetAllVehiclesAsync(int paginationIndex = 0, int pageSize = 10)
         {
-            try
+            var vehicles = await _vehicleRepository.GetAllVehiclesAsync(paginationIndex, pageSize);
+            if(vehicles==null && paginationIndex <0 && pageSize <0)
             {
-                var vehicles = await _vehicleRepository.GetAllVehiclesAsync(paginationIndex, pageSize);
+                throw new Exception("Failed to retrieve vehicles");
+            }
                 return vehicles;
-            }
-            catch (Exception ex)
-            {
-                // Gérer les exceptions appropriées
-                throw new Exception("Failed to retrieve vehicles", ex);
-            }
         }
 
         public Task<List<GetOneVehicleDTO>> GetReservedVehicleByDatesAsync(DateForkDTO dateForkDTO)
@@ -103,12 +99,13 @@ namespace Services
         public async Task<GetOneVehicleDTO> GetVehicleByImmatAsync(string immat)
         {
             GetOneVehicleDTO? vehicleDTO = await this._vehicleRepository.GetVehicleByImmatAsync(immat);
-            if(vehicleDTO == null)
+            if(vehicleDTO == null && immat == null && immat == "")
             {
-                throw new Exception("Acun véhicule ne porte cette immatriculation !");
+                throw new Exception("Vehicle with provided immatriculation not found");
             }
             return vehicleDTO;
         }
+
         /// <summary>
         /// Get a vehicle by brand , used to know if brand exists already
         /// </summary>
@@ -116,16 +113,12 @@ namespace Services
         /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
         public async Task<List<GetOneVehicleDTO>> GetVehiclesByBrandAsync(int brandId, int paginationIndex = 0, int pageSize = 10)
         {
-            try
+             var vehicles = await _vehicleRepository.GetVehiclesByBrandAsync(brandId, paginationIndex, pageSize);
+            if(vehicles == null && brandId < 0)
             {
-                var vehicles = await _vehicleRepository.GetVehiclesByBrandAsync(brandId, paginationIndex, pageSize);
+                throw new Exception("Vehicle with provided brandId not found");
+            }
                 return vehicles;
-            }
-            catch (Exception ex)
-            {
-                // Gérer les exceptions appropriées
-                throw new Exception("Failed to retrieve vehicles", ex);
-            }
         }
 
         /// <summary>
@@ -135,16 +128,13 @@ namespace Services
         /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
         public async Task<List<GetOneVehicleDTO>> GetVehiclesByCategoryAsync(int categoryId, int paginationIndex = 0, int pageSize = 10)
         {
-            try
-            {
-                List<GetOneVehicleDTO>? vehicles = await _vehicleRepository.GetVehiclesByCategoryAsync(categoryId, paginationIndex, pageSize);
-                return vehicles;
-            }
-            catch (Exception ex)
+            List<GetOneVehicleDTO>? vehicles = await _vehicleRepository.GetVehiclesByCategoryAsync(categoryId, paginationIndex, pageSize);
+            if(vehicles == null && categoryId < 0 && paginationIndex < 0 && pageSize < 0)
             {
                 // Gérer les exceptions appropriées
-                throw new Exception("Failed to retrieve vehicles", ex);
+                throw new Exception("Vehicle with provided categoryId not found");
             }
+                return vehicles;
         }
 
         public Task<List<GetOneVehicleDTO>> GetVehiclesByLocalizationAsync(int id)
@@ -159,16 +149,12 @@ namespace Services
         /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
         public async Task<List<GetOneVehicleDTO>> GetVehiclesByModelAsync(int modelId, int paginationIndex = 0, int pageSize = 10)
         {
-            try
+            var vehicles = await _vehicleRepository.GetVehiclesByModelAsync(modelId, paginationIndex, pageSize);
+            if(vehicles != null && modelId < 0 && paginationIndex < 0 && pageSize < 0)
             {
-                var vehicles = await _vehicleRepository.GetVehiclesByModelAsync(modelId, paginationIndex, pageSize);
+                throw new Exception("Vehicle with provided modelId not found");
+            }
                 return vehicles;
-            }
-            catch (Exception ex)
-            {
-                // Gérer les exceptions appropriées
-                throw new Exception("Failed to retrieve vehicles", ex);
-            }
         }
 
         /// <summary>
@@ -178,16 +164,12 @@ namespace Services
         /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
         public async Task<List<GetOneVehicleDTO>> GetVehiclesByMotorizationAsync(int motorizationId, int paginationIndex = 0, int pageSize = 10)
         {
-            try
+            var vehicles = await _vehicleRepository.GetVehiclesByMotorizationAsync(motorizationId, paginationIndex, pageSize);
+            if(vehicles == null && motorizationId < 0 && paginationIndex < 0 && pageSize < 0)
             {
-                var vehicles = await _vehicleRepository.GetVehiclesByMotorizationAsync(motorizationId, paginationIndex, pageSize);
+                throw new Exception("Vehicle with provided motorizationId not found");
+            }
                 return vehicles;
-            }
-            catch (Exception ex)
-            {
-                // Gérer les exceptions appropriées
-                throw new Exception("Failed to retrieve vehicles", ex);
-            }
         }
 
         /// <summary>
@@ -197,16 +179,12 @@ namespace Services
         /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
         public async Task<List<GetOneVehicleDTO>> GetVehiclesByStateAsync(int stateId, int paginationIndex = 0, int pageSize = 10)
         {
-            try
+              var  vehicles = await _vehicleRepository.GetVehiclesByStateAsync(stateId, paginationIndex, pageSize);
+            if(vehicles == null && stateId <0 && paginationIndex < 0 && pageSize < 0)
             {
-                var vehicles = await _vehicleRepository.GetVehiclesByStateAsync(stateId, paginationIndex, pageSize);
+                throw new Exception("Vehicle with provided stateId not found");
+            }
                 return vehicles;
-            }
-            catch (Exception ex)
-            {
-                // Gérer les exceptions appropriées
-                throw new Exception("Failed to retrieve vehicles", ex);
-            }
         }
     
 
@@ -221,7 +199,7 @@ namespace Services
             GetOneVehicleDTO? existingVehicle = await _vehicleRepository.GetVehicleByIdAsync(updateOneVehicleDTO.VehicleId);
 
             // Si aucun véhicule avec le même ID n'existe, retournez null ou lancez une exception selon vos besoins
-            if (existingVehicle == null)
+            if (existingVehicle == null )
             {
                 throw new Exception("Vehicle with provided ID not found");
             }
