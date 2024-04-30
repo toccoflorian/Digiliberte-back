@@ -4,6 +4,7 @@ using IServices;
 using DTO.Dates;
 using Microsoft.EntityFrameworkCore;
 using Repositories;
+using Models;
 
 namespace Services
 {
@@ -129,9 +130,18 @@ namespace Services
             throw new NotImplementedException();
         }
 
-        public Task<List<GetOneVehicleDTO>> GetVehiclesByMotorizationAsync(int motorizationId)
+        public async Task<List<GetOneVehicleDTO>> GetVehiclesByMotorizationAsync(int motorizationId, int paginationIndex = 0, int pageSize = 10)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var vehicles = await _vehicleRepository.GetVehiclesByMotorizationAsync(motorizationId, paginationIndex, pageSize);
+                return vehicles;
+            }
+            catch (Exception ex)
+            {
+                // Gérer les exceptions appropriées
+                throw new Exception("Failed to retrieve vehicles", ex);
+            }
         }
 
         public async Task<List<GetOneVehicleDTO>> GetVehiclesByStateAsync(int stateId, int paginationIndex = 0, int pageSize = 10)
