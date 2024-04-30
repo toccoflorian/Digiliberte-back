@@ -239,11 +239,6 @@ namespace Repositories
             throw new NotImplementedException();
         }
 
-        public Task DeleteVehicleByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<List<GetOneVehicleDTO>> GetVehiclesByUserIdAsync(string userID)
         {
             throw new NotImplementedException();
@@ -314,12 +309,6 @@ namespace Repositories
                 throw new Exception("PageSige Error");
             }
             return vehicleDTO;
-        }
-
-
-        public Task<List<GetOneVehicleDTO>> GetVehiclesByMotorizationAsync(int motorizationId)
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -604,45 +593,57 @@ namespace Repositories
             
         }
 
-        //public async Task<List<GetOneVehicleDTO>> GetVehicleByIdWithRentAsync(int vehicleId)
-        //{
-        //        var vehiclesWithRent = await _context.Vehicles
-        //     .Select(v => new GetOneVehicleWithRentDTO
-        //     {
-        //         VehicleId = v.Id,
-        //         BrandName = v.Brand.Label,
-        //         ModelName = v.Model.Label,
-        //         CategoryName = v.Category.Label,
-        //         MotorizationName = v.Motorization.Label,
-        //         StateName = v.State.Label,
-        //         PictureUrl = v.PictureURL,
-        //         Localization = new LocalizationDTO
-        //         {
-        //             Latitude = 1.5484584,        // données en dur !!!
-        //             Logitude = 2.4949445
-        //         },
-        //         SeatsNumber = v.Category.SeatsNumber,
-        //         Color = v.ColorId.ToString(),
-        //         CO2 = v.Model.CO2,
-        //         ModelYear = v.Model.Year,
-        //         Immatriculation = v.Immatriculation,
-                 
-        //         Rents = v.Rents.Select(r => new GetOneRentDTO
-        //         {
-        //             Id = r.Id,
-        //             UserId=r.User.Id,
-        //             VehiceId=r.VehicleId,
-        //             VehicleInfo=r.Vehicle.State.ToString(),
-        //             Immatriculation=r.Vehicle.Immatriculation,
-        //             StartDate=r.StartDate.Date,
-        //             ReturnDate=r.ReturnDate.Date,
-        //             UserFirstname=r.User.Firstname,
-        //             UserLastname=r.User.Lastname,
-        //         }).ToList()
-        //     })
-        //             .ToListAsync();
+        /// <summary>
+        /// Get a list a vehicle
+        /// </summary>
+        /// <param name="vehicleId"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<List<GetOneVehicleWithRentDTO>> GetVehicleByIdWithRentAsync(int vehicleId)
+        {
+            var vehiclesWithRent = await _context.Vehicles
+                .Where(v => v.Id == vehicleId)
+                .Select(v => new GetOneVehicleWithRentDTO
+                {
+                    VehicleId = v.Id,
+                    BrandName = v.Brand.Label,
+                    ModelName = v.Model.Label,
+                    CategoryName = v.Category.Label,
+                    MotorizationName = v.Motorization.Label,
+                    StateName = v.State.Label,
+                    PictureUrl = v.PictureURL,
+                    Localization = new LocalizationDTO
+                    {
+                        Latitude = v.LocalizationID , 
+                        Logitude = v.LocalizationID,
+                    },
+                    SeatsNumber = v.Category.SeatsNumber,
+                    Color = v.ColorId.ToString(),
+                    CO2 = v.Model.CO2,
+                    ModelYear = v.Model.Year,
+                    Immatriculation = v.Immatriculation,
+                    Rents = v.Rents.Select(r => new GetOneRentDTO
+                    {
+                        Id = r.Id,
+                        UserId = r.User.Id,
+                        VehiceId = r.VehicleId,
+                        //VehicleInfo = r.Vehicle.State.ToString(),
+                        Immatriculation = r.Vehicle.Immatriculation,
+                        StartDate = r.StartDate.Date,
+                        ReturnDate = r.ReturnDate.Date,
+                        UserFirstname = r.User.Firstname,
+                        UserLastname = r.User.Lastname
+                    }).ToList()
+                })
+                .ToListAsync();
 
-        //        return vehiclesWithRent;
+            if (vehiclesWithRent == null)
+            {
+                throw new NotImplementedException();
+            }
+
+            return vehiclesWithRent;
         }
+    }
     }
 
