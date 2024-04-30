@@ -149,6 +149,8 @@ namespace Services
                 throw new Exception("Aucune location ne correspond à cette id !");
             }
 
+            var getStartDate = await._this
+
             // check sur les propriétés saisis :
 
 
