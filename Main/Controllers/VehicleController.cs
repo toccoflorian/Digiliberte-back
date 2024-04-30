@@ -128,10 +128,12 @@ namespace Main.Controllers
         }
 
         /// <summary>
-        /// Get a vehicle by brand , used to know if immat exists already
+        /// 
         /// </summary>
-        /// <param name="GetOneVehicleDTO">string</param>
-        /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
+        /// <param name="brandId"></param>
+        /// <param name="paginationIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<List<GetOneVehicleDTO>>> GetVehiclesByBrandAsync(int brandId, int paginationIndex = 0, int pageSize = 10)
         {
@@ -146,10 +148,12 @@ namespace Main.Controllers
         }
 
         /// <summary>
-        /// Get a vehicle by category , used to know if category exists already
+        /// 
         /// </summary>
-        /// <param name="GetOneVehicleDTO">string</param>
-        /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
+        /// <param name="categoryId"></param>
+        /// <param name="paginationIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<List<GetOneVehicleDTO>>> GetVehiclesByCategoryAsync(int categoryId, int paginationIndex = 0, int pageSize = 10)
         {
@@ -169,10 +173,12 @@ namespace Main.Controllers
         //}
 
         /// <summary>
-        /// Get a vehicle by model , used to know if model exists already
+        /// 
         /// </summary>
-        /// <param name="GetOneVehicleDTO">string</param>
-        /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
+        /// <param name="modelId"></param>
+        /// <param name="paginationIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<List<GetOneVehicleDTO>>> GetVehiclesByModel(int modelId, int paginationIndex = 0, int pageSize = 10)
         {
@@ -187,10 +193,12 @@ namespace Main.Controllers
         }
 
         /// <summary>
-        /// Get a vehicle by motorization , used to know if motorization exists already
+        /// 
         /// </summary>
-        /// <param name="GetOneVehicleDTO">string</param>
-        /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
+        /// <param name="motorizationId"></param>
+        /// <param name="paginationIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<List<GetOneVehicleDTO>>> GetVehiclesByMotorization(int motorizationId, int paginationIndex = 0, int pageSize = 10)
         {
@@ -205,10 +213,12 @@ namespace Main.Controllers
         }
 
         /// <summary>
-        /// Get a vehicle by state , used to know if state exists already
+        /// 
         /// </summary>
-        /// <param name="GetOneVehicleDTO">string</param>
-        /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
+        /// <param name="stateId"></param>
+        /// <param name="paginationIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<List<GetOneVehicleDTO>>> GetVehiclesByState(int stateId, int paginationIndex = 0, int pageSize = 10)
         {
