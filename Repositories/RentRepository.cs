@@ -15,7 +15,6 @@ namespace Repositories
         public RentRepository(DatabaseContext context)
         {
             this._context = context;
-
         }
 
 
@@ -37,6 +36,7 @@ namespace Repositories
             return new GetOneRentDTO
             {
                 Id = entityEntry.Entity.Id,
+                UserId = createOneRentDTO.UserID,
                 VehiceId = createOneRentDTO.VehiceId,
                 VehicleInfo = createOneRentDTO.VehicleInfos!,
                 Immatriculation = createOneRentDTO.Immatriculation!,
@@ -72,6 +72,7 @@ namespace Repositories
                     new GetOneRentDTO
                     {
                         Id = rent.Id,
+                        UserId = rent.UserID,
                         VehiceId = rent.VehicleId,
                         VehicleInfo = $"{rent.Vehicle.Category.Label}, {rent.Vehicle.Category.SeatsNumber} places, {rent.Vehicle.Brand.Label}, {rent.Vehicle.Model.Label}, {rent.Vehicle.Model.Year}",
                         Immatriculation = rent.Vehicle.Immatriculation,
@@ -139,9 +140,23 @@ namespace Repositories
             throw new NotImplementedException();
         }
 
-        public Task<GetOneRentDTO> UpdateRentByIdAsync(int rentID)
+        /// <summary>
+        /// Update Rend By Id using dto as entry to look for ID and edited values
+        /// </summary>
+        /// <param name="updateRentDTO"> Changes made on start date and return Date</param>
+        /// <returns>Return GetOneRendDTO with the updated Rent</returns>
+        public async Task<int?> UpdateRentByIdAsync(UpdateRentDTO updateRentDTO)
         {
-            throw new NotImplementedException();
-        }
+            var updatingRent = await this._context.Rents.FindAsync(updateRentDTO.Id);
+
+            updatingRent.ReturnDateID = updateRentDTO.ReturnDateId;
+            updatingRent.StartDateID = updatingRent.StartDateID;
+            updatingRent.StartDate = updatingRent.StartDate;
+            updatingRent.ReturnDate = updatingRent.ReturnDate;
+            
+            _context.Update(updatingRent);
+
+            return await _context.SaveChangesAsync();;
+        }   
     }
 }

@@ -126,9 +126,33 @@ namespace Services
         {
             throw new NotImplementedException();
         }
-
-        public Task<GetOneRentDTO> UpdateRentByIdAsync(int rentID)
+        /// <summary>
+        /// Will check here all potentials errors before updating
+        /// </summary>
+        /// <param name="updateRentRequestDTO"></param>
+        /// <returns></returns>
+        public async Task<GetOneRentDTO> UpdateRentByIdAsync(UpdateRentRequestDTO updateRentRequestDTO)
         {
+            // Check sur la requete et cohérence de la requete
+            if(updateRentRequestDTO == null) { throw new Exception("Request cannot be null"); }
+            if(updateRentRequestDTO.Id == 0) { throw new Exception("Id cannot be 0"); }
+            if(updateRentRequestDTO.Id < 0) { throw new Exception("Id cannot be < 0");  }
+            if(updateRentRequestDTO.ReturnDate > updateRentRequestDTO.StartDate) { throw new Exception("New Return Date cannot be less than new Start Date"); }
+            if(updateRentRequestDTO.ReturnDate == updateRentRequestDTO.StartDate) { throw new Exception("New dates cannot be the sames"); }
+            if((updateRentRequestDTO.ReturnDate - updateRentRequestDTO.StartDate) > TimeSpan.FromDays(60)) { throw new Exception("Rent duration cannot exceed 2 months!"); }
+            if((updateRentRequestDTO.ReturnDate - updateRentRequestDTO.StartDate) < TimeSpan.FromMinutes(30)) { throw new Exception("Your rent must be at least 30 minutes"); }
+
+            // check si le rentEntity est valide / pas nul
+            GetOneRentDTO? getRent = await this._rentRepository.GetRentByIdAsync(updateRentRequestDTO.Id);
+            if (getRent == null)
+            {
+                throw new Exception("Aucune location ne correspond à cette id !");
+            }
+
+            // check sur les propriétés saisis :
+
+
+
             throw new NotImplementedException();
         }
     }

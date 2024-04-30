@@ -6,7 +6,7 @@ namespace IRepositories
     public interface IRentRepository
     {
         public Task<GetOneRentDTO> CreateOneRentAsync(CreateRentDTO createOneRentDTO);
-        public Task<GetOneRentDTO> UpdateRentByIdAsync(int rentID);
+        public Task<int?> UpdateRentByIdAsync(UpdateRentDTO updateRentDTO);
         public Task DeleteRentByIdAsync(int rentID); 
         public Task<List<GetOneRentDTO>> GetAllRentAsync();
         public Task<GetOneRentDTO> GetRentByCarPoolAsync(int carPoolID);

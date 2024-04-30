@@ -115,10 +115,10 @@ namespace Main.Controllers
         //{
         //    throw new NotImplementedException();
         //}
-
-        //public GetOneRentDTO UpdateRentById(int rentID)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        [HttpPost]
+        public async Task<IActionResult> UpdateRentById(UpdateRentRequestDTO updateRentRequest)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

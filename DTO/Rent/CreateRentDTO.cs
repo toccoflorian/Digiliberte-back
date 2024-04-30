@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace DTO.Rent
 {
+    /// <summary>
+    /// DTO USED FOR CREATING A RENT , UserId, UserFirstName, UserLAstName, Vehicle Id , StartDate ,StartDateId, return date, ReturnDateId , à changer ?
+    /// </summary>
     public class CreateRentDTO
     {
         public string? UserID { get; set; }
