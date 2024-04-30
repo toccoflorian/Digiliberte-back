@@ -71,11 +71,6 @@ namespace Main.Controllers
                 }
         }
 
-        //public Task<List<GetOneVehicleDTO>> GetAllVehicles()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
         //public Task<List<GetOneVehicleWithRentDTO>> GetAllReservedVehicles()
         //{
         //    throw new NotImplementedException();
@@ -88,11 +83,6 @@ namespace Main.Controllers
 
 
         //public Task<List<GetOneVehicleDTO>> GetReservedVehicleByDates(DateForkDTO dateForkDTO)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public Task<List<GetOneVehicleDTO>> GetUnreservedVehicleByDates(DateForkDTO dateForkDTO)
         //{
         //    throw new NotImplementedException();
         //}
@@ -137,10 +127,23 @@ namespace Main.Controllers
             }
         }
 
-        //public Task<List<GetOneVehicleDTO>> GetVehiclesByBrand(int brandId)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        /// <summary>
+        /// Get a vehicle by brand , used to know if immat exists already
+        /// </summary>
+        /// <param name="GetOneVehicleDTO">string</param>
+        /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
+        [HttpGet]
+        public async Task<ActionResult<List<GetOneVehicleDTO>>> GetVehiclesByBrandAsync(int brandId, int paginationIndex = 0, int pageSize = 10)
+        {
+            try
+            {
+                return await this._vehicleService.GetVehiclesByBrandAsync(brandId, paginationIndex, pageSize);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         /// <summary>
         /// Get a vehicle by category , used to know if state exists already
