@@ -1,4 +1,5 @@
-﻿using DTO.CarPools;
+﻿using DTO.CarPoolPassenger;
+using DTO.CarPools;
 using DTO.Dates;
 using DTO.Rent;
 using IRepositories;
@@ -9,18 +10,21 @@ namespace Services
     public class CarPoolService : ICarPoolService
     {
         private readonly ICarPoolRepository _carPoolRepository;
+        private readonly ICarPoolPassengerRepository _carPoolPassengerRepository;
         private readonly IRentRepository _rentRepository;
         private readonly ILocalizationRepository _localizationRepository;
         private readonly IDateRepository _dateRepository;
         private readonly IUserRepository _userRepository;
         public CarPoolService(
             ICarPoolRepository carPoolRepository,
+            ICarPoolPassengerRepository carPoolPassengerRepository,
             IRentRepository rentRepository, 
             ILocalizationRepository localizationRepository, 
             IDateRepository dateRepository,
             IUserRepository userRepository)
         {
             this._carPoolRepository = carPoolRepository;
+            this._carPoolPassengerRepository = carPoolPassengerRepository;
             this._rentRepository = rentRepository;
             this._localizationRepository = localizationRepository;
             this._dateRepository = dateRepository;
@@ -133,14 +137,15 @@ namespace Services
             throw new NotImplementedException();
         }
 
-        public Task<List<GetOneCarPoolDTO>> GetCarPoolByPassengerAsync(int carPoolPassengerID)
+        public async Task<List<GetOneCarPoolDTO>> GetCarPoolByPassengerAsync(string userId)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolByPassengerAsync(string userID)
-        {
-            throw new NotImplementedException();
+            List<GetOneCarPoolPassengerDTO>? passengers =  await this._carPoolPassengerRepository.GetPassengersByUserAsync(userId);
+            List<GetOneCarPoolDTO> carpools = new List<GetOneCarPoolDTO>();
+            foreach (GetOneCarPoolPassengerDTO passenger in passengers)
+            {
+                carpools.Add(await this._carPoolRepository.GetCarPoolByIdAsync(passenger.CarPoolId));
+            }
+            return carpools;
         }
 
         public Task<GetOneCarPoolWithPassengersDTO> GetCarPoolByRentAsync(int rentID)

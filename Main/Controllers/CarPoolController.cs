@@ -105,10 +105,19 @@ namespace Main.Controllers
         //    throw new NotImplementedException();
         //}
 
-        //public Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolByPassengerAsync(string userID)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        [HttpGet]
+        public async Task<ActionResult<List<GetOneCarPoolWithPassengersDTO>>> GetCarPoolByPassengerAsync()
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            try
+            {
+                return Ok(await this._carPoolService.GetCarPoolByPassengerAsync(userId));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         //public Task<GetOneCarPoolWithPassengersDTO> GetCarPoolByRentAsync(int rentID)
         //{
