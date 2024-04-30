@@ -110,7 +110,7 @@ namespace Services
             return vehicleDTO;
         }
         /// <summary>
-        /// Get a vehicle by brand , used to know if immat exists already
+        /// Get a vehicle by brand , used to know if brand exists already
         /// </summary>
         /// <param name="immat">string</param>
         /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
@@ -129,7 +129,7 @@ namespace Services
         }
 
         /// <summary>
-        /// Get a vehicle by category , used to know if immat exists already
+        /// Get a vehicle by category , used to know if category exists already
         /// </summary>
         /// <param name="immat">string</param>
         /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
@@ -152,11 +152,30 @@ namespace Services
             throw new NotImplementedException();
         }
 
-        public Task<List<GetOneVehicleDTO>> GetVehiclesByModelAsync(int modelId)
+        /// <summary>
+        /// Get a vehicle by model , used to know if model exists already
+        /// </summary>
+        /// <param name="immat">string</param>
+        /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
+        public async Task<List<GetOneVehicleDTO>> GetVehiclesByModelAsync(int modelId, int paginationIndex = 0, int pageSize = 10)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var vehicles = await _vehicleRepository.GetVehiclesByModelAsync(modelId, paginationIndex, pageSize);
+                return vehicles;
+            }
+            catch (Exception ex)
+            {
+                // Gérer les exceptions appropriées
+                throw new Exception("Failed to retrieve vehicles", ex);
+            }
         }
 
+        /// <summary>
+        /// Get a vehicle by motorization , used to know if motorization exists already
+        /// </summary>
+        /// <param name="immat">string</param>
+        /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
         public async Task<List<GetOneVehicleDTO>> GetVehiclesByMotorizationAsync(int motorizationId, int paginationIndex = 0, int pageSize = 10)
         {
             try
@@ -171,6 +190,11 @@ namespace Services
             }
         }
 
+        /// <summary>
+        /// Get a vehicle by state , used to know if state exists already
+        /// </summary>
+        /// <param name="immat">string</param>
+        /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
         public async Task<List<GetOneVehicleDTO>> GetVehiclesByStateAsync(int stateId, int paginationIndex = 0, int pageSize = 10)
         {
             try
