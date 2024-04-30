@@ -122,9 +122,31 @@ namespace Repositories
                 .FirstOrDefaultAsync(rentDTO => rentDTO.Id == rentID);
         }
 
+        /// <summary>
+        /// Asynchronously retrieves rental information for a vehicle based on the specified vehicle ID.
+        /// </summary>
+        /// <param name="vehicleId">The ID of the vehicle for which rental information is to be retrieved.</param>
+        /// <returns>
+        /// A task representing the asynchronous operation. The task result contains a list of <see cref="GetOneRentByVehicleIdDTO"/> objects representing the rental information for the specified vehicle.
+        /// </returns>
         public async Task<List<GetOneRentByVehicleIdDTO>> GetRentByVehicleIdAsync(int vehicleId)
         {
-            
+            List<GetOneRentByVehicleIdDTO>? getRentsByVehicle = await this._context.Rents
+                .Where(v => v.VehicleId == vehicleId)
+                .Include(rent => rent.StartDate)
+                .ThenInclude(startDate => startDate.Date)
+                .Include (rent => rent.ReturnDate)
+                .ThenInclude(returnDate => returnDate.Date)
+                .Select(rent => 
+                new GetOneRentByVehicleIdDTO
+                {
+                    Id = rent.Id,
+                    UserId = rent.UserID,
+                    VehiceId = rent.Vehicle.Id,
+                    StartDate = rent.StartDate.Date,
+                    ReturnDate= rent.ReturnDate.Date,
+                }).ToListAsync();
+            return getRentsByVehicle;
         }
 
         public Task<List<GetOneRentDTO>> GetRentsByDateForkAsync(DateForkDTO dateForkDTO)
