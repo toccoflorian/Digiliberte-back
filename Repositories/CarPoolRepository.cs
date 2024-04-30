@@ -125,7 +125,8 @@ namespace Repositories
 
         public async Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolByDriverIdAsync(string userId)
         {
-            var carPoolsByDriverId = await this._context.CarPools.Where(carpoolUser => carpoolUser.Rent.UserID == userId)
+            var carPoolsByDriverId = await this._context.CarPools
+                .Where(carpoolUser => carpoolUser.Rent.UserID == userId)
                 .Select(carpool =>
                 new GetOneCarPoolWithPassengersDTO
                 {
@@ -178,20 +179,58 @@ namespace Repositories
             throw new NotImplementedException();
         }
 
-
-        public Task<List<GetOneCarPoolDTO>> GetCarPoolByPassengerAsync(int carPoolPassengerID)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolByPassengerAsync(string userID)
         {
             throw new NotImplementedException();
         }
 
-        public Task<GetOneCarPoolWithPassengersDTO> GetCarPoolByRentAsync(int rentID)
+        public async Task<GetOneCarPoolWithPassengersDTO?> GetCarPoolByRentAsync(int rentID)
         {
-            throw new NotImplementedException();
+            return await this._context.CarPools
+                .Select(carpool =>
+                    new GetOneCarPoolWithPassengersDTO
+                    {
+                        CarPoolId = carpool.Id,
+                        RentId = carpool.RentId,
+                        UserId = carpool.Rent.UserID,
+                        VehicleId = carpool.Rent.VehicleId,
+                        VehicleBrand = carpool.Rent.Vehicle.Brand.Label,
+                        VehicleModel = carpool.Rent.Vehicle.Model.Label,
+                        VehicleMotorization = carpool.Rent.Vehicle.Motorization.Label,
+                        VehicleImmatriculation = carpool.Rent.Vehicle.Immatriculation,
+                        SeatsTotalNumber = carpool.Rent.Vehicle.Category.SeatsNumber,
+                        FreeSeats = carpool.Rent.Vehicle.Category.SeatsNumber - (carpool.carPoolPassengers != null ? carpool.carPoolPassengers.Count() : 0),
+                        CO2 = carpool.Rent.Vehicle.Model.CO2,
+                        StartDate = carpool.StartDate.Date,
+                        EndDate = carpool.EndDate.Date,
+                        StartLocalization = new LocalizationDTO
+                        {
+                            Latitude = carpool.StartLocalization.Latitude,
+                            Logitude = carpool.StartLocalization.Longitude,
+                        },
+                        EndLocalization = new LocalizationDTO
+                        {
+                            Latitude = carpool.EndLocalization.Latitude,
+                            Logitude = carpool.EndLocalization.Longitude,
+                        },
+                        Passengers = carpool.carPoolPassengers
+                            .Select(passenger =>
+                                new GetOneCarPoolPassengerDTO
+                                {
+                                    Id = passenger.Id,
+                                    CarPoolId = carpool.Id,
+                                    Description = passenger.Description,
+                                    UserDTO = new GetOneUserDTO
+                                    {
+                                        Id = passenger.UserID,
+                                        Firstname = passenger.User.Firstname,
+                                        Lastname = passenger.User.Lastname,
+                                        PictureURL = passenger.User.PictureURL
+                                    }
+                                })
+                            .ToList()
+                    })
+                .FirstOrDefaultAsync(carpool => carpool.RentId == rentID);
         }
 
         public Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolByStartDateAsync(DateTime date)

@@ -93,9 +93,25 @@ namespace Repositories
             throw new NotImplementedException();
         }
 
-        public Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByUserAsync(string userID)
+        public async Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByUserAsync(string userID)
         {
-            throw new NotImplementedException();
+            return await this._context.CarPoolPassengers
+                .Where(passenger => passenger.UserID == userID)
+                .Select(passenger =>
+                    new GetOneCarPoolPassengerDTO
+                    {
+                        Id = passenger.Id,
+                        CarPoolId = passenger.CarPoolID,
+                        Description = passenger.Description,
+                        UserDTO = new GetOneUserDTO
+                        {
+                            Id = passenger.UserID,
+                            Firstname = passenger.User.Firstname,
+                            Lastname = passenger.User.Lastname,
+                            PictureURL = passenger.User.PictureURL
+                        },
+                    })
+                .ToListAsync();
         }
 
         public Task<GetOneCarPoolPassengerDTO> UpdateCarPoolPassengerByIdAsync(int carPoolPassengerId)

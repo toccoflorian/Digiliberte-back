@@ -8,9 +8,8 @@ namespace IServices
     {
         public Task<GetOneCarPoolDTO> CreateCarpoolAsync(CreateOneCarPoolDTO createOneCarPoolDTO);
         public Task DeleteCarPoolByIdAsync(int rentID);
-        public Task<List<GetOneCarPoolDTO>> GetCarPoolByPassengerAsync(int carPoolPassengerID);
+        public Task<List<GetOneCarPoolDTO>> GetCarPoolByPassengerAsync(string userId);
         public Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolByEndDateAsync(DateTime date);
-        public Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolByPassengerAsync(string userID);
         public Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolsByDateForkAsync(DateForkDTO dateForkDTO);
         public Task<GetOneCarPoolWithPassengersDTO> GetCarPoolByRentAsync(int rentID);
         public Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolByStartDateAsync(DateTime date);
