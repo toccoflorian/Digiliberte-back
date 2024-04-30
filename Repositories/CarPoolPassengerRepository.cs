@@ -1,4 +1,5 @@
 ﻿using DTO.CarPoolPassenger;
+using DTO.Pagination;
 using DTO.User;
 using IRepositories;
 using Microsoft.EntityFrameworkCore;
@@ -28,14 +29,32 @@ namespace Repositories
             return entityEntry.Entity.Id;
         }
 
-        public Task DeleteCarPoolPassengerByIdAsync(int carPoolPassengerId)
+        public async Task<int> DeleteCarPoolPassengerByIdAsync(int carpoolPassengerId)
         {
-            throw new NotImplementedException();
+            this._context.CarPoolPassengers.Remove((await this._context.CarPoolPassengers.FindAsync(carpoolPassengerId))!);
+            return await this._context.SaveChangesAsync();
         }
 
-        public Task<List<GetOneCarPoolPassengerDTO>> GetAllPassengersAsync()
+        public async Task<List<GetOneCarPoolPassengerDTO>> GetAllPassengersAsync(PageForkDTO pageForkDTO)
         {
-            throw new NotImplementedException();
+            return await this._context.CarPoolPassengers
+                .Skip(pageForkDTO.PageIndex * pageForkDTO.PageSize)
+                .Take(pageForkDTO.PageSize)
+                .Select(carpoolPassenger => 
+                    new GetOneCarPoolPassengerDTO
+                    {
+                        Id = carpoolPassenger.Id,
+                        CarPoolId = carpoolPassenger.CarPoolID,
+                        Description = carpoolPassenger.Description,
+                        UserDTO = 
+                            new GetOneUserDTO 
+                            {
+                                Id = carpoolPassenger.UserID,
+                                Firstname = carpoolPassenger.User.Firstname,
+                                Lastname = carpoolPassenger.User.Lastname,
+                                PictureURL = carpoolPassenger.User.PictureURL
+                            }})
+                .ToListAsync();
         }
 
         public Task<List<GetOneCarPoolPassengerDTO>> GetPassengerByDescriptionDateAsync(DateTime dateTime)
@@ -74,9 +93,25 @@ namespace Repositories
             throw new NotImplementedException();
         }
 
-        public Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByUserAsync(string userID)
+        public async Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByUserAsync(string userID)
         {
-            throw new NotImplementedException();
+            return await this._context.CarPoolPassengers
+                .Where(passenger => passenger.UserID == userID)
+                .Select(passenger =>
+                    new GetOneCarPoolPassengerDTO
+                    {
+                        Id = passenger.Id,
+                        CarPoolId = passenger.CarPoolID,
+                        Description = passenger.Description,
+                        UserDTO = new GetOneUserDTO
+                        {
+                            Id = passenger.UserID,
+                            Firstname = passenger.User.Firstname,
+                            Lastname = passenger.User.Lastname,
+                            PictureURL = passenger.User.PictureURL
+                        },
+                    })
+                .ToListAsync();
         }
 
         public Task<GetOneCarPoolPassengerDTO> UpdateCarPoolPassengerByIdAsync(int carPoolPassengerId)

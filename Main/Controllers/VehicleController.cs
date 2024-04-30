@@ -67,6 +67,7 @@ namespace Main.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+
                 }
         }
 

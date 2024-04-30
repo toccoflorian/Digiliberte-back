@@ -1,7 +1,10 @@
 ﻿using DTO.CarPoolPassenger;
 using DTO.CarPools;
+using DTO.Pagination;
 using IRepositories;
 using IServices;
+using Models;
+using Utils.Constants;
 
 namespace Services
 {
@@ -35,14 +38,39 @@ namespace Services
             return passenger;
         }
 
-        public Task DeleteCarPoolPassengerByIdAsync(int carPoolPassengerId)
+        public async Task DeleteCarPoolPassengerByIdAsync(DeleteCarpoolPassengerDTO deleteCarPoolPassengerDTO)
         {
-            throw new NotImplementedException();
+
+            //  recuperation du carpoolPassenger et verification que le carpoolPassenger correspond à l'utilisateur connecté
+            GetOneCarPoolPassengerDTO? carpoolPassenger = await this._carPoolPassengerRepository.GetPassengerByIdAsync(deleteCarPoolPassengerDTO.Id);
+            if(carpoolPassenger == null)
+            {
+                throw new Exception("Aucun covoiturage ne correspond à cette id !");
+            }
+            GetOneCarPoolWithPassengersDTO? carpool = await this._carPoolRepository.GetCarPoolByIdAsync(carpoolPassenger.CarPoolId);
+            if(deleteCarPoolPassengerDTO.ConnectedUserId != carpoolPassenger.UserDTO.Id
+                &&
+                deleteCarPoolPassengerDTO.ConnectedUserId != carpool.UserId
+                &&
+                deleteCarPoolPassengerDTO.ConnectedUserRole?.ToUpper() != ROLE.ADMIN)
+            {
+                throw new Exception("Vous devez être le conducteur du covoiturage, l'auteur de la reservation ou ADMIN pour pouvoir la supprimer");
+            }
+            //verification du carpoolPassenger
+            if (carpoolPassenger == null)
+            {
+                throw new Exception("Aucun passager de covoiturage ne correspond à cette id !");
+            }
+            // suppression et verification de la suppression du carpoolPassenger
+            if (await this._carPoolPassengerRepository.DeleteCarPoolPassengerByIdAsync(deleteCarPoolPassengerDTO.Id) < 1)
+            {
+                throw new Exception("Une erreur est survenue, suppression non effectuée !");
+            }
         }
 
-        public Task<List<GetOneCarPoolPassengerDTO>> GetAllPassengersAsync()
+        public async Task<List<GetOneCarPoolPassengerDTO>> GetAllPassengersAsync(PageForkDTO pageKorkDTO)
         {
-            throw new NotImplementedException();
+            return await this._carPoolPassengerRepository.GetAllPassengersAsync(pageKorkDTO);
         }
 
         public Task<List<GetOneCarPoolPassengerDTO>> GetPassengerByDescriptionDateAsync(DateTime dateTime)
