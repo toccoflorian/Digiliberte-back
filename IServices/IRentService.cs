@@ -28,5 +28,6 @@ namespace IServices
         public Task<List<GetOneRentDTO>> GetRentsByStartDateAsync(DateTime date);
         public Task<GetOneRentDTO> GetRentByIdAsync(int rentID);
         public Task<List<GetOneRentDTO>> GetRentByVehicleIdAsync(int vehicleId);
+        public Task<List<GetOneRentByVehicleIdDTO>> GetRentSimpleByVehicleIdAsync(int vehicleId);
     }
 }

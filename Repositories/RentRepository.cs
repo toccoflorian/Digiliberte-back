@@ -176,16 +176,83 @@ namespace Repositories
         /// <returns>Return GetOneRendDTO with the updated Rent</returns>
         public async Task<int?> UpdateRentByIdAsync(UpdateRentDTO updateRentDTO)
         {
-            var updatingRent = await this._context.Rents.FindAsync(updateRentDTO.Id);
+            Rent? updatingRent = await this._context.Rents.FindAsync(updateRentDTO.Id);
 
-            updatingRent.ReturnDateID = updateRentDTO.ReturnDateId;
+            updatingRent!.ReturnDateID = updateRentDTO.ReturnDateId;
             updatingRent.StartDateID = updatingRent.StartDateID;
             updatingRent.StartDate = updatingRent.StartDate;
             updatingRent.ReturnDate = updatingRent.ReturnDate;
 
-            _context.Update(updatingRent);
+            this._context.Rents.Update(updatingRent);
 
-            return await _context.SaveChangesAsync(); ;
+            return await _context.SaveChangesAsync();
+        }
+        /// <summary>
+        /// Get a rent by a Return date Id, might be more optimized then doing it by DateTime 
+        /// </summary>
+        /// <param name="id">the id of the searched date</param>
+        /// <returns> List of GetOneRentDTO</returns>
+        public async Task<List<GetOneRentDTO>> GetRentsByEndDateIdAsync(int id)
+        {
+            return await this._context.Rents
+                .Include(rent => rent.Vehicle)
+                .ThenInclude(vehicle => vehicle.Category)
+                .Include(rent => rent.Vehicle)
+                .ThenInclude(vehicle => vehicle.Brand)
+                .Include(rent => rent.Vehicle)
+                .ThenInclude(vehicle => vehicle.Model)
+                .Include(rent => rent.User)
+                .Include(rent => rent.StartDate)
+                .Include(rent => rent.ReturnDate)
+                .Where(rent => rent.ReturnDateID == id)
+                .Select(rent =>
+                    new GetOneRentDTO
+                    {
+                        Id = rent.Id,
+                        UserId = rent.UserID,
+                        VehiceId = rent.VehicleId,
+                        VehicleInfo = $"{rent.Vehicle.Category.Label}, {rent.Vehicle.Category.SeatsNumber} places, {rent.Vehicle.Brand.Label}, {rent.Vehicle.Model.Label}, {rent.Vehicle.Model.Year}",
+                        Immatriculation = rent.Vehicle.Immatriculation,
+                        UserFirstname = rent.User.Firstname,
+                        UserLastname = rent.User.Lastname,
+                        StartDate = rent.StartDate.Date,
+                        ReturnDate = rent.ReturnDate.Date
+                    })
+                .ToListAsync();
+        }
+        /// <summary>
+        /// Get a rent by a start date Id, might be more optimized then doing it by DateTime 
+        /// </summary>
+        /// <param name="id">the id of the searched date</param>
+        /// <returns> List of GetOneRentDTO</returns>
+        public async Task<List<GetOneRentDTO>> GetRentsByStartDateIdAsync(int id)
+        {
+            return await this._context.Rents
+                .Include(rent => rent.Vehicle)
+                .ThenInclude(vehicle => vehicle.Category)
+                .Include(rent => rent.Vehicle)
+                .ThenInclude(vehicle => vehicle.Brand)
+                .Include(rent => rent.Vehicle)
+                .ThenInclude(vehicle => vehicle.Model)
+                .Include(rent => rent.User)
+                .Include(rent => rent.StartDate)
+                .Include(rent => rent.ReturnDate)
+                .Where(rent=> rent.StartDateID == id)
+                .Select(rent =>
+                    new GetOneRentDTO
+                    {
+                        Id = rent.Id,
+                        UserId = rent.UserID,
+                        VehiceId = rent.VehicleId,
+                        VehicleInfo = $"{rent.Vehicle.Category.Label}, {rent.Vehicle.Category.SeatsNumber} places, {rent.Vehicle.Brand.Label}, {rent.Vehicle.Model.Label}, {rent.Vehicle.Model.Year}",
+                        Immatriculation = rent.Vehicle.Immatriculation,
+                        UserFirstname = rent.User.Firstname,
+                        UserLastname = rent.User.Lastname,
+                        StartDate = rent.StartDate.Date,
+                        ReturnDate = rent.ReturnDate.Date
+                    })
+                .ToListAsync();
+
         }
     }
 }

@@ -6,6 +6,7 @@ using IRepositories;
 using IServices;
 using Microsoft.AspNetCore.Identity;
 using Models;
+using Repositories.Helper;
 
 namespace Services
 {
@@ -16,18 +17,21 @@ namespace Services
         private readonly IUserRepository _userRepository;
         private readonly IDateRepository _dateRepository;
         private readonly UserManager<AppUser> _userManager;
+        private readonly RentHelper _rentHelper;
         public RentService(
             IRentRepository rentRepository, 
             IVehicleRepository vehicleRepository,
             IUserRepository userRepository,
             IDateRepository dateRepository,
-            UserManager<AppUser> userManager)
+            UserManager<AppUser> userManager,
+            RentHelper rentHelper)
         {
             this._rentRepository = rentRepository;
             this._vehicleRepository = vehicleRepository;
             this._userRepository = userRepository;
             this._dateRepository = dateRepository;
             this._userManager = userManager;
+            this._rentHelper = rentHelper;
         }
 
         /// <summary>
@@ -101,10 +105,23 @@ namespace Services
             }
             return rentDTO;
         }
-
-        public Task<List<GetOneRentDTO>> GetRentByVehicleIdAsync(int vehicleId)
+        /// <summary>
+        /// Asynchronous service to getRentSimpleByVehicleId , almost the same as 
+        /// <see cref="GetRentByVehicleIdAsync(int)"/> but returns a Different DTO
+        /// </summary>
+        /// <param name="vehicleId">Id of the looked vehicle</param>
+        /// <returns>Return a List of <see cref="GetOneRentByVehicleIdDTO"/></returns>
+        /// <exception cref="Exception">Exception for id == 0 or <0 , or if no vehicles found</exception>
+        public async Task<List<GetOneRentByVehicleIdDTO>> GetRentSimpleByVehicleIdAsync(int vehicleId)
         {
-            throw new NotImplementedException();
+            if (vehicleId == 0) { throw new Exception("Id can not be 0"); }
+            if(vehicleId < 0) { throw new Exception("Id can't be negative"); }
+
+            List<GetOneRentByVehicleIdDTO> rentList = await _rentRepository.GetRentByVehicleIdAsync(vehicleId);
+            // renvois erreur si liste vide
+            if (rentList == null) { throw new Exception($"No rents found for this vehicle {vehicleId}"); }
+
+            return rentList;
         }
 
         public Task<List<GetOneRentDTO>> GetRentsByDateForkAsync(DateForkDTO dateForkDTO)
@@ -131,7 +148,7 @@ namespace Services
         /// </summary>
         /// <param name="updateRentRequestDTO"></param>
         /// <returns></returns>
-        public async Task<GetOneRentDTO> UpdateRentByIdAsync(UpdateRentRequestDTO updateRentRequestDTO)
+        public async Task<UpdateRentDTO> UpdateRentByIdAsync(UpdateRentRequestDTO updateRentRequestDTO)
         {
             // Check sur la requete et cohérence de la requete
             if(updateRentRequestDTO == null) { throw new Exception("Request cannot be null"); }
@@ -151,15 +168,30 @@ namespace Services
             {
                 throw new Exception("No Rentals found for this Id!");
             }
+            // check si les dates saisis ne coïncident pas avec dates de locations déjà existantes, auquel cas pas de modifications possible
+            if (await this._rentHelper.isVehicleRentedAsync(getRent.VehiceId, updateRentRequestDTO.StartDate, updateRentRequestDTO.ReturnDate))
+            {
+                throw new Exception("The car is rented at the selected dates");
+            }
+
             // check si les dates saisies existent dans la BDD
             int? getStartDateId = await this._dateRepository.GetCloseDateAsync(updateRentRequestDTO.StartDate);
             int? getReturnDateId = await this._dateRepository.GetCloseDateAsync(updateRentRequestDTO.ReturnDate);
+
+            // check if the dates exists in DB within one minutes , if not
+            GetOneDateDTO startDateDTO;
+            GetOneDateDTO returnDateDTO;
+            if (getStartDateId == null || getReturnDateId == null)
+            {
+                startDateDTO = await this._dateRepository.CreateAsync(updateRentRequestDTO.StartDate); 
+                returnDateDTO = await this._dateRepository.CreateAsync(updateRentRequestDTO.ReturnDate);
+            }
+
+
+
             
-            
-
-
-
-            throw new NotImplementedException();
         }
+
+        public Task<List<GetOneRentDTO>> GetRentByVehicleIdAsync(int vehicleId) {  throw new NotImplementedException(); }
     }
 }
