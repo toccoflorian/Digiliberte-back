@@ -148,9 +148,14 @@ namespace Services
             return carpools;
         }
 
-        public Task<GetOneCarPoolWithPassengersDTO> GetCarPoolByRentAsync(int rentID)
+        public async Task<GetOneCarPoolWithPassengersDTO> GetCarPoolByRentAsync(int rentID)
         {
-            throw new NotImplementedException();
+            GetOneCarPoolWithPassengersDTO? carpool = await this._carPoolRepository.GetCarPoolByRentAsync(rentID);
+            if(carpool == null)
+            {
+                throw new Exception("Aucun covoiturage ne correspond à cette location !");
+            }
+            return carpool;
         }
 
         public Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolByStartDateAsync(DateTime date)

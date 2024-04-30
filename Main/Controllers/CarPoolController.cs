@@ -106,6 +106,7 @@ namespace Main.Controllers
         //}
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<GetOneCarPoolWithPassengersDTO>>> GetCarPoolByPassengerAsync()
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
@@ -119,10 +120,19 @@ namespace Main.Controllers
             }
         }
 
-        //public Task<GetOneCarPoolWithPassengersDTO> GetCarPoolByRentAsync(int rentID)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult<GetOneCarPoolWithPassengersDTO>> GetCarPoolByRentAsync(int rentID)
+        {
+            try
+            {
+                return Ok(await this._carPoolService.GetCarPoolByRentAsync(rentID));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         //public Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolByStartDateAsync(DateTime date)
         //{
