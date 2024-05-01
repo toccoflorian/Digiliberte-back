@@ -66,7 +66,7 @@ namespace Main.Controllers
         //}
 
         [HttpGet]
-        //[Authorize]     // ADMIN
+        [Authorize]
         public async Task<ActionResult<List<GetOneCarPoolDTO>>> GetAllCarPoolAsync()
         {
             try
@@ -94,10 +94,24 @@ namespace Main.Controllers
             }
         }
 
-        //public Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolByEndDateAsync(DateTime date)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult<List<GetOneCarPoolWithPassengersDTO>>> GetCarPoolByEndDateAsync(DateTime date, float? marge)
+        {
+            try
+            {
+                return Ok(await this._carPoolService.GetCarPoolByEndDateAsync(
+                    new GetCarpoolByDateDTO
+                    {
+                        Date = date,
+                        Marge = marge == (float)0 ? (float)0.1 : (marge ?? (float)0.1)
+                    }));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
 
         //public Task<List<GetOneCarPoolDTO>> GetCarPoolByPassengerAsync(int carPoolPassengerID)
@@ -134,15 +148,41 @@ namespace Main.Controllers
             }
         }
 
-        //public Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolByStartDateAsync(DateTime date)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        [HttpGet]
+        public async Task<ActionResult<List<GetOneCarPoolWithPassengersDTO>>> GetCarPoolByStartDateAsync(DateTime date, float? marge)
+        {
+            try
+            {
+                return Ok(await this._carPoolService.GetCarPoolByStartDateAsync(
+                    new GetCarpoolByDateDTO
+                    {
+                        Date = date,
+                        Marge = marge == (float)0 ? (float)0.1 : (marge ?? (float)0.1)
+                    }));
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
-        //public Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolsByDateForkAsync(DateForkDTO dateForkDTO)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        [HttpGet]
+        public async Task<ActionResult<List<GetOneCarPoolWithPassengersDTO>>> GetCarPoolsByDateForkAsync(DateTime beginFork, DateTime endFork)
+        {
+            try
+            {
+                return Ok(await this._carPoolService.GetCarPoolsByDateForkAsync(
+                    new DateForkDTO
+                    {
+                        StartDate = new GetOneDateDTO { Id = 1, Date = beginFork },
+                        EndDate = new GetOneDateDTO { Id = 1, Date = endFork }
+                    }));
+            }
+            catch( Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         //public Task<GetOneRentDTO> UpdateCarPoolByIdAsync(int rentID)
         //{

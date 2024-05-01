@@ -132,9 +132,9 @@ namespace Services
             return carPools;
         }
 
-        public Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolByEndDateAsync(DateTime date)
+        public async Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolByEndDateAsync(GetCarpoolByDateDTO dateDTO)
         {
-            throw new NotImplementedException();
+            return await this._carPoolRepository.GetCarPoolByEndDateAsync(dateDTO);
         }
 
         public async Task<List<GetOneCarPoolDTO>> GetCarPoolByPassengerAsync(string userId)
@@ -158,14 +158,14 @@ namespace Services
             return carpool;
         }
 
-        public Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolByStartDateAsync(DateTime date)
+        public async Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolByStartDateAsync(GetCarpoolByDateDTO dateDTO)
         {
-            throw new NotImplementedException();
+            return await this._carPoolRepository.GetCarPoolByStartDateAsync(dateDTO);
         }
 
-        public Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolsByDateForkAsync(DateForkDTO dateForkDTO)
+        public async Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolsByDateForkAsync(DateForkDTO dateForkDTO)
         {
-            throw new NotImplementedException();
+            return await this._carPoolRepository.GetCarPoolsByDateForkAsync (dateForkDTO);
         }
 
         public Task<GetOneRentDTO> UpdateCarPoolByIdAsync(int rentID)
