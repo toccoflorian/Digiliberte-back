@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models;
+using Services;
 using System.Security.Claims;
 
 namespace Main.Controllers
@@ -20,6 +21,11 @@ namespace Main.Controllers
             this._carPoolPassengerService = carPoolPassengerService;
         }
 
+        /// <summary>
+        /// Create a Carpool passenger
+        /// </summary>
+        /// <param name="createCarPoolPassengerDTO"></param>
+        /// <returns></returns>
         [HttpPost]
         [Authorize]
         public async Task<ActionResult<GetOneCarPoolPassengerDTO>> CreateCarPoolPassenger(CreateCarPoolPassengerDTO createCarPoolPassengerDTO)
@@ -40,6 +46,11 @@ namespace Main.Controllers
             }
         }
 
+        /// <summary>
+        /// Delete a passenger of a carpool by the passenger Id
+        /// </summary>
+        /// <param name="deleteCarPoolPassengerDTO"></param>
+        /// <returns></returns>
         [HttpDelete]
         //[Authorize]
         public async Task<ActionResult> DeleteCarPoolPassengerById(DeleteCarpoolPassengerDTO deleteCarPoolPassengerDTO)
@@ -61,7 +72,7 @@ namespace Main.Controllers
 
 
         /// <summary>
-        /// Get All passengers
+        /// Get All passengers of a carpool
         /// </summary>
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
@@ -93,12 +104,18 @@ namespace Main.Controllers
         //    throw new NotImplementedException();
         //}
 
+        /// <summary>
+        /// Get passengers of a carpool by a carpool passenger Id
+        /// </summary>
+        /// <param name="carPoolPassengerID"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<GetOneCarPoolPassengerDTO>> GetPassengerById(int carPoolPassengerID)
         {
             try
             {
                 return Ok(await this._carPoolPassengerService.GetPassengerByIdAsync(carPoolPassengerID));
+
             }
             catch(Exception ex)
             {
@@ -124,10 +141,23 @@ namespace Main.Controllers
             }
         }
 
-        //public Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByUser(string userID)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        /// <summary>
+        /// Get passengers of a carpool by user Id (driver)
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<ActionResult<List<GetOneCarPoolPassengerDTO>>> GetPassengersByUserAsync(string userID)
+        {
+            try
+            {
+                return Ok(await this._carPoolPassengerService.GetPassengersByUserAsync(userID));
+    }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+}
+        }
 
         //public Task<GetOneCarPoolPassengerDTO> UpdateCarPoolPassengerById(int carPoolPassengerId)
         //{
