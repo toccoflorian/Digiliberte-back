@@ -106,18 +106,23 @@ namespace Main.Controllers
             }
         }
 
-        //[HttpGet]
-        //public async Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByCarPoolAsync(int carPoolID)
-        //{
-        //    try
-        //    {
-        //        return Ok(await this._carPoolPassengerService.GetPassengerByCarpoolAsync(carPoolID));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
+        /// <summary>
+        /// Get passengers by carPool id
+        /// </summary>
+        /// <param name="carPoolID"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<ActionResult<List<GetOneCarPoolPassengerDTO>>> GetPassengersByCarPoolAsync(int carPoolID)
+        {
+            try
+            {
+                return Ok(await this._carPoolPassengerService.GetPassengersByCarPoolAsync(carPoolID));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         //public Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByUser(string userID)
         //{

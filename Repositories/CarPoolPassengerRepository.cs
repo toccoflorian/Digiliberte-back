@@ -88,9 +88,30 @@ namespace Repositories
                 .FirstOrDefaultAsync(passenger => passenger.Id == carPoolPassengerID);
         }
 
-        public Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByCarPoolAsync(int carPoolID)
+        /// <summary>
+        /// Get passengers by Carpool Id
+        /// </summary>
+        /// <param name="carPoolID"></param>
+        /// <returns></returns>
+        public async Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByCarPoolAsync(int carPoolID)
         {
-            throw new NotImplementedException();
+            return await this._context.CarPoolPassengers
+                .Where(passenger => passenger.CarPoolID == carPoolID)
+                .Select(passenger =>
+                    new GetOneCarPoolPassengerDTO
+                    {
+                        Id = passenger.Id,
+                        //CarPoolId = passenger.CarPoolID,
+                        Description = passenger.Description,
+                        UserDTO = new GetOneUserDTO
+                        {
+                            Id = passenger.UserID,
+                            Firstname = passenger.User.Firstname,
+                            Lastname = passenger.User.Lastname,
+                            PictureURL = passenger.User.PictureURL
+                        },
+                    })
+                .ToListAsync();
         }
 
         public async Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByUserAsync(string userID)
