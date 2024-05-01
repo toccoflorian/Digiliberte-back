@@ -40,7 +40,8 @@ namespace Main.Controllers
         }
 
         /// <summary>
-        /// Put a Model into the db, use a DTO for update        /// </summary>
+        /// Put a Model into the db, use a DTO for update        
+        /// </summary>
         /// <param name="updateOneModel">DTO of Model for update</param>
         /// <returns>Returns a DTO of the updated Vehicle</returns>
         [HttpPut]
@@ -53,31 +54,9 @@ namespace Main.Controllers
             }catch (Exception ex) { return BadRequest(ex.Message); }
         }
 
-        ///// <summary>
-        ///// Dlete a Model into the db, use a DTO for delete        
-        ///// 
-        ///// /// </summary>
-        ///// <param name="deleteOneModel">DTO of Model for delete</param>
-        ///// <returns>Returns a DTO of the deleted Vehicle</returns>
-        //[HttpDelete]
-        //public async Task<ActionResult<GetOneModelDTO?>> DeleteOneModelByIdAsync(int Id)
-        //{
-        //    var model = await _modelServices.GetOneModelByIdAsync(Id);
-
-        //    if (model != null)
-        //    {
-        //        await _modelServices.DeleteOneModelByIdAsync(Id); 
-        //        return Ok($"Le modèle avec le id : {Id} à été supprimé ");
-        //    }
-        //    else
-        //    {
-        //        return null; // Indique que le modèle n'a pas été trouvé, donc la suppression n'a pas été effectuée
-        //    }
-        //}
-
         /// <summary>
         /// Get a Model By Id into the db, use a Id       
-        /// /// </summary>
+        /// </summary>
         /// <param name="GetOneModelById">DTO of Model for GetOneModel</param>
         /// <returns>Returns a DTO of the GetOneModelById Model</returns>
         [HttpGet]

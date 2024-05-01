@@ -16,10 +16,10 @@ namespace Main.Controllers
         }
 
         /// <summary>
-        /// Create a Category into the db, use a DTO for Create        
+        /// Create a Category into the db, use a DTO for Create   
         /// </summary>
-        /// <param name="updateOneCategory">DTO of Category for update</param>
-        /// <returns>Returns a DTO of the updated category</returns>
+        /// <param name="createOneCategoryDTO"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<GetOneCategoryDTO>> CreateOneCategory(CreateOneCategoryDTO createOneCategoryDTO)
         {
@@ -49,25 +49,9 @@ namespace Main.Controllers
             catch (Exception ex) { return BadRequest(ex.Message); }
         }
 
-        ///// <summary>
-        ///// Dlete a Category into the db, use a DTO for delete        
-        ///// 
-        ///// /// </summary>
-        ///// <param name="deleteOneCategory">DTO of Category for delete</param>
-        ///// <returns>Returns a DTO of the deleted category</returns>
-        //[HttpDelete]
-        //public async Task<ActionResult<GetOneCategoryDTO?>> DeleteOneCategoryByIdAsync(int Id)
-        //{
-        //    try
-        //    {
-        //        return Ok(await _categoryServices.DeleteOneCategoryByIdAsync(Id));
-        //    }
-        //    catch(Exception ex) { return BadRequest(ex.Message) ; }
-        //}
-
         /// <summary>
         /// Get a Category By Id into the db, use a Id       
-        /// /// </summary>
+        /// </summary>
         /// <param name="GetOneCategoryById">DTO of Category for GetOneCategory</param>
         /// <returns>Returns a DTO of the GetOneCategoryById Category</returns>
         [HttpGet]

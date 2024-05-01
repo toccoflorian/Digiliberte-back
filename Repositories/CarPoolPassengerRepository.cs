@@ -111,7 +111,7 @@ namespace Repositories
                     new GetOneCarPoolPassengerDTO
                     {
                         Id = passenger.Id,
-                        //CarPoolId = passenger.CarPoolID,
+                        CarPoolId = passenger.CarPoolID,
                         Description = passenger.Description,
                         UserDTO = new GetOneUserDTO
                         {
