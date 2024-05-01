@@ -1,12 +1,9 @@
 ﻿using DTO.CarPools;
 using DTO.Dates;
 using DTO.Rent;
-using IRepositories;
 using IServices;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Models;
 using System.Security.Claims;
 
 namespace Main.Controllers
@@ -187,9 +184,17 @@ namespace Main.Controllers
             }
         }
 
-        //public Task<GetOneRentDTO> UpdateCarPoolByIdAsync(int rentID)
-        //{
-        //    throw new NotImplementedException();
-        //} public    
+        [HttpPut]
+        public async Task<ActionResult<GetOneRentDTO>> UpdateCarPoolByIdAsync(UpdateOneCarPoolDTO carpoolDTO)
+        {
+            try
+            {
+                return Ok(await this._carPoolService.UpdateCarPoolByIdAsync(carpoolDTO));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
