@@ -99,9 +99,14 @@ namespace Services
             return carPoolPassengerDTO;
         }
 
-        public Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByCarPoolAsync(int carPoolID)
+        public async Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByCarPoolAsync(int carPoolID)
         {
-            throw new NotImplementedException();
+            List<GetOneCarPoolPassengerDTO>? carPoolPassengerDTO = await this._carPoolPassengerRepository.GetPassengersByCarPoolAsync(carPoolID);
+            if (carPoolPassengerDTO == null)
+            {
+                throw new Exception("Aucun covoiturage ne porte cette Id !");
+            }
+            return carPoolPassengerDTO;
         }
 
         public Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByUserAsync(string userID)
