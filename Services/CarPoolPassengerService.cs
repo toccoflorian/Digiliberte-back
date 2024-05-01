@@ -20,7 +20,7 @@ namespace Services
 
         public async Task<GetOneCarPoolPassengerDTO> CreateCarPoolPassengerAsync(CreateCarPoolPassengerDTO createCarPoolPassengerDTO)
         {
-            CarPool? carpoolDTO = await this._carPoolRepository.GetCarPoolByIdAsync(createCarPoolPassengerDTO.CarPoolId);
+            CarPool? carpoolDTO = await this._carPoolRepository.GetCarPoolTypeByIdAsync(createCarPoolPassengerDTO.CarPoolId);
             if(carpoolDTO == null)
             {
                 throw new Exception("Aucune location ne correspond !");
@@ -47,7 +47,7 @@ namespace Services
             {
                 throw new Exception("Aucun covoiturage ne correspond à cette id !");
             }
-            CarPool? carpool = await this._carPoolRepository.GetCarPoolByIdAsync(carpoolPassenger.CarPoolId);
+            CarPool? carpool = await this._carPoolRepository.GetCarPoolTypeByIdAsync(carpoolPassenger.CarPoolId);
             if(deleteCarPoolPassengerDTO.ConnectedUserId != carpoolPassenger.UserDTO.Id
                 &&
                 deleteCarPoolPassengerDTO.ConnectedUserId != carpool!.Rent.UserID

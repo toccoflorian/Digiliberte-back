@@ -97,13 +97,13 @@ namespace Services
             // création du covoiturage
             int carpoolId = await this._carPoolRepository.CreateCarpoolAsync(createOneCarPoolDTO);
 
-            CarPool carpool = await this._carPoolRepository.GetCarPoolByIdAsync(carpoolId);
+            CarPool carpool = await this._carPoolRepository.GetCarPoolTypeByIdAsync(carpoolId);
             return new GetOneCarPoolWithPassengersDTO().MapAsync(carpool);
         }
 
         public async Task DeleteCarPoolByIdAsync(int carpoolId)
         {
-            CarPool? carpool = await this._carPoolRepository.GetCarPoolByIdAsync(carpoolId);
+            CarPool? carpool = await this._carPoolRepository.GetCarPoolTypeByIdAsync(carpoolId);
             if (carpool == null)
             {
                 throw new Exception("Aucun convoiturage ne porte cette id !");
@@ -117,7 +117,7 @@ namespace Services
 
         public async Task<GetOneCarPoolWithPassengersDTO> GetCarPoolByIdAsync(int carPoolID)
         {
-            CarPool? carpool = await this._carPoolRepository.GetCarPoolByIdAsync(carPoolID);
+            CarPool? carpool = await this._carPoolRepository.GetCarPoolTypeByIdAsync(carPoolID);
             if(carpool == null)
             {
                 throw new Exception("Aucun covoiturage ne porte cette id !");
@@ -156,7 +156,7 @@ namespace Services
             List<GetOneCarPoolDTO> carpools = new List<GetOneCarPoolDTO>();
             foreach (GetOneCarPoolPassengerDTO passenger in passengers)
             {
-                CarPool carpool = (await this._carPoolRepository.GetCarPoolByIdAsync(passenger.CarPoolId))!;
+                CarPool carpool = (await this._carPoolRepository.GetCarPoolTypeByIdAsync(passenger.CarPoolId))!;
                 carpools.Add(new GetOneCarPoolWithPassengersDTO().MapAsync(carpool));
             }
             return carpools;
@@ -184,7 +184,7 @@ namespace Services
 
         public async Task<GetOneCarPoolDTO> UpdateCarPoolByIdAsync(UpdateOneCarPoolDTO carpoolDTO)
         {
-            CarPool? carpool = await this._carPoolRepository.GetCarPoolByIdAsync(carpoolDTO.Id);
+            CarPool? carpool = await this._carPoolRepository.GetCarPoolTypeByIdAsync(carpoolDTO.Id);
 
             if(carpool == null)
             {
@@ -238,7 +238,7 @@ namespace Services
             }
 
             await this._carPoolRepository.UpdateCarPoolByIdAsync(carpool);
-            return new GetOneCarPoolDTO().MapAsync(await this._carPoolRepository.GetCarPoolByIdAsync(carpoolDTO.Id));
+            return (await this._carPoolRepository.GetCarPoolByIdAsync(carpoolDTO.Id))!;
         }
     }
 }

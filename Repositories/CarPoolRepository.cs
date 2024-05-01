@@ -50,54 +50,12 @@ namespace Repositories
 
         public async Task<GetOneCarPoolWithPassengersDTO?> GetCarPoolByIdAsync(int carPoolID)
         {
-            return await this._context.CarPools
-                .Select(carpool =>
-                    new GetOneCarPoolWithPassengersDTO
-                    {
-                        CarPoolId = carpool.Id,
-                        RentId = carpool.RentId,
-                        UserId = carpool.Rent.UserID,
-                        VehicleId = carpool.Rent.VehicleId,
-                        VehicleBrand = carpool.Rent.Vehicle.Brand.Label,
-                        VehicleModel = carpool.Rent.Vehicle.Model.Label,
-                        VehicleMotorization = carpool.Rent.Vehicle.Motorization.Label,
-                        VehicleImmatriculation = carpool.Rent.Vehicle.Immatriculation,
-                        SeatsTotalNumber = carpool.Rent.Vehicle.Category.SeatsNumber,
-                        FreeSeats = carpool.Rent.Vehicle.Category.SeatsNumber - (carpool.carPoolPassengers != null ? carpool.carPoolPassengers.Count() : 0),
-                        CO2 = carpool.Rent.Vehicle.Model.CO2,
-                        StartDate = carpool.StartDate.Date,
-                        EndDate = carpool.EndDate.Date,
-                        StartLocalization = new LocalizationDTO
-                        {
-                            Latitude = carpool.StartLocalization.Latitude,
-                            Logitude = carpool.StartLocalization.Longitude,
-                        },
-                        EndLocalization = new LocalizationDTO
-                        {
-                            Latitude = carpool.EndLocalization.Latitude,
-                            Logitude = carpool.EndLocalization.Longitude,
-                        },
-                        Passengers = carpool.carPoolPassengers
-                        .Select(passenger =>
-                            new GetOneCarPoolPassengerDTO
-                            {
-                                Id = passenger.Id,
-                                CarPoolId = carpool.Id,
-                                Description = passenger.Description,
-                                UserDTO = new GetOneUserDTO
-                                {
-                                    Id = passenger.UserID,
-                                    Firstname = passenger.User.Firstname,
-                                    Lastname = passenger.User.Lastname,
-                                    PictureURL = passenger.User.PictureURL
-                                }
-                            })
-                        .ToList()
-                    })
-                .FirstOrDefaultAsync(carpool => carpool.CarPoolId == carPoolID);
+            CarPool? carpool =  await this._context.CarPools
+                .FirstOrDefaultAsync(carpool => carpool.Id == carPoolID);
+            return carpool == null ? null : new GetOneCarPoolWithPassengersDTO().MapAsync(carpool);
         }
 
-        public async Task<CarPool?> GetCarPoolByIdAsyncNew(int carPoolID)
+        public async Task<CarPool?> GetCarPoolTypeByIdAsync(int carPoolID)
         {
             return await this._context.CarPools
                 .Include(carpool => carpool.Rent)
