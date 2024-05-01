@@ -35,6 +35,11 @@ namespace Repositories
             return await this._context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Get all passengers of a carpool
+        /// </summary>
+        /// <param name="pageForkDTO"></param>
+        /// <returns></returns>
         public async Task<List<GetOneCarPoolPassengerDTO>> GetAllPassengersAsync(PageForkDTO pageForkDTO)
         {
             return await this._context.CarPoolPassengers
@@ -67,6 +72,11 @@ namespace Repositories
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Get passengers of a carpool by a carpool passenger Id
+        /// </summary>
+        /// <param name="carPoolPassengerID"></param>
+        /// <returns></returns>
         public async Task<GetOneCarPoolPassengerDTO?> GetPassengerByIdAsync(int carPoolPassengerID)
         {
             return await this._context.CarPoolPassengers
@@ -89,7 +99,7 @@ namespace Repositories
         }
 
         /// <summary>
-        /// Get passengers by Carpool Id
+        /// Get passengers of a carpool by Carpool Id
         /// </summary>
         /// <param name="carPoolID"></param>
         /// <returns></returns>
@@ -114,6 +124,11 @@ namespace Repositories
                 .ToListAsync();
         }
 
+        /// <summary>
+        /// Get carpool passengers by user Id (driver) 
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
         public async Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByUserAsync(string userID)
         {
             return await this._context.CarPoolPassengers

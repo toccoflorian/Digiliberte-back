@@ -84,34 +84,76 @@ namespace Services
         }
 
         /// <summary>
-        /// Get Passenger by id
+        /// Get a Passenger by id
         /// </summary>
         /// <param name="carPoolPassengerID"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
         public async Task<GetOneCarPoolPassengerDTO> GetPassengerByIdAsync(int carPoolPassengerID)
         {
+            if(carPoolPassengerID == ' ')
+            {
+                throw new Exception("A carPool passenger iD must be provided ! ");
+            }
+            if(carPoolPassengerID < 0)
+            {
+                throw new Exception("A valid carPool passenger Id sould be provided ! ");
+            }
             GetOneCarPoolPassengerDTO? carPoolPassengerDTO = await this._carPoolPassengerRepository.GetPassengerByIdAsync(carPoolPassengerID);
             if(carPoolPassengerDTO == null )
             {
-                throw new Exception("Aucun covoiturage ne porte cette Id !");
+                throw new Exception("No passengers was found!");
             }
             return carPoolPassengerDTO;
         }
 
+        /// <summary>
+        /// Get passengers of a carpool by carpoolID 
+        /// </summary>
+        /// <param name="carPoolID"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByCarPoolAsync(int carPoolID)
         {
+            if(carPoolID < 0)
+            {
+                throw new Exception("A valid carPoolID sould be provided");
+            }
+            if(carPoolID == ' ') 
+            { 
+                throw new Exception("A corPoolID sould be provided");
+            }
             List<GetOneCarPoolPassengerDTO>? carPoolPassengerDTO = await this._carPoolPassengerRepository.GetPassengersByCarPoolAsync(carPoolID);
             if (carPoolPassengerDTO == null)
             {
-                throw new Exception("Aucun covoiturage ne porte cette Id !");
+                throw new Exception("No Carpool with this id was found");
             }
             return carPoolPassengerDTO;
         }
 
-        public Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByUserAsync(string userID)
+        /// <summary>
+        /// Get passengers by user Id
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByUserAsync(string userID)
         {
-            throw new NotImplementedException();
+            if(userID == null)
+            {
+                throw new Exception("A user Id must be provided");
+            }
+            if(userID.Length == 0)
+            {
+                throw new Exception("A correct userId should be provided");
+            }
+
+            List<GetOneCarPoolPassengerDTO>? carPoolPassengerDTO = await this._carPoolPassengerRepository.GetPassengersByUserAsync(userID);
+            if (carPoolPassengerDTO == null)
+            {
+                throw new Exception("No passenger with this id was found");
+            }
+            return carPoolPassengerDTO;
         }
 
         public Task<GetOneCarPoolPassengerDTO> UpdateCarPoolPassengerByIdAsync(int carPoolPassengerId)
