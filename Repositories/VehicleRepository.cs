@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Utils.Enum;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Repositories
 {
@@ -27,8 +28,8 @@ namespace Repositories
         /// <summary>
         /// Create a Vehicle Repository
         /// </summary>
-        /// <param name="createVehicleDTO">Gives a DTO as parameter with only needed values</param>
-        /// <returns>Return Get One vehicle DTO</returns>
+        /// <param name="createVehicleDTO"></param>
+        /// <returns></returns>
         public async Task<GetOneVehicleDTO?> CreateVehicleAsync(CreateVehicleDTO createVehicleDTO)
         {
             //Create the vehicle Based on CreateDTO
@@ -57,8 +58,9 @@ namespace Repositories
         /// <summary>
         /// Get a vehicle by immat , used to know if immat exists already
         /// </summary>
-        /// <param name="immat">string</param>
-        /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
+        /// <param name="immat"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<GetOneVehicleDTO?> GetVehicleByImmatAsync(string immat)
         {
             GetOneVehicleDTO? vehicleDTO = await _context.Vehicles
@@ -80,10 +82,18 @@ namespace Repositories
                         Immatriculation = v.Immatriculation
                     })
                 .FirstOrDefaultAsync(vehicle => vehicle.Immatriculation.ToUpper() == immat.ToUpper());
-            if (vehicleDTO != null && immat =="" && immat == null)
+            if (vehicleDTO != null)
             {
                 // recupreration du nom de la couleur - Important
                 vehicleDTO.Color = Enum.GetName(typeof(ColorEnum), int.Parse(vehicleDTO.Color));
+            }
+            if(immat == null)
+            {
+                 throw new Exception("A correct immatriculation must be provided");
+            }
+            if(immat == "")
+            {
+                throw new Exception("An immatriculation must be provided");
             }
             return vehicleDTO;
         }
@@ -91,8 +101,11 @@ namespace Repositories
         /// <summary>
         /// Get a vehicle by motorization , used to know if immat exists already
         /// </summary>
-        /// <param name="immat">string</param>
-        /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
+        /// <param name="motorizationId"></param>
+        /// <param name="paginationIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<List<GetOneVehicleDTO>> GetVehiclesByMotorizationAsync(int motorizationId, int paginationIndex = 0, int pageSize = 10)
         {
             // Interrogez la base de données pour obtenir les véhicules avec l'ID de l'état spécifié
@@ -129,19 +142,35 @@ namespace Repositories
                 Immatriculation = v.Immatriculation
 
             }).ToList();
-            if (vehiclesDTOs != null && motorizationId < 0 && motorizationId == null && paginationIndex < 0)
+            if (vehiclesDTOs != null  && paginationIndex < 0)
             {
                 // recupreration du nom de la couleur - Important
                 //vehiclesDTOs.Color = Enum.GetName(typeof(ColorEnum), int.Parse(vehiclesDTOs.Color));
+            }
+            if(motorizationId == ' ')
+            {
+                throw new Exception("A correct motorizationId must be provided");
+            }
+            if(motorizationId < 0)
+            {
+                throw new Exception("A correct motorizationId must be provided");
+            }
+            if(paginationIndex < 0)
+            {
+                throw new Exception("PaginationIndex Error");
+            }
+            if (pageSize < 0)
+            {
+                throw new Exception("PageSize Error");
             }
             return vehiclesDTOs;
         }
 
         /// <summary>
-        /// Get a vehicle by id , used to know if immat exists already
+        /// Update a vehicle by id
         /// </summary>
-        /// <param name="immat">string</param>
-        /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
+        /// <param name="updateOneVehicleDTO"></param>
+        /// <returns></returns>
         public async Task UpdateVehicleByIdAsync(UpdateOneVehicleDTO updateOneVehicleDTO)
         {
             Vehicle vehicle = (await this._context.Vehicles.FindAsync(updateOneVehicleDTO.VehicleId))!;
@@ -159,8 +188,8 @@ namespace Repositories
         /// <summary>
         /// Get a vehicle by id
         /// </summary>
-        /// <param name="id">string</param>
-        /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<GetOneVehicleDTO?> GetVehicleByIdAsync(int id)
         {
             GetOneVehicleDTO? vehicleDTO = await this._context.Vehicles
@@ -193,15 +222,19 @@ namespace Repositories
                 // recupreration du nom de la couleur - Important
                 vehicleDTO.Color = Enum.GetName(typeof(ColorEnum), int.Parse(vehicleDTO.Color));
             }
+            if (id < 0)
+            {
+                throw new Exception("A correct Id should be provided");
+            }
+            if (id == ' ')
+            {
+                throw new Exception("A Id should be provided");
+            }
+
             return vehicleDTO;
         }
 
         public Task<List<GetOneVehicleDTO>> GetVehiclesByLocalizationAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task DeleteVehicleByIdAsync(int id)
         {
             throw new NotImplementedException();
         }
@@ -212,10 +245,13 @@ namespace Repositories
         }
 
         /// <summary>
-        /// Get a vehicle by state , used to know if immat exists already
+        /// Get a vehicle by state , used to know if state exists already
         /// </summary>
-        /// <param name="immat">string</param>
-        /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
+        /// <param name="stateId"></param>
+        /// <param name="paginationIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         public async Task<List<GetOneVehicleDTO>> GetVehiclesByStateAsync(int stateId, int paginationIndex = 0, int pageSize = 10)
         {
             // Interrogez la base de données pour obtenir les véhicules avec l'ID de l'état spécifié
@@ -252,24 +288,37 @@ namespace Repositories
                 Immatriculation = v.Immatriculation
 
             }).ToList();
-            if (vehicleDTO == null && stateId < 0 && stateId == null && paginationIndex < 0)
+            if (vehicleDTO == null && stateId < 0 && stateId == null)
             {
                 throw new NotImplementedException();
+            }
+            if (stateId < 0)
+            {
+                throw new Exception("A correct stateId should be provided");
+            }
+            if (stateId == ' ')
+            {
+                throw new Exception("A correct stateId should be provided");
+            }
+            if (paginationIndex < 0)
+            {
+                throw new Exception("PaginationIndex Error");
+            }
+            if (pageSize < 0)
+            {
+                throw new Exception("PageSige Error");
             }
             return vehicleDTO;
         }
 
-
-        public Task<List<GetOneVehicleDTO>> GetVehiclesByMotorizationAsync(int motorizationId)
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
-        /// Get a vehicle by category , used to know if immat exists already
+        /// Get a vehicle by category , used to know if category exists already
         /// </summary>
-        /// <param name="immat">string</param>
-        /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
+        /// <param name="categoryId"></param>
+        /// <param name="paginationIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         public async Task<List<GetOneVehicleDTO>> GetVehiclesByCategoryAsync(int categoryId, int paginationIndex = 0, int pageSize = 10)
         {
                 // Interrogez la base de données pour obtenir les véhicules avec l'ID de l'état spécifié
@@ -307,12 +356,36 @@ namespace Repositories
 
                 }).ToList();
 
-            if(vehiclesDTOs == null && categoryId < 0 && categoryId == null && paginationIndex < 0) { 
+            if(vehiclesDTOs == null && categoryId < 0 && categoryId == null) { 
                 throw new NotImplementedException();
-        }
-                return vehiclesDTOs;
+            }
+            if (categoryId < 0)
+            {
+                throw new Exception("A correct categoryId should be provided");
+            }
+            if (categoryId == ' ')
+            {
+                throw new Exception("A categoryId should be provided");
+            }
+            if (paginationIndex < 0)
+            {
+                throw new Exception("PaginationIndex Error");
+            }
+            if (pageSize < 0)
+            {
+                throw new Exception("PageSige Error");
+            }
+            return vehiclesDTOs;
         }
 
+        /// <summary>
+        /// Get a vehicle by Brand , used to know if brand exists already
+        /// </summary>
+        /// <param name="brandId"></param>
+        /// <param name="paginationIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         public async Task<List<GetOneVehicleDTO>> GetVehiclesByBrandAsync(int brandId, int paginationIndex = 0, int pageSize = 10)
         {
             // Interrogez la base de données pour obtenir les véhicules avec l'ID de l'état spécifié
@@ -350,13 +423,37 @@ namespace Repositories
 
             }).ToList();
 
-            if(vehiclesDTOs == null && brandId < 0 && brandId == null && paginationIndex < 0)
+            if(vehiclesDTOs == null)
             {
                 throw new NotImplementedException();
             }
-                return vehiclesDTOs;
+            if (brandId <0)
+            {
+                throw new Exception("A correct brandId should be provided");
+            }
+            if (brandId ==' ')
+            {
+                throw new Exception("A brandlId should be provided");
+            }
+            if (paginationIndex < 0)
+            {
+                throw new Exception("PaginationIndex Error");
+            }
+            if (pageSize < 0)
+            {
+                throw new Exception("PageSige Error");
+            }
+            return vehiclesDTOs;
         }
 
+        /// <summary>
+        /// Get a vehicle by model , used to know if model exists already
+        /// </summary>
+        /// <param name="modelId"></param>
+        /// <param name="paginationIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         public async Task<List<GetOneVehicleDTO>> GetVehiclesByModelAsync(int modelId, int paginationIndex = 0, int pageSize = 10)
         {
 
@@ -394,9 +491,25 @@ namespace Repositories
                 Immatriculation = v.Immatriculation
 
             }).ToList();
-            if (vehiclesDTOs== null && modelId <0 && modelId == null && paginationIndex <0)
+            if (vehiclesDTOs== null &&  paginationIndex <0)
             {
                 throw new NotImplementedException();
+            }
+            if(modelId < 0)
+            {
+                throw new Exception("A correct modelId should be provided");
+            }
+            if (modelId == ' ')
+            {
+                throw new Exception("A modelId should be provided");
+            }
+            if (paginationIndex < 0)
+            {
+                throw new Exception("PaginationIndex Error");
+            }
+            if (pageSize < 0)
+            {
+                throw new Exception("PageSige Error");
             }
             return vehiclesDTOs;
             
@@ -422,6 +535,13 @@ namespace Repositories
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Get All Vehicles
+        /// </summary>
+        /// <param name="paginationIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         public async Task<List<GetOneVehicleDTO>> GetAllVehiclesAsync(int paginationIndex = 0, int pageSize = 10)
         {
             // Interrogez la base de données pour obtenir toutes les vehicles
@@ -457,53 +577,73 @@ namespace Repositories
                 Immatriculation = v.Immatriculation
 
             }).ToList();
-            if(vehiclesDTOs == null && paginationIndex < 0)
+            if(vehiclesDTOs == null)
             {
-                throw new NotImplementedException();
+                throw new Exception("No Vehicle found");
+            }
+            if(paginationIndex < 0 )
+            {
+                throw new Exception( "PaginationIndex Error");
+            }
+            if(pageSize < 0)
+            {
+                throw new Exception("PageSige Error");
             }
             return vehiclesDTOs;
             
         }
 
-        //public async Task<List<GetOneVehicleDTO>> GetVehicleByIdWithRentAsync(int vehicleId)
-        //{
-        //        var vehiclesWithRent = await _context.Vehicles
-        //     .Select(v => new GetOneVehicleWithRentDTO
-        //     {
-        //         VehicleId = v.Id,
-        //         BrandName = v.Brand.Label,
-        //         ModelName = v.Model.Label,
-        //         CategoryName = v.Category.Label,
-        //         MotorizationName = v.Motorization.Label,
-        //         StateName = v.State.Label,
-        //         PictureUrl = v.PictureURL,
-        //         Localization = new LocalizationDTO
-        //         {
-        //             Latitude = 1.5484584,        // données en dur !!!
-        //             Logitude = 2.4949445
-        //         },
-        //         SeatsNumber = v.Category.SeatsNumber,
-        //         Color = v.ColorId.ToString(),
-        //         CO2 = v.Model.CO2,
-        //         ModelYear = v.Model.Year,
-        //         Immatriculation = v.Immatriculation,
-                 
-        //         Rents = v.Rents.Select(r => new GetOneRentDTO
-        //         {
-        //             Id = r.Id,
-        //             UserId=r.User.Id,
-        //             VehiceId=r.VehicleId,
-        //             VehicleInfo=r.Vehicle.State.ToString(),
-        //             Immatriculation=r.Vehicle.Immatriculation,
-        //             StartDate=r.StartDate.Date,
-        //             ReturnDate=r.ReturnDate.Date,
-        //             UserFirstname=r.User.Firstname,
-        //             UserLastname=r.User.Lastname,
-        //         }).ToList()
-        //     })
-        //             .ToListAsync();
+        /// <summary>
+        /// Get a list a vehicle
+        /// </summary>
+        /// <param name="vehicleId"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<List<GetOneVehicleWithRentDTO>> GetVehicleByIdWithRentAsync(int vehicleId)
+        {
+            var vehiclesWithRent = await _context.Vehicles
+                .Where(v => v.Id == vehicleId)
+                .Select(v => new GetOneVehicleWithRentDTO
+                {
+                    VehicleId = v.Id,
+                    BrandName = v.Brand.Label,
+                    ModelName = v.Model.Label,
+                    CategoryName = v.Category.Label,
+                    MotorizationName = v.Motorization.Label,
+                    StateName = v.State.Label,
+                    PictureUrl = v.PictureURL,
+                    Localization = new LocalizationDTO
+                    {
+                        Latitude = v.LocalizationID , 
+                        Logitude = v.LocalizationID,
+                    },
+                    SeatsNumber = v.Category.SeatsNumber,
+                    Color = v.ColorId.ToString(),
+                    CO2 = v.Model.CO2,
+                    ModelYear = v.Model.Year,
+                    Immatriculation = v.Immatriculation,
+                    Rents = v.Rents.Select(r => new GetOneRentDTO
+                    {
+                        Id = r.Id,
+                        UserId = r.User.Id,
+                        VehiceId = r.VehicleId,
+                        //VehicleInfo = r.Vehicle.State.ToString(),
+                        Immatriculation = r.Vehicle.Immatriculation,
+                        StartDate = r.StartDate.Date,
+                        ReturnDate = r.ReturnDate.Date,
+                        UserFirstname = r.User.Firstname,
+                        UserLastname = r.User.Lastname
+                    }).ToList()
+                })
+                .ToListAsync();
 
-        //        return vehiclesWithRent;
+            if (vehiclesWithRent == null)
+            {
+                throw new NotImplementedException();
+            }
+
+            return vehiclesWithRent;
         }
+    }
     }
 
