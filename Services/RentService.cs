@@ -7,6 +7,7 @@ using IServices;
 using Microsoft.AspNetCore.Identity;
 using Models;
 using Repositories.Helper;
+using System.Data;
 
 namespace Services
 {
@@ -19,7 +20,7 @@ namespace Services
         private readonly UserManager<AppUser> _userManager;
         private readonly RentHelper _rentHelper;
         public RentService(
-            IRentRepository rentRepository, 
+            IRentRepository rentRepository,
             IVehicleRepository vehicleRepository,
             IUserRepository userRepository,
             IDateRepository dateRepository,
@@ -41,18 +42,18 @@ namespace Services
         /// <returns>the created rent formated with GetOneRentDTO</returns>
         public async Task<GetOneRentDTO> CreateOneRentAsync(CreateRentDTO createOneRentDTO)
         {
-            if(createOneRentDTO.StartDate <  DateTime.Now)
+            if (createOneRentDTO.StartDate < DateTime.Now)
             {
                 throw new Exception("La date de début de reservation dois être dans le futur !");
             }
-            if(createOneRentDTO.ReturnDate <= createOneRentDTO.StartDate)
+            if (createOneRentDTO.ReturnDate <= createOneRentDTO.StartDate)
             {
                 throw new Exception("La date de retour doit être superieur à la date de début !");
             }
 
             // récuperation des informations de Vehicle
             GetOneVehicleDTO? vehicleDTO = await this._vehicleRepository.GetVehicleByIdAsync(createOneRentDTO.VehiceId);
-            if(vehicleDTO == null)
+            if (vehicleDTO == null)
             {
                 throw new Exception("Aucun véhicule ne correspond à l'id spécifier !");
             }
@@ -61,7 +62,7 @@ namespace Services
 
             // récuperation des informations de User
             GetOneUserDTO? userDTO = await this._userRepository.GetUserByIdAsync(createOneRentDTO.UserID);
-            if(userDTO == null)
+            if (userDTO == null)
             {
                 throw new Exception("L'utilisateur est introuvable !");
             }
@@ -71,7 +72,7 @@ namespace Services
             // création des DatesClass et récuperation des id
             GetOneDateDTO startDateDTO = await this._dateRepository.CreateAsync(createOneRentDTO.StartDate);
             GetOneDateDTO returnDateDTO = await this._dateRepository.CreateAsync(createOneRentDTO.ReturnDate);
-            createOneRentDTO.StartDateId  = startDateDTO.Id;
+            createOneRentDTO.StartDateId = startDateDTO.Id;
             createOneRentDTO.ReturnDateId = returnDateDTO.Id;
 
             return await this._rentRepository.CreateOneRentAsync(createOneRentDTO);
@@ -115,7 +116,7 @@ namespace Services
         public async Task<List<GetOneRentByVehicleIdDTO>> GetRentSimpleByVehicleIdAsync(int vehicleId)
         {
             if (vehicleId == 0) { throw new Exception("Id can not be 0"); }
-            if(vehicleId < 0) { throw new Exception("Id can't be negative"); }
+            if (vehicleId < 0) { throw new Exception("Id can't be negative"); }
 
             List<GetOneRentByVehicleIdDTO> rentList = await _rentRepository.GetRentByVehicleIdAsync(vehicleId);
             // renvois erreur si liste vide
@@ -151,25 +152,25 @@ namespace Services
         public async Task<GetOneRentDTO> UpdateRentByIdAsync(UpdateRentRequestDTO updateRentRequestDTO)
         {
             // Check sur la requete et cohérence de la requete
-            if(updateRentRequestDTO == null) { throw new Exception("Request cannot be null"); }
-            if(updateRentRequestDTO.Id == 0) { throw new Exception("Id cannot be 0"); }
-            if(updateRentRequestDTO.Id < 0) { throw new Exception("Id cannot be < 0");  }
-            if(updateRentRequestDTO.ReturnDate > updateRentRequestDTO.StartDate) { throw new Exception("New Return Date cannot be less than new Start Date"); }
-            if(updateRentRequestDTO.ReturnDate == updateRentRequestDTO.StartDate) { throw new Exception("New dates cannot be the sames"); }
-            if((updateRentRequestDTO.ReturnDate - updateRentRequestDTO.StartDate) > TimeSpan.FromDays(60)) { throw new Exception("Rent duration cannot exceed 2 months!"); }
-            if((updateRentRequestDTO.ReturnDate - updateRentRequestDTO.StartDate) < TimeSpan.FromMinutes(30)) { throw new Exception("Your rent must be at least 30 minutes"); }
-            if(updateRentRequestDTO.StartDate <= DateTime.Now) { throw new Exception("The new Start Date must be in the future"); }
-            if(updateRentRequestDTO.ReturnDate <= DateTime.Now) { throw new Exception("The new Return Date must be in the future"); }
+            if (updateRentRequestDTO == null) { throw new Exception("Request cannot be null"); }
+            if (updateRentRequestDTO.Id == 0) { throw new Exception("Id cannot be 0"); }
+            if (updateRentRequestDTO.Id < 0) { throw new Exception("Id cannot be < 0"); }
+            if (updateRentRequestDTO.ReturnDate > updateRentRequestDTO.StartDate) { throw new Exception("New Return Date cannot be less than new Start Date"); }
+            if (updateRentRequestDTO.ReturnDate == updateRentRequestDTO.StartDate) { throw new Exception("New dates cannot be the sames"); }
+            if ((updateRentRequestDTO.ReturnDate - updateRentRequestDTO.StartDate) > TimeSpan.FromDays(60)) { throw new Exception("Rent duration cannot exceed 2 months!"); }
+            if ((updateRentRequestDTO.ReturnDate - updateRentRequestDTO.StartDate) < TimeSpan.FromMinutes(30)) { throw new Exception("Your rent must be at least 30 minutes"); }
+            if (updateRentRequestDTO.StartDate <= DateTime.Now) { throw new Exception("The new Start Date must be in the future"); }
+            if (updateRentRequestDTO.ReturnDate <= DateTime.Now) { throw new Exception("The new Return Date must be in the future"); }
 
 
             // check si le rentEntity est valide / pas nul
-            GetOneRentDTO? getRent = await this._rentRepository.GetRentByIdAsync(updateRentRequestDTO.Id);
-            if (getRent == null)
+            GetOneRentDTO? getRentOld = await this._rentRepository.GetRentByIdAsync(updateRentRequestDTO.Id);
+            if (getRentOld == null)
             {
                 throw new Exception("No Rentals found for this Id!");
             }
             // check si les dates saisis ne coïncident pas avec dates de locations déjà existantes, auquel cas pas de modifications possible
-            if (await this._rentHelper.isVehicleRentedAsync(getRent.VehiceId, updateRentRequestDTO.StartDate, updateRentRequestDTO.ReturnDate))
+            if (await this._rentHelper.isVehicleRentedAsync(getRentOld.VehiceId, updateRentRequestDTO.StartDate, updateRentRequestDTO.ReturnDate))
             {
                 throw new Exception("The car is rented at the selected dates");
             }
@@ -178,20 +179,45 @@ namespace Services
             int? getStartDateId = await this._dateRepository.GetCloseDateAsync(updateRentRequestDTO.StartDate);
             int? getReturnDateId = await this._dateRepository.GetCloseDateAsync(updateRentRequestDTO.ReturnDate);
 
-            // check if the dates exists in DB within one minutes , if not
-            GetOneDateDTO startDateDTO;
-            GetOneDateDTO returnDateDTO;
+            DateTime beginDateResult = updateRentRequestDTO.StartDate; // creation de date pour etre reutilisé plus tard dans isRented
+            DateTime endDateResult = updateRentRequestDTO.ReturnDate;
+
+            // check if the dates exists in DB within one minutes , if not creates them
             if (getStartDateId == null || getReturnDateId == null)
             {
-                startDateDTO = await this._dateRepository.CreateAsync(updateRentRequestDTO.StartDate); 
-                returnDateDTO = await this._dateRepository.CreateAsync(updateRentRequestDTO.ReturnDate);
+                GetOneDateDTO startDateDTO = await this._dateRepository.CreateAsync(updateRentRequestDTO.StartDate);
+                GetOneDateDTO returnDateDTO = await this._dateRepository.CreateAsync(updateRentRequestDTO.ReturnDate);
+                beginDateResult = startDateDTO.Date;
+                endDateResult = returnDateDTO.Date;
+                getStartDateId = startDateDTO.Id;
+                getReturnDateId = returnDateDTO.Id;
             }
 
+            // check si le vehicule est loué aux dates choisis, si les dates existe, utilise les existante, sinon prend les nouvelles.
+            bool isRented = await _rentHelper.isVehicleRentedAsync(getRentOld.VehiceId, beginDateResult, endDateResult);
 
 
-            throw new NotImplementedException();
+
+            if (isRented) // si loué, retourne vrai, donc exception !
+            {
+                throw new Exception("Le véhicule est loué aux dates choisis !");
+            }
+            // SI TOUT EST BON , ALORS ON UPDATE !
+            // Mapping sur UpdateRentDTO
+            UpdateRentDTO UpdateRentDTO = new UpdateRentDTO
+            {
+                Id = updateRentRequestDTO.Id,
+                StartDateId = (int)getStartDateId,
+                ReturnDateId = (int)getReturnDateId,
+                StartDate = beginDateResult,
+                ReturnDate = endDateResult,
+            };
+            await this._rentRepository.UpdateRentByIdAsync(UpdateRentDTO);
+
+            return await this._rentRepository.GetRentByIdAsync(updateRentRequestDTO.Id);
+
         }
 
-        public Task<List<GetOneRentDTO>> GetRentByVehicleIdAsync(int vehicleId) {  throw new NotImplementedException(); }
+        public Task<List<GetOneRentDTO>> GetRentByVehicleIdAsync(int vehicleId) { throw new NotImplementedException(); }
     }
 }
