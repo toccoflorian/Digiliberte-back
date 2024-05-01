@@ -73,6 +73,7 @@ namespace Repositories
                     {
                         Id = rent.Id,
                         VehiceId = rent.VehicleId,
+                        UserId = rent.UserID,
                         VehicleInfo = $"{rent.Vehicle.Category.Label}, {rent.Vehicle.Category.SeatsNumber} places, {rent.Vehicle.Brand.Label}, {rent.Vehicle.Model.Label}, {rent.Vehicle.Model.Year}",
                         Immatriculation = rent.Vehicle.Immatriculation,
                         UserFirstname = rent.User.Firstname,
