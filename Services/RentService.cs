@@ -148,7 +148,7 @@ namespace Services
         /// </summary>
         /// <param name="updateRentRequestDTO"></param>
         /// <returns></returns>
-        public async Task<UpdateRentDTO> UpdateRentByIdAsync(UpdateRentRequestDTO updateRentRequestDTO)
+        public async Task<GetOneRentDTO> UpdateRentByIdAsync(UpdateRentRequestDTO updateRentRequestDTO)
         {
             // Check sur la requete et cohérence de la requete
             if(updateRentRequestDTO == null) { throw new Exception("Request cannot be null"); }
@@ -189,7 +189,7 @@ namespace Services
 
 
 
-            
+            throw new NotImplementedException();
         }
 
         public Task<List<GetOneRentDTO>> GetRentByVehicleIdAsync(int vehicleId) {  throw new NotImplementedException(); }
