@@ -83,6 +83,12 @@ namespace Services
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Get Passenger by id
+        /// </summary>
+        /// <param name="carPoolPassengerID"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<GetOneCarPoolPassengerDTO> GetPassengerByIdAsync(int carPoolPassengerID)
         {
             GetOneCarPoolPassengerDTO? carPoolPassengerDTO = await this._carPoolPassengerRepository.GetPassengerByIdAsync(carPoolPassengerID);
