@@ -16,6 +16,6 @@ namespace IServices
         public Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolByDriverIdAsync(string userId);
         public Task<List<GetOneCarPoolDTO>> GetAllCarPoolAsync();
         public Task<GetOneCarPoolWithPassengersDTO> GetCarPoolByIdAsync(int carPoolID);
-        public Task<GetOneRentDTO> UpdateCarPoolByIdAsync(int rentID);
+        public Task<GetOneCarPoolDTO> UpdateCarPoolByIdAsync(UpdateOneCarPoolDTO carpoolDTO);
     }
 }

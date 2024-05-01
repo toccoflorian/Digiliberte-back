@@ -35,15 +35,19 @@ namespace Repositories
             await this._context.SaveChangesAsync();
             return entityEntry.Entity.Id;
         }
+
         public async Task<int> DeleteCarPoolByIdAsync(CarPool carpool)
         {
             this._context.CarPools.Remove(carpool);
             return await this._context.SaveChangesAsync();
         }
-        public Task<GetOneRentDTO> UpdateCarPoolByIdAsync(int rentID)
+
+        public async Task<int> UpdateCarPoolByIdAsync(CarPool carpool)
         {
-            throw new NotImplementedException();
+            this._context.Update(carpool);
+            return await this._context.SaveChangesAsync();
         }
+
         public async Task<CarPool?> GetCarPoolByIdAsync(int carPoolID)
         {
             return await this._context.CarPools
@@ -59,6 +63,10 @@ namespace Repositories
                 .Include(carpool => carpool.Rent)
                 .ThenInclude(rent => rent.Vehicle)
                 .ThenInclude(vehicle => vehicle.Category)
+                .Include(carpool => carpool.Rent)
+                .ThenInclude(rent => rent.StartDate)
+                .Include(carpool => carpool.Rent)
+                .ThenInclude(rent => rent.ReturnDate)
                 .Include(carpool => carpool.StartDate)
                 .Include(carpool => carpool.EndDate)
                 .Include(carpool => carpool.StartLocalization)
