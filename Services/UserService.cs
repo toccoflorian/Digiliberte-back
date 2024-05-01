@@ -62,12 +62,12 @@ namespace Services
             {
                 throw new ArgumentException("Merci de renseigner un id valide");
             }
-            GetOneCarPoolWithPassengersDTO? carpool = await this._carPoolRepository.GetCarPoolByIdAsync(carPoolId);
+            CarPool? carpool = await this._carPoolRepository.GetCarPoolByIdAsync(carPoolId);
             if(carpool == null)
             {
                 throw new ArgumentException("Le covoiturage n'existe pas !");
             }
-            GetOneUserDTO? user = await this._userRepository.GetUserByIdAsync(carpool.UserId);
+            GetOneUserDTO? user = await this._userRepository.GetUserByIdAsync(carpool.Rent.UserID);
             if (user == null)
             {   // une location devrais forcement avoir un user createur
                 throw new Exception("Une erreur s'est produite, merci de contacter le développeur back-end");

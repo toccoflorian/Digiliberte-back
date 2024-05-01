@@ -1,9 +1,12 @@
 ﻿using DTO.CarPoolPassenger;
 using DTO.CarPools;
 using DTO.Dates;
+using DTO.Localization;
 using DTO.Rent;
+using DTO.User;
 using IRepositories;
 using IServices;
+using Models;
 
 namespace Services
 {
@@ -94,22 +97,114 @@ namespace Services
             // création du covoiturage
             int carpoolId = await this._carPoolRepository.CreateCarpoolAsync(createOneCarPoolDTO);
 
-            return await this._carPoolRepository.GetCarPoolByIdAsync(carpoolId);
+            CarPool carpool = await this._carPoolRepository.GetCarPoolByIdAsync(carpoolId);
+            return new GetOneCarPoolWithPassengersDTO
+            {
+                CarPoolId = carpool.Id,
+                RentId = carpool.RentId,
+                UserId = carpool.Rent.UserID,
+                VehicleId = carpool.Rent.VehicleId,
+                VehicleBrand = carpool.Rent.Vehicle.Brand.Label,
+                VehicleModel = carpool.Rent.Vehicle.Model.Label,
+                VehicleMotorization = carpool.Rent.Vehicle.Motorization.Label,
+                VehicleImmatriculation = carpool.Rent.Vehicle.Immatriculation,
+                SeatsTotalNumber = carpool.Rent.Vehicle.Category.SeatsNumber,
+                FreeSeats = carpool.Rent.Vehicle.Category.SeatsNumber - (carpool.carPoolPassengers != null ? carpool.carPoolPassengers.Count() : 0),
+                CO2 = carpool.Rent.Vehicle.Model.CO2,
+                StartDate = carpool.StartDate.Date,
+                EndDate = carpool.EndDate.Date,
+                StartLocalization = new LocalizationDTO
+                {
+                    Latitude = carpool.StartLocalization.Latitude,
+                    Logitude = carpool.StartLocalization.Longitude,
+                },
+                EndLocalization = new LocalizationDTO
+                {
+                    Latitude = carpool.EndLocalization.Latitude,
+                    Logitude = carpool.EndLocalization.Longitude,
+                },
+                Passengers = carpool.carPoolPassengers
+                            .Select(passenger =>
+                                new GetOneCarPoolPassengerDTO
+                                {
+                                    Id = passenger.Id,
+                                    CarPoolId = carpool.Id,
+                                    Description = passenger.Description,
+                                    UserDTO = new GetOneUserDTO
+                                    {
+                                        Id = passenger.UserID,
+                                        Firstname = passenger.User.Firstname,
+                                        Lastname = passenger.User.Lastname,
+                                        PictureURL = passenger.User.PictureURL
+                                    }
+                                })
+                            .ToList()
+            };
         }
 
-        public Task DeleteCarPoolByIdAsync(int rentID)
+        public async Task DeleteCarPoolByIdAsync(int carpoolId)
         {
-            throw new NotImplementedException();
+            CarPool? carpool = await this._carPoolRepository.GetCarPoolByIdAsync(carpoolId);
+            if (carpool == null)
+            {
+                throw new Exception("Aucun convoiturage ne porte cette id !");
+            }
+            int result = await this._carPoolRepository.DeleteCarPoolByIdAsync(carpool);
+            if(result == 0)
+            {
+                throw new Exception("Une erreur s'est produite lors de la suppression, merci de contacter le support !");
+            }
         }
 
         public async Task<GetOneCarPoolWithPassengersDTO> GetCarPoolByIdAsync(int carPoolID)
         {
-            GetOneCarPoolWithPassengersDTO? carpoolDTO = await this._carPoolRepository.GetCarPoolByIdAsync(carPoolID);
-            if(carpoolDTO == null)
+            CarPool? carpool = await this._carPoolRepository.GetCarPoolByIdAsync(carPoolID);
+            if(carpool == null)
             {
                 throw new Exception("Aucun covoiturage ne porte cette id !");
             }
-            return carpoolDTO;
+            return new GetOneCarPoolWithPassengersDTO
+            {
+                CarPoolId = carpool.Id,
+                RentId = carpool.RentId,
+                UserId = carpool.Rent.UserID,
+                VehicleId = carpool.Rent.VehicleId,
+                VehicleBrand = carpool.Rent.Vehicle.Brand.Label,
+                VehicleModel = carpool.Rent.Vehicle.Model.Label,
+                VehicleMotorization = carpool.Rent.Vehicle.Motorization.Label,
+                VehicleImmatriculation = carpool.Rent.Vehicle.Immatriculation,
+                SeatsTotalNumber = carpool.Rent.Vehicle.Category.SeatsNumber,
+                FreeSeats = carpool.Rent.Vehicle.Category.SeatsNumber - (carpool.carPoolPassengers != null ? carpool.carPoolPassengers.Count() : 0),
+                CO2 = carpool.Rent.Vehicle.Model.CO2,
+                StartDate = carpool.StartDate.Date,
+                EndDate = carpool.EndDate.Date,
+                StartLocalization = new LocalizationDTO
+                {
+                    Latitude = carpool.StartLocalization.Latitude,
+                    Logitude = carpool.StartLocalization.Longitude,
+                },
+                EndLocalization = new LocalizationDTO
+                {
+                    Latitude = carpool.EndLocalization.Latitude,
+                    Logitude = carpool.EndLocalization.Longitude,
+                },
+                Passengers = carpool.carPoolPassengers
+                            .Select(passenger =>
+                                new GetOneCarPoolPassengerDTO
+                                {
+                                    Id = passenger.Id,
+                                    CarPoolId = carpool.Id,
+                                    Description = passenger.Description,
+                                    UserDTO = new GetOneUserDTO
+                                    {
+                                        Id = passenger.UserID,
+                                        Firstname = passenger.User.Firstname,
+                                        Lastname = passenger.User.Lastname,
+                                        PictureURL = passenger.User.PictureURL
+                                    }
+                                })
+                            .ToList()
+            };
         }
 
         public async Task<List<GetOneCarPoolDTO>> GetAllCarPoolAsync()
@@ -143,7 +238,50 @@ namespace Services
             List<GetOneCarPoolDTO> carpools = new List<GetOneCarPoolDTO>();
             foreach (GetOneCarPoolPassengerDTO passenger in passengers)
             {
-                carpools.Add(await this._carPoolRepository.GetCarPoolByIdAsync(passenger.CarPoolId));
+                CarPool carpool = await this._carPoolRepository.GetCarPoolByIdAsync(passenger.CarPoolId);
+                carpools.Add(
+                    new GetOneCarPoolWithPassengersDTO
+                    {
+                        CarPoolId = carpool.Id,
+                        RentId = carpool.RentId,
+                        UserId = carpool.Rent.UserID,
+                        VehicleId = carpool.Rent.VehicleId,
+                        VehicleBrand = carpool.Rent.Vehicle.Brand.Label,
+                        VehicleModel = carpool.Rent.Vehicle.Model.Label,
+                        VehicleMotorization = carpool.Rent.Vehicle.Motorization.Label,
+                        VehicleImmatriculation = carpool.Rent.Vehicle.Immatriculation,
+                        SeatsTotalNumber = carpool.Rent.Vehicle.Category.SeatsNumber,
+                        FreeSeats = carpool.Rent.Vehicle.Category.SeatsNumber - (carpool.carPoolPassengers != null ? carpool.carPoolPassengers.Count() : 0),
+                        CO2 = carpool.Rent.Vehicle.Model.CO2,
+                        StartDate = carpool.StartDate.Date,
+                        EndDate = carpool.EndDate.Date,
+                        StartLocalization = new LocalizationDTO
+                        {
+                            Latitude = carpool.StartLocalization.Latitude,
+                            Logitude = carpool.StartLocalization.Longitude,
+                        },
+                        EndLocalization = new LocalizationDTO
+                        {
+                            Latitude = carpool.EndLocalization.Latitude,
+                            Logitude = carpool.EndLocalization.Longitude,
+                        },
+                        Passengers = carpool.carPoolPassengers
+                            .Select(passenger =>
+                                new GetOneCarPoolPassengerDTO
+                                {
+                                    Id = passenger.Id,
+                                    CarPoolId = carpool.Id,
+                                    Description = passenger.Description,
+                                    UserDTO = new GetOneUserDTO
+                                    {
+                                        Id = passenger.UserID,
+                                        Firstname = passenger.User.Firstname,
+                                        Lastname = passenger.User.Lastname,
+                                        PictureURL = passenger.User.PictureURL
+                                    }
+                                })
+                            .ToList()
+                    });
             }
             return carpools;
         }
