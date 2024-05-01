@@ -5,6 +5,7 @@ using IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Models;
 using System.Security.Claims;
 
 namespace Main.Controllers
@@ -58,6 +59,13 @@ namespace Main.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Get All passengers
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<List<GetOneCarPoolPassengerDTO>>> GetAllPassengers(int? pageIndex, int? pageSize)
         {
@@ -99,9 +107,16 @@ namespace Main.Controllers
         }
 
         //[HttpGet]
-        //public async Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByCarPool(int carPoolID)
+        //public async Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByCarPoolAsync(int carPoolID)
         //{
-        //    throw new NotImplementedException();
+        //    try
+        //    {
+        //        return Ok(await this._carPoolPassengerService.GetPassengerByCarpoolAsync(carPoolID));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
         //}
 
         //public Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByUser(string userID)
