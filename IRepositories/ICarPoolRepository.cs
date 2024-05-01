@@ -9,7 +9,6 @@ namespace IRepositories
     {
         public Task<int> CreateCarpoolAsync(CreateOneCarPoolDTO createOneCarPoolDTO);
         public Task<int> UpdateCarPoolByIdAsync(CarPool carpool);
-        public Task<CarPool?> GetCarPoolByIdAsyncNew(int carPoolID);
         public Task<int> DeleteCarPoolByIdAsync(CarPool carpool);
         public Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolByEndDateAsync(GetCarpoolByDateDTO dateDTO);
         public Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolsByDateForkAsync(DateForkDTO dateForkDTO);
