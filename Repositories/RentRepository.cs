@@ -131,7 +131,7 @@ namespace Repositories
                         Immatriculation = rent.Vehicle.Immatriculation
                     })
                 .FirstOrDefaultAsync(rentDTO => rentDTO.Id == rentID);
-        }
+        }   // TODO : CHANGER LE RETOUR EN GETRENTWITHCARPOOL
 
         /// <summary>
         /// Asynchronously retrieves rental information for a vehicle based on the specified vehicle ID.
@@ -243,25 +243,58 @@ namespace Repositories
                 .ToListAsync();
 
         }
-
-        public Task<List<GetOneRentDTO>> GetRentsByDateForkAsync(DateForkDTO dateForkDTO)
+        /// <summary>
+        /// Asynchronously retrieves a list of rental transactions filtered by a specified date range.
+        /// This method is optimized for read-only scenarios to enhance performance.
+        /// </summary>
+        /// <param name="dateForkDTO">An object containing the start and end dates used to define the date range for filtering the rentals.</param>
+        /// <returns>A list of <see cref="GetOneRentDTO"/> objects that represent the rental transactions within the given date range. Each object contains detailed information about the rental, including identifiers and related user and vehicle details.</returns>
+        /// <remarks>
+        /// This method utilizes Entity Framework's AsNoTracking to improve query performance as the result set is only read. The rentals are filtered to include those where the start date is on or after the specified start date and the return date is on or before the specified end date.
+        /// Each returned rental includes details such as the rental identifier, start and return dates, user ID, vehicle ID, user's firstname, user's lastname, and a formatted string containing the vehicle's brand, model, and year.
+        /// </remarks>
+        public async Task<List<GetOneRentDTO>> GetRentsByDateForkAsync(DateForkDTO dateForkDTO)
         {
-            throw new NotImplementedException();
+            // Assume GetOneRentDTO contains all relevant fields you need
+            var rentsList = await this._context.Rents
+                .AsNoTracking() // Improve performance for read-only queries
+                .Where(rent =>
+                    rent.StartDate.Date >= dateForkDTO.StartDate.Date &&
+                    rent.ReturnDate.Date <= dateForkDTO.EndDate.Date)
+                .Select(rent => new GetOneRentDTO
+                {
+                    Id = rent.Id,
+                    StartDate = rent.StartDate.Date, // Assuming StartDate is a complex type with a Date property
+                    ReturnDate = rent.ReturnDate.Date, // Assuming ReturnDate is a complex type with a Date property
+                    UserId = rent.UserID,
+                    VehiceId = rent.VehicleId,
+                    UserFirstname = rent.User.Firstname, // Assuming User details are needed
+                    UserLastname = rent.User.Lastname,
+                    VehicleInfo = $"{rent.Vehicle.Brand.Label} {rent.Vehicle.Model.Label} {rent.Vehicle.Model.Year}" // Assuming Vehicle details are 
+                })
+                .ToListAsync();
+
+            return rentsList;
         }
 
         public Task<List<GetOneRentDTO>> GetRentsByEndDateAsync(DateTime date)
         {
             throw new NotImplementedException();
-        }
+        } // TODO : A FAIRE PLUS TARD
 
         public Task<List<GetOneRentDTO>> GetRentsByStartDateAsync(DateTime date)
         {
             throw new NotImplementedException();
-        }
+        } // TODO : A FAIRE PLUS TARD
 
-        public Task<List<GetOneRentWithCarPoolDTO>> GetRentsByUserAsync(string userID)
+        public async Task<List<int>?> GetRentsByUserAsync(string userID)
         {
-            throw new NotImplementedException();
+            List<int>? myRents = await this._context.Rents
+                .Where(rent => rent.UserID == userID)
+                .Select(rent => rent.Id)
+                .ToListAsync();
+
+            return myRents;
         }
 
         public async Task<GetOneRentWithCarPoolDTO> GetRentByIdWithCarpoolAsync(int rentId)

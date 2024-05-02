@@ -86,7 +86,7 @@ namespace Services
         public Task DeleteRentByIdAsync(int rentID)
         {
             throw new NotImplementedException();
-        }
+        } // TODO 
 
         /// <summary>
         /// Get all rents 
@@ -104,7 +104,7 @@ namespace Services
         /// <exception cref="Exception"></exception>
         public async Task<GetOneRentWithCarPoolDTO> GetRentByCarPoolAsync(int carPoolID)
         {
-            if(carPoolID < 0) { throw new Exception("Id can't be less than 0"); }
+            if (carPoolID < 0) { throw new Exception("Id can't be less than 0"); }
             int searchedRentId = await this._rentRepository.GetRentIdByCarPoolAsync(carPoolID);
             if (searchedRentId == 0)
             {
@@ -112,32 +112,37 @@ namespace Services
             }
 
             GetOneRentDTO? rentDto = await this._rentRepository.GetRentByIdAsync(searchedRentId); // recupere le rent
-            if(rentDto == null)
+            if (rentDto == null)
             {
                 throw new Exception("No rent founds");
             }
             List<GetOneCarPoolWithPassengersDTO>? carpools = await this._carPoolRepository.GetCarPoolsByRentAsync(searchedRentId) ?? new List<GetOneCarPoolWithPassengersDTO>();
-            
-            
+
+
             //Mappe le rent DTO sur notre DTO de retour
-           GetOneRentWithCarPoolDTO? rentWithCarPoolDTO = new GetOneRentWithCarPoolDTO
-           {
-               Id = rentDto.Id,
-               UserId = rentDto.UserId,
-               Immatriculation = rentDto.Immatriculation,
-               StartDate = rentDto.StartDate,
-               ReturnDate = rentDto.ReturnDate,
-               UserFirstname = rentDto.UserFirstname,
-               UserLastname = rentDto.UserLastname,
-               VehiceId = rentDto.VehiceId,
-               VehicleInfo = rentDto.VehicleInfo,
-               CarPools = carpools // appelle un repo car pool pour afficher les carpools
-           };
+            GetOneRentWithCarPoolDTO? rentWithCarPoolDTO = new GetOneRentWithCarPoolDTO
+            {
+                Id = rentDto.Id,
+                UserId = rentDto.UserId,
+                Immatriculation = rentDto.Immatriculation,
+                StartDate = rentDto.StartDate,
+                ReturnDate = rentDto.ReturnDate,
+                UserFirstname = rentDto.UserFirstname,
+                UserLastname = rentDto.UserLastname,
+                VehiceId = rentDto.VehiceId,
+                VehicleInfo = rentDto.VehicleInfo,
+                CarPools = carpools // appelle un repo car pool pour afficher les carpools
+            };
 
             return rentWithCarPoolDTO;
-            
-        }
 
+        }
+        /// <summary>
+        /// Get a Rent By Id 
+        /// </summary>
+        /// <param name="rentID"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<GetOneRentDTO> GetRentByIdAsync(int rentID)
         {
             GetOneRentDTO? rentDTO = await this._rentRepository.GetRentByIdAsync(rentID);
@@ -165,26 +170,83 @@ namespace Services
 
             return rentList;
         }
-
-        public Task<List<GetOneRentDTO>> GetRentsByDateForkAsync(DateForkDTO dateForkDTO)
+        /// <summary>
+        /// Retrieves rents within a date fork asynchronously.
+        /// </summary>
+        /// <param name="dateForkDTO">The date fork DTO containing start and end dates.</param>
+        /// <returns>A list of <see cref="GetOneRentDTO"/> objects representing the rents.</returns>
+        /// <exception cref="Exception">Thrown when <paramref name="dateForkDTO"/> is null or contains invalid dates.</exception>
+        public async Task<List<GetOneRentDTO>> GetRentsByDateForkAsync(DateForkDTO dateForkDTO)
         {
-            throw new NotImplementedException();
+            if (dateForkDTO == null)
+            {
+                throw new Exception("Can't be null");
+            }
+            if (dateForkDTO.StartDate.Date.Year <= 0) { throw new Exception("Date can't be less than 0"); }
+            if (dateForkDTO.EndDate.Date.Year <= 0) { throw new Exception("Date can't be less than 0"); }
+            if (dateForkDTO.EndDate.Id <= 0) { dateForkDTO.EndDate.Id = 0; }
+            if (dateForkDTO.StartDate.Id <= 0) { dateForkDTO.StartDate.Id = 0; }
+            if (dateForkDTO.EndDate.Id != 0) { dateForkDTO.EndDate.Id = 0; }
+            if (dateForkDTO.StartDate.Id != 0) { dateForkDTO.StartDate.Id = 0; }
+            var rents = await this._rentRepository.GetRentsByDateForkAsync(dateForkDTO);
+            if (rents.Count == 0)
+            {
+                throw new Exception("No rents Founds");
+            }
+
+            return rents;
         }
 
-        public Task<List<GetOneRentDTO>> GetRentsByEndDateAsync(DateTime date)
+        /// <summary>
+        /// Retrieves rents with associated car pools by user ID asynchronously.
+        /// </summary>
+        /// <param name="userID">The ID of the user.</param>
+        /// <returns>
+        /// A list of <see cref="GetOneRentWithCarPoolDTO"/> objects representing the rents with associated car pools.
+        /// </returns>
+        /// <exception cref="Exception">
+        /// Thrown when no rents are found for the user or when a rent or car pool is not found.
+        /// </exception>
+        public async Task<List<GetOneRentWithCarPoolDTO>> GetRentsByUserAsync(string userID)
         {
-            throw new NotImplementedException();
+            var rentIds = await this._rentRepository.GetRentsByUserAsync(userID);
+            if (rentIds == null || rentIds.Count == 0)
+            {
+                throw new Exception("No rents found for user.");
+            }
+            List<GetOneRentWithCarPoolDTO> rentsWithCarPools = new List<GetOneRentWithCarPoolDTO>();
+
+            foreach (int rentId in rentIds)
+            {
+                // Fetch rent details synchronously within the loop to avoid concurrency issues
+                GetOneRentDTO? rentDto = await this._rentRepository.GetRentByIdAsync(rentId);
+                if (rentDto == null)
+                {
+                    throw new Exception("Rent not found for rentId: " + rentId);
+                }
+
+                // Fetch carpool details for the current rent synchronously within the loop
+                List<GetOneCarPoolWithPassengersDTO>? carPools = await this._carPoolRepository.GetCarPoolsByRentAsync(rentId);
+
+                // Create and add the combined DTO to the list
+                rentsWithCarPools.Add(new GetOneRentWithCarPoolDTO
+                {
+                    Id = rentDto.Id,
+                    UserId = rentDto.UserId,
+                    Immatriculation = rentDto.Immatriculation,
+                    StartDate = rentDto.StartDate,
+                    ReturnDate = rentDto.ReturnDate,
+                    UserFirstname = rentDto.UserFirstname,
+                    UserLastname = rentDto.UserLastname,
+                    VehiceId = rentDto.VehiceId,
+                    VehicleInfo = rentDto.VehicleInfo,
+                    CarPools = carPools ?? new List<GetOneCarPoolWithPassengersDTO>()
+                });
+            }
+
+            return rentsWithCarPools;
         }
 
-        public Task<List<GetOneRentDTO>> GetRentsByStartDateAsync(DateTime date)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<GetOneRentWithCarPoolDTO>> GetRentsByUserAsync(string userID)
-        {
-            throw new NotImplementedException();
-        }
         /// <summary>
         /// Will check here all potentials errors before updating
         /// </summary>
@@ -254,9 +316,19 @@ namespace Services
                 ReturnDate = endDateResult,
             };
             await this._rentRepository.UpdateRentByIdAsync(UpdateRentDTO);
-            
+
             return await this._rentRepository.GetRentByIdAsync(updateRentRequestDTO.Id);
 
+        }
+
+        public Task<List<GetOneRentDTO>> GetRentsByEndDateAsync(DateTime date)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<GetOneRentDTO>> GetRentsByStartDateAsync(DateTime date)
+        {
+            throw new NotImplementedException();
         }
 
         public Task<List<GetOneRentDTO>> GetRentByVehicleIdAsync(int vehicleId) { throw new NotImplementedException(); }
