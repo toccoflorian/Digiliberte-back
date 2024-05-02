@@ -150,9 +150,10 @@ namespace Repositories
                 .ToListAsync();
         }
 
-        public Task<GetOneCarPoolPassengerDTO> UpdateCarPoolPassengerByIdAsync(int carPoolPassengerId)
+
+        public async Task<CarPoolPassenger?> GetCarpoolPassengerTypeAsync(int carpoolPassengerId)
         {
-            throw new NotImplementedException();
+            return await this._context.CarPoolPassengers.FindAsync(carpoolPassengerId);
         }
     }
 }

@@ -13,12 +13,12 @@ namespace IRepositories
     {
         public Task<int> CreateCarPoolPassengerAsync(CreateCarPoolPassengerDTO createCarPoolPassengerDTO);
         public Task<int> DeleteCarPoolPassengerByIdAsync(int carpoolPassengerId);
-        public Task<GetOneCarPoolPassengerDTO> UpdateCarPoolPassengerByIdAsync(int carPoolPassengerId);
         public Task<List<GetOneCarPoolPassengerDTO>> GetPassengerByDescriptionLocalizationAsync(int localizationID);
         public Task<List<GetOneCarPoolPassengerDTO>> GetPassengerByDescriptionDateAsync(DateTime dateTime);
         public Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByUserAsync(string userID);
         public Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByCarPoolAsync(int carPoolID);
         public Task<List<GetOneCarPoolPassengerDTO>> GetAllPassengersAsync(PageForkDTO pageForkDTO);
         public Task<GetOneCarPoolPassengerDTO> GetPassengerByIdAsync(int carPoolPassengerID);
+        public Task<CarPoolPassenger?> GetCarpoolPassengerTypeAsync(int carpoolPassengerId);
     }
 }

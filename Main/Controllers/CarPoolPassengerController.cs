@@ -159,9 +159,27 @@ namespace Main.Controllers
 }
         }
 
-        //public Task<GetOneCarPoolPassengerDTO> UpdateCarPoolPassengerById(int carPoolPassengerId)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        [HttpPut]
+        [Authorize]
+        public async Task<ActionResult<GetOneCarPoolPassengerDTO>> UpdateCarPoolPassengerById(UpdateCarPoolPassengerControllerDTO updateCarpoolDTO)
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            string userRole = User.FindFirstValue(ClaimTypes.Role)!;
+            try
+            {
+                return Ok(await this._carPoolPassengerService.UpdateCarPoolPassengerByIdAsync(new UpdateCarPoolPassengerDTO
+                {
+                    Id = updateCarpoolDTO.Id,
+                    CarpoolId = updateCarpoolDTO.CarpoolId,
+                    Description = updateCarpoolDTO.Description,
+                    UserId = userId,
+                    UserRole = userRole
+                }));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

@@ -157,9 +157,38 @@ namespace Services
             return carPoolPassengerDTO;
         }
 
-        public Task<GetOneCarPoolPassengerDTO> UpdateCarPoolPassengerByIdAsync(int carPoolPassengerId)
+        public async Task<CarPoolPassenger> GetCarpoolPassengerTypeAsync(int carpoolPassengerId)
         {
-            throw new NotImplementedException();
+            CarPoolPassenger? carpoolPassenger = await this._carPoolPassengerRepository.GetCarpoolPassengerTypeAsync(carpoolPassengerId);
+            if (carpoolPassenger == null)
+            {
+                throw new Exception("Le passager de covoiturage est introuvable !");
+            }
+            return carpoolPassenger;
+        }
+
+        public async Task<GetOneCarPoolPassengerDTO> UpdateCarPoolPassengerByIdAsync(UpdateCarPoolPassengerDTO updateCarpoolPassengerDTO)
+        {
+            CarPoolPassenger carpoolPassenger = await this.GetCarpoolPassengerTypeAsync(updateCarpoolPassengerDTO.Id);
+            if(updateCarpoolPassengerDTO.CarpoolId != carpoolPassenger.CarPoolID  && updateCarpoolPassengerDTO.CarpoolId != null
+                || 
+                updateCarpoolPassengerDTO.Description != carpoolPassenger.Description && updateCarpoolPassengerDTO.Description != null)
+            {
+                await this.DeleteCarPoolPassengerByIdAsync(new DeleteCarpoolPassengerDTO
+                {
+                    Id = updateCarpoolPassengerDTO.Id,
+                    ConnectedUserId = updateCarpoolPassengerDTO.UserId,
+                    ConnectedUserRole = updateCarpoolPassengerDTO.UserRole
+                });
+                return await this.CreateCarPoolPassengerAsync(new CreateCarPoolPassengerDTO
+                {
+                    CarPoolId = updateCarpoolPassengerDTO.CarpoolId != null ? (int)updateCarpoolPassengerDTO.CarpoolId : carpoolPassenger.Id,
+                    Description = updateCarpoolPassengerDTO.Description != null ? updateCarpoolPassengerDTO.Description : carpoolPassenger.Description,
+                    UserId  = updateCarpoolPassengerDTO.UserId,
+                });
+                
+            }
+            throw new Exception("Aucune modification à effectuer !");
         }
     }
 }
