@@ -17,6 +17,13 @@ namespace Main.Controllers
         {
             this._carPoolService = carPoolService;
         }
+        /// <summary>
+        /// Creates a new carpool asynchronously.
+        /// </summary>
+        /// <param name="createRequestCarPoolDTO">The request DTO containing information about the carpool to create.</param>
+        /// <returns>An action result containing a <see cref="GetOneCarPoolDTO"/> object representing the created carpool.</returns>
+        /// <response code="200">Returns the newly created carpool.</response>
+        /// <response code="400">If the request is invalid or an error occurs during creation.</response>
 
         [HttpPost]
         [Authorize]
@@ -42,6 +49,13 @@ namespace Main.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        /// <summary>
+        /// Retrieves a carpool by its ID asynchronously.
+        /// </summary>
+        /// <param name="carPoolID">The ID of the carpool to retrieve.</param>
+        /// <returns>An action result containing a <see cref="GetOneCarPoolWithPassengersDTO"/> object representing the carpool.</returns>
+        /// <response code="200">Returns the requested carpool.</response>
+        /// <response code="400">If the request is invalid or an error occurs during retrieval.</response>
 
         [HttpGet]
         [Authorize]
@@ -56,6 +70,13 @@ namespace Main.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        /// <summary>
+        /// Deletes a carpool by its ID asynchronously.
+        /// </summary>
+        /// <param name="carpoolId">The ID of the carpool to delete.</param>
+        /// <returns>An action result.</returns>
+        /// <response code="200">If the carpool is successfully deleted.</response>
+        /// <response code="400">If the request is invalid or an error occurs during deletion.</response>
 
         [HttpDelete]
         public async Task<ActionResult> DeleteCarPoolByIdAsync(int carpoolId)
@@ -70,6 +91,12 @@ namespace Main.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        /// <summary>
+        /// Retrieves all car pools asynchronously.
+        /// </summary>
+        /// <returns>An action result containing a list of <see cref="GetOneCarPoolDTO"/> objects representing the car pools.</returns>
+        /// <response code="200">Returns the list of car pools.</response>
+        /// <response code="400">If the request is invalid or an error occurs during retrieval.</response>
 
         [HttpGet]
         [Authorize]
@@ -84,6 +111,12 @@ namespace Main.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        /// <summary>
+        /// Retrieves car pools by the driver's ID asynchronously.
+        /// </summary>
+        /// <returns>An action result containing a list of <see cref="GetOneCarPoolWithPassengersDTO"/> objects representing the car pools.</returns>
+        /// <response code="200">Returns the list of car pools.</response>
+        /// <response code="400">If the request is invalid or an error occurs during retrieval.</response>
 
         [HttpGet]
         [Authorize]

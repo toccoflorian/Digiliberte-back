@@ -55,10 +55,11 @@ namespace Repositories
         /// <summary>
         /// Get all rents 
         /// </summary>
+        /// <param name="pageIndex">Page index to display default is 10</param>
         /// <returns>List of Rent formated with GetOneRentDTO</returns>
-        public async Task<List<GetOneRentDTO>> GetAllRentAsync()
+        public async Task<List<GetOneRentDTO>> GetAllRentAsync(int pageSize = 10, int pageIndex = 0)
         {
-            return await this._context.Rents
+            return await this._context.Rents.Skip(pageSize*pageIndex).Take(pageSize)
                 .Include(rent => rent.Vehicle)
                 .ThenInclude(vehicle => vehicle.Category)
                 .Include(rent => rent.Vehicle)
@@ -83,10 +84,17 @@ namespace Repositories
                     })
                 .ToListAsync();
         }
-
-        public Task<GetOneRentDTO> GetRentByCarPoolAsync(int carPoolID)
+        /// <summary>
+        /// Return a car pool Id for a specified carPool
+        /// </summary>
+        /// <param name="carPoolID">carPoolId</param>
+        /// <returns></returns>
+        public async Task<int?> GetRentIdByCarPoolAsync(int carPoolID)
         {
-            throw new NotImplementedException();
+            CarPool? rentByCarPool = await this._context.CarPools
+                .FirstOrDefaultAsync(carpool => carpool.Id == carPoolID);
+                
+            return rentByCarPool.RentId;
         }
 
         /// <summary>
@@ -148,27 +156,6 @@ namespace Repositories
                 }).ToListAsync();
             return getRentsByVehicle;
         }
-
-        public Task<List<GetOneRentDTO>> GetRentsByDateForkAsync(DateForkDTO dateForkDTO)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<GetOneRentDTO>> GetRentsByEndDateAsync(DateTime date)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<GetOneRentDTO>> GetRentsByStartDateAsync(DateTime date)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<GetOneRentWithCarPoolDTO>> GetRentsByUserAsync(string userID)
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
         /// Update Rend By Id using dto as entry to look for ID and edited values
         /// </summary>
@@ -179,9 +166,8 @@ namespace Repositories
             Rent? updatingRent = await this._context.Rents.FindAsync(updateRentDTO.Id);
 
             updatingRent!.ReturnDateID = updateRentDTO.ReturnDateId;
-            updatingRent.StartDateID = updatingRent.StartDateID;
-            updatingRent.StartDate = updatingRent.StartDate;
-            updatingRent.ReturnDate = updatingRent.ReturnDate;
+            updatingRent.StartDateID = updateRentDTO.StartDateId;
+            
 
             this._context.Rents.Update(updatingRent);
 
@@ -254,5 +240,31 @@ namespace Repositories
                 .ToListAsync();
 
         }
+
+        public Task<List<GetOneRentDTO>> GetRentsByDateForkAsync(DateForkDTO dateForkDTO)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<GetOneRentDTO>> GetRentsByEndDateAsync(DateTime date)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<GetOneRentDTO>> GetRentsByStartDateAsync(DateTime date)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<GetOneRentWithCarPoolDTO>> GetRentsByUserAsync(string userID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<GetOneRentWithCarPoolDTO> GetRentByIdWithCarpoolAsync(int rentId)
+        {
+            throw new Exception();
+        }
+
     }
 }

@@ -27,7 +27,7 @@ namespace IRepositories
         /// <returns>
         /// A task representing the asynchronous operation. The task result contains a list of <see cref="GetOneRentDTO"/> objects representing all rentals.
         /// </returns>
-        public Task<List<GetOneRentDTO>> GetAllRentAsync();
+        public Task<List<GetOneRentDTO>> GetAllRentAsync(int pageSize = 10, int pageIndex = 0);
         /// <summary>
         /// Retrieves rental information for a carpool based on the specified carpool ID asynchronously.
         /// </summary>
@@ -35,7 +35,7 @@ namespace IRepositories
         /// <returns>
         /// A task representing the asynchronous operation. The task result contains a <see cref="GetOneRentDTO"/> object representing the rental information for the specified carpool.
         /// </returns>
-        public Task<GetOneRentDTO> GetRentByCarPoolAsync(int carPoolID);
+        public Task<int?> GetRentIdByCarPoolAsync(int carPoolID);
         public Task<List<GetOneRentWithCarPoolDTO>> GetRentsByUserAsync(string userID);
         public Task<List<GetOneRentDTO>> GetRentsByDateForkAsync(DateForkDTO dateForkDTO);
         public Task<List<GetOneRentDTO>> GetRentsByEndDateAsync(DateTime date);

@@ -60,7 +60,7 @@ namespace Main.Controllers
         /// <returns>List of Rent formated with GetOneRentDTO</returns>
         [HttpGet]
         //[Authorize(Roles = ROLE.ADMIN)]
-        public async Task<ActionResult<List<GetOneRentDTO>>> GetAllRent()
+        public async Task<ActionResult<List<GetOneRentDTO>>> GetAllRent(int pageSize = 10, int pageIndex = 0)
         {
             try
             {
@@ -118,7 +118,13 @@ namespace Main.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateRentById(UpdateRentRequestDTO updateRentRequest)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return Ok(await this._rentService.UpdateRentByIdAsync(updateRentRequest));
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

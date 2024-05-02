@@ -41,12 +41,22 @@ namespace Repositories
             this._context.CarPools.Remove(carpool);
             return await this._context.SaveChangesAsync();
         }
+        /// <summary>
+        /// Updates a carpool in the database asynchronously.
+        /// </summary>
+        /// <param name="carpool">The carpool object to update.</param>
+        /// <returns>The number of state entries written to the database.</returns>
 
         public async Task<int> UpdateCarPoolByIdAsync(CarPool carpool)
         {
             this._context.Update(carpool);
             return await this._context.SaveChangesAsync();
         }
+        /// <summary>
+        /// Retrieves a carpool with passengers by its ID asynchronously.
+        /// </summary>
+        /// <param name="carPoolID">The ID of the carpool to retrieve.</param>
+        /// <returns>A <see cref="GetOneCarPoolWithPassengersDTO"/> object representing the carpool with passengers, or null if not found.</returns>
 
         public async Task<GetOneCarPoolWithPassengersDTO?> GetCarPoolByIdAsync(int carPoolID)
         {
@@ -54,6 +64,11 @@ namespace Repositories
                 .FirstOrDefaultAsync(carpool => carpool.Id == carPoolID);
             return carpool == null ? null : new GetOneCarPoolWithPassengersDTO().MapAsync(carpool);
         }
+        /// <summary>
+        /// Retrieves a carpool's type by its ID asynchronously.
+        /// </summary>
+        /// <param name="carPoolID">The ID of the carpool to retrieve.</param>
+        /// <returns>A <see cref="CarPool"/> object representing the carpool's type, or null if not found.</returns>
 
         public async Task<CarPool?> GetCarPoolTypeByIdAsync(int carPoolID)
         {
@@ -82,6 +97,10 @@ namespace Repositories
                 .ThenInclude(p=>p.User)
                 .FirstOrDefaultAsync(carpool => carpool.Id == carPoolID);
         }
+        /// <summary>
+        /// Retrieves all car pools asynchronously.
+        /// </summary>
+        /// <returns>A list of <see cref="GetOneCarPoolDTO"/> objects representing the car pools.</returns>
 
         public async Task<List<GetOneCarPoolDTO>> GetAllCarPoolAsync()
         {
@@ -113,6 +132,11 @@ namespace Repositories
                 })
                 .ToListAsync();
         }
+        /// <summary>
+        /// Retrieves car pools by driver ID asynchronously.
+        /// </summary>
+        /// <param name="userId">The ID of the driver.</param>
+        /// <returns>A list of <see cref="GetOneCarPoolWithPassengersDTO"/> objects representing car pools.</returns>
 
         public async Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolByDriverIdAsync(string userId)
         {
@@ -164,6 +188,11 @@ namespace Repositories
 
             return carPoolsByDriverId;
         }
+        /// <summary>
+        /// Retrieves car pools by end date asynchronously, within a specified margin of time.
+        /// </summary>
+        /// <param name="dateDTO">The date and margin DTO.</param>
+        /// <returns>A list of <see cref="GetOneCarPoolWithPassengersDTO"/> objects representing car pools.</returns>
 
         public async Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolByEndDateAsync(GetCarpoolByDateDTO dateDTO)
         {
@@ -217,6 +246,12 @@ namespace Repositories
                     })
                     .ToListAsync();
         }
+        /// <summary>
+        /// Retrieves car pools by passenger ID asynchronously.
+        /// </summary>
+        /// <param name="userID">The ID of the passenger.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
+        /// <exception cref="NotImplementedException">Thrown if the method is not implemented.</exception>
 
         public Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolByPassengerAsync(string userID)
         {

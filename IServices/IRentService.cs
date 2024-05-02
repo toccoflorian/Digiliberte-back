@@ -20,7 +20,7 @@ namespace IServices
         /// Return a getOneRentDTO using the method GetRentByIdAsync</returns>
         public Task<GetOneRentDTO> UpdateRentByIdAsync(UpdateRentRequestDTO updateRentRequest);
         public Task DeleteRentByIdAsync(int rentID);
-        public Task<List<GetOneRentDTO>> GetAllRentAsync();
+        public Task<List<GetOneRentDTO>> GetAllRentAsync(int pageSize = 10, int pageIndex = 0);
         public Task<GetOneRentDTO> GetRentByCarPoolAsync(int carPoolID);
         public Task<List<GetOneRentWithCarPoolDTO>> GetRentsByUserAsync(string userID);
         public Task<List<GetOneRentDTO>> GetRentsByDateForkAsync(DateForkDTO dateForkDTO);

@@ -87,14 +87,24 @@ namespace Services
         /// Get all rents 
         /// </summary>
         /// <returns>List of Rent formated with GetOneRentDTO</returns>
-        public async Task<List<GetOneRentDTO>> GetAllRentAsync()
+        public async Task<List<GetOneRentDTO>> GetAllRentAsync(int pageSize = 10, int pageIndex = 0)
         {
-            return await this._rentRepository.GetAllRentAsync();
+            return await this._rentRepository.GetAllRentAsync(pageSize, pageIndex);
         }
 
-        public Task<GetOneRentDTO> GetRentByCarPoolAsync(int carPoolID)
+        public async Task<GetOneRentDTO> GetRentByCarPoolAsync(int carPoolID)
         {
-            throw new NotImplementedException();
+            int? searchedRentId = await this._rentRepository.GetRentIdByCarPoolAsync(carPoolID);
+            if (searchedRentId == null)
+            {
+                throw new Exception("Rent not found for this carpoolId"); // MUST NEVER HAPPEN
+            }
+            if(carPoolID < 0) { throw new Exception("Id can't be less than 0"); }
+            if(carPoolID == 0) { throw new Exception("Id can't be 0"); }
+
+            GetOneRentDTO? rentDto = await this._rentRepository.GetRentByIdAsync((int)searchedRentId); // recupere le rent
+
+            throw new Exception("not implemented");
         }
 
         public async Task<GetOneRentDTO> GetRentByIdAsync(int rentID)
@@ -155,7 +165,7 @@ namespace Services
             if (updateRentRequestDTO == null) { throw new Exception("Request cannot be null"); }
             if (updateRentRequestDTO.Id == 0) { throw new Exception("Id cannot be 0"); }
             if (updateRentRequestDTO.Id < 0) { throw new Exception("Id cannot be < 0"); }
-            if (updateRentRequestDTO.ReturnDate > updateRentRequestDTO.StartDate) { throw new Exception("New Return Date cannot be less than new Start Date"); }
+            if (updateRentRequestDTO.ReturnDate < updateRentRequestDTO.StartDate) { throw new Exception("New Return Date cannot be less than new Start Date"); }
             if (updateRentRequestDTO.ReturnDate == updateRentRequestDTO.StartDate) { throw new Exception("New dates cannot be the sames"); }
             if ((updateRentRequestDTO.ReturnDate - updateRentRequestDTO.StartDate) > TimeSpan.FromDays(60)) { throw new Exception("Rent duration cannot exceed 2 months!"); }
             if ((updateRentRequestDTO.ReturnDate - updateRentRequestDTO.StartDate) < TimeSpan.FromMinutes(30)) { throw new Exception("Your rent must be at least 30 minutes"); }
@@ -213,7 +223,7 @@ namespace Services
                 ReturnDate = endDateResult,
             };
             await this._rentRepository.UpdateRentByIdAsync(UpdateRentDTO);
-
+            
             return await this._rentRepository.GetRentByIdAsync(updateRentRequestDTO.Id);
 
         }
