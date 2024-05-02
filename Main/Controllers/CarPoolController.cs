@@ -16,6 +16,8 @@ namespace Main.Controllers
         public CarPoolController(ICarPoolService carPoolService)
         {
             this._carPoolService = carPoolService;
+        }
+
         /// <summary>
         /// Creates a new carpool asynchronously.
         /// </summary>
@@ -46,6 +48,8 @@ namespace Main.Controllers
             {
                 return BadRequest(ex.Message);
             }
+
+        }
         /// <summary>
         /// Retrieves a carpool by its ID asynchronously.
         /// </summary>
@@ -56,14 +60,15 @@ namespace Main.Controllers
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<GetOneCarPoolWithPassengersDTO>> GetCarPoolByIdAsync(int carPoolID)
-        {
-            try
             {
-                return Ok(await this._carPoolService.GetCarPoolByIdAsync(carPoolID));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
+                try
+                {
+                    return Ok(await this._carPoolService.GetCarPoolByIdAsync(carPoolID));
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
             }
         /// <summary>
         /// Deletes a carpool by its ID asynchronously.
@@ -74,16 +79,17 @@ namespace Main.Controllers
         /// <response code="400">If the request is invalid or an error occurs during deletion.</response>
         [HttpDelete]
         public async Task<ActionResult> DeleteCarPoolByIdAsync(int carpoolId)
-        {
-            try
-            {
-                await this._carPoolService.DeleteCarPoolByIdAsync(carpoolId);
-                return Ok();
-            }
-            catch (Exception ex) 
-            {
-                return BadRequest(ex.Message);
-            }
+                {
+                    try
+                    {
+                        await this._carPoolService.DeleteCarPoolByIdAsync(carpoolId);
+                        return Ok();
+                    }
+                    catch (Exception ex)
+                    {
+                        return BadRequest(ex.Message);
+                    }
+                }
         /// <summary>
         /// Retrieves all car pools asynchronously.
         /// </summary>
@@ -93,15 +99,16 @@ namespace Main.Controllers
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<List<GetOneCarPoolDTO>>> GetAllCarPoolAsync()
-        {
-            try
-            {
-                return Ok(await this._carPoolService.GetAllCarPoolAsync());
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+                    {
+                        try
+                        {
+                            return Ok(await this._carPoolService.GetAllCarPoolAsync());
+                        }
+                        catch (Exception ex)
+                        {
+                            return BadRequest(ex.Message);
+                        }
+                    }
         /// <summary>
         /// Retrieves car pools by the driver's ID asynchronously.
         /// </summary>
