@@ -1,3 +1,4 @@
+
 ﻿using DTO.CarPools;
 using DTO.Dates;
 using DTO.Rent;
@@ -70,6 +71,7 @@ namespace Main.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
         /// <summary>
         /// Deletes a carpool by its ID asynchronously.
         /// </summary>
@@ -91,6 +93,7 @@ namespace Main.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
         /// <summary>
         /// Retrieves all car pools asynchronously.
         /// </summary>
@@ -111,13 +114,13 @@ namespace Main.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        
         /// <summary>
         /// Retrieves car pools by the driver's ID asynchronously.
         /// </summary>
         /// <returns>An action result containing a list of <see cref="GetOneCarPoolWithPassengersDTO"/> objects representing the car pools.</returns>
         /// <response code="200">Returns the list of car pools.</response>
         /// <response code="400">If the request is invalid or an error occurs during retrieval.</response>
-
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<List<GetOneCarPoolWithPassengersDTO>>> GetCarPoolByDriverIdAsync()
@@ -139,6 +142,7 @@ namespace Main.Controllers
         /// <param name="date"></param>
         /// <param name="marge"></param>
         /// <returns></returns>
+        
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<List<GetOneCarPoolWithPassengersDTO>>> GetCarPoolByEndDateAsync(DateTime date, float? marge)
@@ -162,6 +166,7 @@ namespace Main.Controllers
         /// Get a carPoll by user Id
         /// </summary>
         /// <returns></returns>
+        
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<List<GetOneCarPoolWithPassengersDTO>>> GetCarPoolByUserAsync()
@@ -182,6 +187,7 @@ namespace Main.Controllers
         /// </summary>
         /// <param name="rentID"></param>
         /// <returns></returns>
+        
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<GetOneCarPoolWithPassengersDTO>> GetCarPoolByRentAsync(int rentID)
@@ -226,6 +232,7 @@ namespace Main.Controllers
         /// <param name="beginFork"></param>
         /// <param name="endFork"></param>
         /// <returns></returns>
+        
         [HttpGet]
         public async Task<ActionResult<List<GetOneCarPoolWithPassengersDTO>>> GetCarPoolsByDateForkAsync(DateTime beginFork, DateTime endFork)
         {
@@ -249,6 +256,7 @@ namespace Main.Controllers
         /// </summary>
         /// <param name="carpoolDTO"></param>
         /// <returns></returns>
+        
         [HttpPut]
         public async Task<ActionResult<GetOneRentDTO>> UpdateCarPoolByIdAsync(UpdateOneCarPoolDTO carpoolDTO)
         {
