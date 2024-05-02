@@ -1,3 +1,4 @@
+
 ﻿using DTO.CarPools;
 using DTO.Dates;
 using DTO.Rent;
@@ -19,10 +20,12 @@ namespace Main.Controllers
         }
 
         /// <summary>
-        /// Create a carPool
+        /// Creates a new carpool asynchronously.
         /// </summary>
-        /// <param name="createRequestCarPoolDTO"></param>
-        /// <returns></returns>
+        /// <param name="createRequestCarPoolDTO">The request DTO containing information about the carpool to create.</param>
+        /// <returns>An action result containing a <see cref="GetOneCarPoolDTO"/> object representing the created carpool.</returns>
+        /// <response code="200">Returns the newly created carpool.</response>
+        /// <response code="400">If the request is invalid or an error occurs during creation.</response>
         [HttpPost]
         [Authorize]
         public async Task<ActionResult<GetOneCarPoolDTO>> CreateCarpool(CreateCarpoolRequestDTO createRequestCarPoolDTO)
@@ -46,68 +49,73 @@ namespace Main.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        }
 
+        }
         /// <summary>
-        /// GET a carPool by Id
+        /// Retrieves a carpool by its ID asynchronously.
         /// </summary>
-        /// <param name="carPoolID"></param>
-        /// <returns></returns>
+        /// <param name="carPoolID">The ID of the carpool to retrieve.</param>
+        /// <returns>An action result containing a <see cref="GetOneCarPoolWithPassengersDTO"/> object representing the carpool.</returns>
+        /// <response code="200">Returns the requested carpool.</response>
+        /// <response code="400">If the request is invalid or an error occurs during retrieval.</response>
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<GetOneCarPoolWithPassengersDTO>> GetCarPoolByIdAsync(int carPoolID)
-        {
-            try
             {
-                return Ok(await this._carPoolService.GetCarPoolByIdAsync(carPoolID));
+                try
+                {
+                    return Ok(await this._carPoolService.GetCarPoolByIdAsync(carPoolID));
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
             }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
         /// <summary>
-        /// DELETE a carPoll by a carpool Id
+        /// Deletes a carpool by its ID asynchronously.
         /// </summary>
-        /// <param name="carpoolId"></param>
-        /// <returns></returns>
+        /// <param name="carpoolId">The ID of the carpool to delete.</param>
+        /// <returns>An action result.</returns>
+        /// <response code="200">If the carpool is successfully deleted.</response>
+        /// <response code="400">If the request is invalid or an error occurs during deletion.</response>
         [HttpDelete]
         public async Task<ActionResult> DeleteCarPoolByIdAsync(int carpoolId)
-        {
-            try
-            {
-                await this._carPoolService.DeleteCarPoolByIdAsync(carpoolId);
-                return Ok();
-            }
-            catch (Exception ex) 
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
+                {
+                    try
+                    {
+                        await this._carPoolService.DeleteCarPoolByIdAsync(carpoolId);
+                        return Ok();
+                    }
+                    catch (Exception ex)
+                    {
+                        return BadRequest(ex.Message);
+                    }
+                }
         /// <summary>
-        /// GET all carPool
+        /// Retrieves all car pools asynchronously.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>An action result containing a list of <see cref="GetOneCarPoolDTO"/> objects representing the car pools.</returns>
+        /// <response code="200">Returns the list of car pools.</response>
+        /// <response code="400">If the request is invalid or an error occurs during retrieval.</response>
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<List<GetOneCarPoolDTO>>> GetAllCarPoolAsync()
-        {
-            try
-            {
-                return Ok(await this._carPoolService.GetAllCarPoolAsync());
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
+                    {
+                        try
+                        {
+                            return Ok(await this._carPoolService.GetAllCarPoolAsync());
+                        }
+                        catch (Exception ex)
+                        {
+                            return BadRequest(ex.Message);
+                        }
+                    }
         /// <summary>
-        /// GET a carPool by the driver id
+        /// Retrieves car pools by the driver's ID asynchronously.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>An action result containing a list of <see cref="GetOneCarPoolWithPassengersDTO"/> objects representing the car pools.</returns>
+        /// <response code="200">Returns the list of car pools.</response>
+        /// <response code="400">If the request is invalid or an error occurs during retrieval.</response>
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<List<GetOneCarPoolWithPassengersDTO>>> GetCarPoolByDriverIdAsync()
@@ -253,3 +261,4 @@ namespace Main.Controllers
         }
     }
 }
+
