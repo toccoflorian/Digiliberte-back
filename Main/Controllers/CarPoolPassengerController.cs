@@ -109,6 +109,8 @@ namespace Main.Controllers
         /// Get passengers of a carpool by a carpool passenger Id
         /// </summary>
         /// <param name="carPoolPassengerID"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
         /// <returns></returns>
         [HttpGet]
         [Authorize]
@@ -129,6 +131,8 @@ namespace Main.Controllers
         /// Get passengers by carPool id
         /// </summary>
         /// <param name="carPoolID"></param>
+        /// <param name="paginationIndex"></param>
+        /// <param name="pageSize"></param>
         /// <returns></returns>
         [HttpGet]
         [Authorize]
@@ -163,6 +167,11 @@ namespace Main.Controllers
 }
         }
 
+        /// <summary>
+        /// Put carpool
+        /// </summary>
+        /// <param name="updateCarpoolDTO"></param>
+        /// <returns></returns>
         [HttpPut]
         [Authorize]
         public async Task<ActionResult<GetOneCarPoolPassengerDTO>> UpdateCarPoolPassengerById(UpdateCarPoolPassengerControllerDTO updateCarpoolDTO)
