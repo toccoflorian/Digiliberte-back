@@ -68,9 +68,18 @@ namespace Services
             }
         }
 
-
-        public async Task<List<GetOneCarPoolPassengerDTO>> GetAllPassengersAsync(PageForkDTO pageKorkDTO)
+        /// <summary>
+        /// Get all passengers
+        /// </summary>
+        /// <param name="pageKorkDTO"></param>
+        /// <param name="paginationIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        public async Task<List<GetOneCarPoolPassengerDTO>> GetAllPassengersAsync(PageForkDTO pageKorkDTO, int paginationIndex = 0, int pageSize = 10)
         {
+            if (pageKorkDTO == null) { throw new Exception("No passengers were found"); }
+            if (paginationIndex < 0) { throw new Exception("Pagination index Error"); }
+            if (pageSize < 0) { throw new Exception("Page size Error"); }
             return await this._carPoolPassengerRepository.GetAllPassengersAsync(pageKorkDTO);
         }
 
@@ -92,43 +101,29 @@ namespace Services
         /// <exception cref="Exception"></exception>
         public async Task<GetOneCarPoolPassengerDTO> GetPassengerByIdAsync(int carPoolPassengerID)
         {
-            if(carPoolPassengerID == ' ')
-            {
-                throw new Exception("A carPool passenger iD must be provided ! ");
-            }
-            if(carPoolPassengerID < 0)
-            {
-                throw new Exception("A valid carPool passenger Id sould be provided ! ");
-            }
+            if(carPoolPassengerID == ' '){throw new Exception("A carPool passenger iD must be provided ! ");}
+            if(carPoolPassengerID < 0){throw new Exception("A valid carPool passenger Id sould be provided ! ");}
             GetOneCarPoolPassengerDTO? carPoolPassengerDTO = await this._carPoolPassengerRepository.GetPassengerByIdAsync(carPoolPassengerID);
-            if(carPoolPassengerDTO == null )
-            {
-                throw new Exception("No passengers was found!");
-            }
+            if(carPoolPassengerDTO == null ){throw new Exception("No passengers was found!");}
             return carPoolPassengerDTO;
         }
 
         /// <summary>
-        /// Get passengers of a carpool by carpoolID 
+        /// Get passengers of a carpool by carpoolID
         /// </summary>
         /// <param name="carPoolID"></param>
+        /// <param name="paginationIndex"></param>
+        /// <param name="pageSize"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByCarPoolAsync(int carPoolID)
+        public async Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByCarPoolAsync(int carPoolID, int paginationIndex = 0, int pageSize = 10)
         {
-            if(carPoolID < 0)
-            {
-                throw new Exception("A valid carPoolID sould be provided");
-            }
-            if(carPoolID == ' ') 
-            { 
-                throw new Exception("A corPoolID sould be provided");
-            }
+            if (paginationIndex < 0){throw new Exception("PaginationIndex Error");}
+            if (pageSize < 0){throw new Exception("PageSize Error");}
+            if (carPoolID < 0){throw new Exception("A valid carPoolID sould be provided");}
+            if(carPoolID == ' '){throw new Exception("A corPoolID sould be provided");}
             List<GetOneCarPoolPassengerDTO>? carPoolPassengerDTO = await this._carPoolPassengerRepository.GetPassengersByCarPoolAsync(carPoolID);
-            if (carPoolPassengerDTO == null)
-            {
-                throw new Exception("No Carpool with this id was found");
-            }
+            if (carPoolPassengerDTO == null){throw new Exception("No Carpool with this id was found");}
             return carPoolPassengerDTO;
         }
 
@@ -136,24 +131,19 @@ namespace Services
         /// Get passengers by user Id
         /// </summary>
         /// <param name="userID"></param>
+        /// <param name="paginationIndex"></param>
+        /// <param name="pageSize"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByUserAsync(string userID)
+        public async Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByUserAsync(string userID, int paginationIndex = 0, int pageSize = 10)
         {
-            if(userID == null)
-            {
-                throw new Exception("A user Id must be provided");
-            }
-            if(userID.Length == 0)
-            {
-                throw new Exception("A correct userId should be provided");
-            }
+            if (paginationIndex < 0){throw new Exception("PaginationIndex Error");}
+            if (pageSize < 0){throw new Exception("PageSize Error");}
+            if (userID == null){throw new Exception("A user Id must be provided");}
+            if(userID.Length == 0){throw new Exception("A correct userId should be provided");}
 
             List<GetOneCarPoolPassengerDTO>? carPoolPassengerDTO = await this._carPoolPassengerRepository.GetPassengersByUserAsync(userID);
-            if (carPoolPassengerDTO == null)
-            {
-                throw new Exception("No passenger with this id was found");
-            }
+            if (carPoolPassengerDTO == null){throw new Exception("No passenger with this id was found");}
             return carPoolPassengerDTO;
         }
 
