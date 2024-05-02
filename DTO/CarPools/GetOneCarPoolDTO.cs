@@ -56,6 +56,8 @@ namespace DTO.CarPools
 
     public class GetOneCarPoolWithPassengersDTO : GetOneCarPoolDTO
     {
+        public int FreeSeats { get; set; }
+        public List<GetOneCarPoolPassengerDTO>? Passengers { get; set; }
         public override GetOneCarPoolWithPassengersDTO MapAsync(CarPool carpool) 
         {
             GetOneCarPoolDTO? carpoolDTO = base.MapAsync(carpool);
@@ -78,7 +80,5 @@ namespace DTO.CarPools
                 .ToList();
             return this;
         }
-        public int FreeSeats { get; set; }
-        public List<GetOneCarPoolPassengerDTO>? Passengers { get; set; }
     }
 }
