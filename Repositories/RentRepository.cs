@@ -55,11 +55,10 @@ namespace Repositories
         /// <summary>
         /// Get all rents 
         /// </summary>
-        /// <param name="pageIndex">Page index to display default is 10</param>
         /// <returns>List of Rent formated with GetOneRentDTO</returns>
-        public async Task<List<GetOneRentDTO>> GetAllRentAsync(int pageSize = 10, int pageIndex = 0)
+        public async Task<List<GetOneRentDTO>> GetAllRentAsync()
         {
-            return await this._context.Rents.Skip(pageSize*pageIndex).Take(pageSize)
+            return await this._context.Rents
                 .Include(rent => rent.Vehicle)
                 .ThenInclude(vehicle => vehicle.Category)
                 .Include(rent => rent.Vehicle)
@@ -84,20 +83,10 @@ namespace Repositories
                     })
                 .ToListAsync();
         }
-        /// <summary>
-        /// Return a car pool Id for a specified carPool
-        /// </summary>
-        /// <param name="carPoolID">carPoolId</param>
-        /// <returns></returns>
-        public async Task<int> GetRentIdByCarPoolAsync(int carPoolID)
+
+        public Task<GetOneRentDTO> GetRentByCarPoolAsync(int carPoolID)
         {
-            CarPool? rentByCarPool = await this._context.CarPools
-                .FirstOrDefaultAsync(carpool => carpool.Id == carPoolID);
-            if (rentByCarPool == null)
-            {
-                return 0;
-            }
-            return rentByCarPool.RentId;
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -131,7 +120,7 @@ namespace Repositories
                         Immatriculation = rent.Vehicle.Immatriculation
                     })
                 .FirstOrDefaultAsync(rentDTO => rentDTO.Id == rentID);
-        }   // TODO : CHANGER LE RETOUR EN GETRENTWITHCARPOOL
+        }
 
         /// <summary>
         /// Asynchronously retrieves rental information for a vehicle based on the specified vehicle ID.
@@ -159,6 +148,27 @@ namespace Repositories
                 }).ToListAsync();
             return getRentsByVehicle;
         }
+
+        public Task<List<GetOneRentDTO>> GetRentsByDateForkAsync(DateForkDTO dateForkDTO)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<GetOneRentDTO>> GetRentsByEndDateAsync(DateTime date)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<GetOneRentDTO>> GetRentsByStartDateAsync(DateTime date)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<GetOneRentWithCarPoolDTO>> GetRentsByUserAsync(string userID)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Update Rend By Id using dto as entry to look for ID and edited values
         /// </summary>
@@ -169,8 +179,9 @@ namespace Repositories
             Rent? updatingRent = await this._context.Rents.FindAsync(updateRentDTO.Id);
 
             updatingRent!.ReturnDateID = updateRentDTO.ReturnDateId;
-            updatingRent.StartDateID = updateRentDTO.StartDateId;
-            
+            updatingRent.StartDateID = updatingRent.StartDateID;
+            updatingRent.StartDate = updatingRent.StartDate;
+            updatingRent.ReturnDate = updatingRent.ReturnDate;
 
             this._context.Rents.Update(updatingRent);
 
@@ -243,64 +254,5 @@ namespace Repositories
                 .ToListAsync();
 
         }
-        /// <summary>
-        /// Asynchronously retrieves a list of rental transactions filtered by a specified date range.
-        /// This method is optimized for read-only scenarios to enhance performance.
-        /// </summary>
-        /// <param name="dateForkDTO">An object containing the start and end dates used to define the date range for filtering the rentals.</param>
-        /// <returns>A list of <see cref="GetOneRentDTO"/> objects that represent the rental transactions within the given date range. Each object contains detailed information about the rental, including identifiers and related user and vehicle details.</returns>
-        /// <remarks>
-        /// This method utilizes Entity Framework's AsNoTracking to improve query performance as the result set is only read. The rentals are filtered to include those where the start date is on or after the specified start date and the return date is on or before the specified end date.
-        /// Each returned rental includes details such as the rental identifier, start and return dates, user ID, vehicle ID, user's firstname, user's lastname, and a formatted string containing the vehicle's brand, model, and year.
-        /// </remarks>
-        public async Task<List<GetOneRentDTO>> GetRentsByDateForkAsync(DateForkDTO dateForkDTO)
-        {
-            // Assume GetOneRentDTO contains all relevant fields you need
-            var rentsList = await this._context.Rents
-                .AsNoTracking() // Improve performance for read-only queries
-                .Where(rent =>
-                    rent.StartDate.Date >= dateForkDTO.StartDate.Date &&
-                    rent.ReturnDate.Date <= dateForkDTO.EndDate.Date)
-                .Select(rent => new GetOneRentDTO
-                {
-                    Id = rent.Id,
-                    StartDate = rent.StartDate.Date, // Assuming StartDate is a complex type with a Date property
-                    ReturnDate = rent.ReturnDate.Date, // Assuming ReturnDate is a complex type with a Date property
-                    UserId = rent.UserID,
-                    VehiceId = rent.VehicleId,
-                    UserFirstname = rent.User.Firstname, // Assuming User details are needed
-                    UserLastname = rent.User.Lastname,
-                    VehicleInfo = $"{rent.Vehicle.Brand.Label} {rent.Vehicle.Model.Label} {rent.Vehicle.Model.Year}" // Assuming Vehicle details are 
-                })
-                .ToListAsync();
-
-            return rentsList;
-        }
-
-        public Task<List<GetOneRentDTO>> GetRentsByEndDateAsync(DateTime date)
-        {
-            throw new NotImplementedException();
-        } // TODO : A FAIRE PLUS TARD
-
-        public Task<List<GetOneRentDTO>> GetRentsByStartDateAsync(DateTime date)
-        {
-            throw new NotImplementedException();
-        } // TODO : A FAIRE PLUS TARD
-
-        public async Task<List<int>?> GetRentsByUserAsync(string userID)
-        {
-            List<int>? myRents = await this._context.Rents
-                .Where(rent => rent.UserID == userID)
-                .Select(rent => rent.Id)
-                .ToListAsync();
-
-            return myRents;
-        }
-
-        public async Task<GetOneRentWithCarPoolDTO> GetRentByIdWithCarpoolAsync(int rentId)
-        {
-            throw new Exception();
-        }
-
     }
 }

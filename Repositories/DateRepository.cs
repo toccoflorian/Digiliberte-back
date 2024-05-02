@@ -69,11 +69,11 @@ namespace Repositories
             var minDate = targetDate.AddMinutes(-0.5);
             var maxDate = targetDate.AddMinutes(0.5);
 
-            // Query the database to find a close date using DateDiffSecond to find the closest date
+            // Query the database to find a close date
             var closeDate = await _context.Dates
-                .Where(d => d.Date >= minDate && d.Date <= maxDate)
-                .OrderBy(d => Math.Abs(EF.Functions.DateDiffSecond(d.Date, targetDate))) // Using DateDiffSecond for comparison
-                .FirstOrDefaultAsync();
+                                          .Where(d => d.Date >= minDate && d.Date <= maxDate)
+                                          .OrderBy(d => Math.Abs((d.Date - targetDate).Ticks)) // Order by closest date
+                                          .FirstOrDefaultAsync();
 
             // Return the ID of the date if found, otherwise return null
             return closeDate?.Id;
