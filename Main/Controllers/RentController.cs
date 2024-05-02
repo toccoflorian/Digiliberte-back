@@ -34,7 +34,7 @@ namespace Main.Controllers
         public async Task<ActionResult<GetOneRentDTO>> CreateOneRent(CreateRentDTO createOneRentDTO)
         {
             string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId == null)
+            if(userId == null)
             {
                 return BadRequest("Identifier vous !");
             }
@@ -60,7 +60,7 @@ namespace Main.Controllers
         /// <returns>List of Rent formated with GetOneRentDTO</returns>
         [HttpGet]
         //[Authorize(Roles = ROLE.ADMIN)]
-        public async Task<ActionResult<List<GetOneRentDTO>>> GetAllRent(int pageSize = 10, int pageIndex = 0)
+        public async Task<ActionResult<List<GetOneRentDTO>>> GetAllRent()
         {
             try
             {
@@ -72,19 +72,10 @@ namespace Main.Controllers
             }
         }
 
-        [HttpGet]
-        //[Authorize]
-        public async Task<ActionResult<GetOneRentWithCarPoolDTO>> GetRentByCarPoolId(int carPoolId)
-        {
-            try
-            {
-                return Ok(await this._rentService.GetRentByCarPoolAsync(carPoolId));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+        //public GetOneRentDTO GetRentByCarPool(int carPoolID)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         [HttpGet]
         //[Authorize]
@@ -94,7 +85,7 @@ namespace Main.Controllers
             {
                 return Ok(await this._rentService.GetRentByIdAsync(rentID));
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -127,63 +118,7 @@ namespace Main.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateRentById(UpdateRentRequestDTO updateRentRequest)
         {
-            try
-            {
-                return Ok(await this._rentService.UpdateRentByIdAsync(updateRentRequest));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-        /// <summary>
-        /// Retrieves rents within a date fork asynchronously.
-        /// </summary>
-        /// <param name="dateFork">The date fork DTO containing start and end dates.</param>
-        /// <returns>An <see cref="IActionResult"/> representing the result of the action.</returns>
-        /// <response code="200">Returns the list of rents.</response>
-        /// <response code="400">If the request is invalid or an error occurs during retrieval.</response>
-
-        [HttpPost]
-        public async Task<IActionResult> GetRentByDateFork(DateForkDTO dateFork)
-        {
-            try
-            {
-                return Ok(await this._rentService.GetRentsByDateForkAsync(dateFork));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-
-        /// <summary>
-        /// Retrieves rents with associated car pools for the authenticated user or a specified user asynchronously.
-        /// </summary>
-        /// <param name="userId">The ID of the user. If null, retrieves rents for the authenticated user.</param>
-        /// <returns>
-        /// An <see cref="IActionResult"/> representing the result of the action.
-        /// </returns>
-        /// <response code="200">Returns the list of rents with associated car pools.</response>
-        /// <response code="400">If the request is invalid or an error occurs during retrieval.</response>
-        [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> GetRentByUserId(string? userId = null)
-        {
-            string? TargetUser = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (!(userId == null))
-            {
-                TargetUser = userId;
-            }
-
-            try
-            {
-                return Ok(await this._rentService.GetRentsByUserAsync(TargetUser));
-            }catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-
+            throw new NotImplementedException();
         }
     }
 }
