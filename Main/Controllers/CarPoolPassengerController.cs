@@ -110,7 +110,7 @@ namespace Main.Controllers
         /// <param name="carPoolPassengerID"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<GetOneCarPoolPassengerDTO>> GetPassengerById(int carPoolPassengerID)
+        public async Task<ActionResult<GetOneCarPoolPassengerDTO>> GetPassengerById(int carPoolPassengerID, int? pageIndex, int? pageSize)
         {
             try
             {
@@ -129,11 +129,11 @@ namespace Main.Controllers
         /// <param name="carPoolID"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<List<GetOneCarPoolPassengerDTO>>> GetPassengersByCarPoolAsync(int carPoolID)
+        public async Task<ActionResult<List<GetOneCarPoolPassengerDTO>>> GetPassengersByCarPoolAsync(int carPoolID, int paginationIndex = 0, int pageSize = 10)
         {
             try
             {
-                return Ok(await this._carPoolPassengerService.GetPassengersByCarPoolAsync(carPoolID));
+                return Ok(await this._carPoolPassengerService.GetPassengersByCarPoolAsync(carPoolID, paginationIndex, pageSize));
             }
             catch (Exception ex)
             {
