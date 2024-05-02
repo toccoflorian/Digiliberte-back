@@ -21,7 +21,7 @@ namespace IServices
         public Task<GetOneRentDTO> UpdateRentByIdAsync(UpdateRentRequestDTO updateRentRequest);
         public Task DeleteRentByIdAsync(int rentID);
         public Task<List<GetOneRentDTO>> GetAllRentAsync(int pageSize = 10, int pageIndex = 0);
-        public Task<GetOneRentDTO> GetRentByCarPoolAsync(int carPoolID);
+        public Task<GetOneRentWithCarPoolDTO> GetRentByCarPoolAsync(int carPoolID);
         public Task<List<GetOneRentWithCarPoolDTO>> GetRentsByUserAsync(string userID);
         public Task<List<GetOneRentDTO>> GetRentsByDateForkAsync(DateForkDTO dateForkDTO);
         public Task<List<GetOneRentDTO>> GetRentsByEndDateAsync(DateTime date);

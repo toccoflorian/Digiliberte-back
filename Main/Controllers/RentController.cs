@@ -72,10 +72,18 @@ namespace Main.Controllers
             }
         }
 
-        //public GetOneRentDTO GetRentByCarPool(int carPoolID)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        [HttpGet]
+        //[Authorize]
+        public async Task<ActionResult<GetOneRentWithCarPoolDTO>> GetRentByCarPoolId(int carPoolId)
+        {
+            try
+            {
+                return Ok(await this._rentService.GetRentByCarPoolAsync(carPoolId));
+            }catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         [HttpGet]
         //[Authorize]

@@ -1,4 +1,5 @@
-﻿using DTO.Dates;
+﻿using DTO.CarPools;
+using DTO.Dates;
 using DTO.Rent;
 using DTO.User;
 using DTO.Vehicles;
@@ -6,6 +7,7 @@ using IRepositories;
 using IServices;
 using Microsoft.AspNetCore.Identity;
 using Models;
+using Repositories;
 using Repositories.Helper;
 using System.Data;
 
@@ -19,13 +21,15 @@ namespace Services
         private readonly IDateRepository _dateRepository;
         private readonly UserManager<AppUser> _userManager;
         private readonly RentHelper _rentHelper;
+        private readonly ICarPoolRepository _carPoolRepository;
         public RentService(
             IRentRepository rentRepository,
             IVehicleRepository vehicleRepository,
             IUserRepository userRepository,
             IDateRepository dateRepository,
             UserManager<AppUser> userManager,
-            RentHelper rentHelper)
+            RentHelper rentHelper,
+            ICarPoolRepository carPoolRepository)
         {
             this._rentRepository = rentRepository;
             this._vehicleRepository = vehicleRepository;
@@ -33,6 +37,7 @@ namespace Services
             this._dateRepository = dateRepository;
             this._userManager = userManager;
             this._rentHelper = rentHelper;
+            this._carPoolRepository = carPoolRepository;
         }
 
         /// <summary>
@@ -91,20 +96,46 @@ namespace Services
         {
             return await this._rentRepository.GetAllRentAsync(pageSize, pageIndex);
         }
-
-        public async Task<GetOneRentDTO> GetRentByCarPoolAsync(int carPoolID)
+        /// <summary>
+        /// Get A rent with it's car Pools
+        /// </summary>
+        /// <param name="carPoolID"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task<GetOneRentWithCarPoolDTO> GetRentByCarPoolAsync(int carPoolID)
         {
-            int? searchedRentId = await this._rentRepository.GetRentIdByCarPoolAsync(carPoolID);
-            if (searchedRentId == null)
+            if(carPoolID < 0) { throw new Exception("Id can't be less than 0"); }
+            int searchedRentId = await this._rentRepository.GetRentIdByCarPoolAsync(carPoolID);
+            if (searchedRentId == 0)
             {
                 throw new Exception("Rent not found for this carpoolId"); // MUST NEVER HAPPEN
             }
-            if(carPoolID < 0) { throw new Exception("Id can't be less than 0"); }
-            if(carPoolID == 0) { throw new Exception("Id can't be 0"); }
 
-            GetOneRentDTO? rentDto = await this._rentRepository.GetRentByIdAsync((int)searchedRentId); // recupere le rent
+            GetOneRentDTO? rentDto = await this._rentRepository.GetRentByIdAsync(searchedRentId); // recupere le rent
+            if(rentDto == null)
+            {
+                throw new Exception("No rent founds");
+            }
+            List<GetOneCarPoolWithPassengersDTO>? carpools = await this._carPoolRepository.GetCarPoolsByRentAsync(searchedRentId) ?? new List<GetOneCarPoolWithPassengersDTO>();
+            
+            
+            //Mappe le rent DTO sur notre DTO de retour
+           GetOneRentWithCarPoolDTO? rentWithCarPoolDTO = new GetOneRentWithCarPoolDTO
+           {
+               Id = rentDto.Id,
+               UserId = rentDto.UserId,
+               Immatriculation = rentDto.Immatriculation,
+               StartDate = rentDto.StartDate,
+               ReturnDate = rentDto.ReturnDate,
+               UserFirstname = rentDto.UserFirstname,
+               UserLastname = rentDto.UserLastname,
+               VehiceId = rentDto.VehiceId,
+               VehicleInfo = rentDto.VehicleInfo,
+               CarPools = carpools // appelle un repo car pool pour afficher les carpools
+           };
 
-            throw new Exception("not implemented");
+            return rentWithCarPoolDTO;
+            
         }
 
         public async Task<GetOneRentDTO> GetRentByIdAsync(int rentID)

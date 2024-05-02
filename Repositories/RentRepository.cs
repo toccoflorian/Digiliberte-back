@@ -89,11 +89,14 @@ namespace Repositories
         /// </summary>
         /// <param name="carPoolID">carPoolId</param>
         /// <returns></returns>
-        public async Task<int?> GetRentIdByCarPoolAsync(int carPoolID)
+        public async Task<int> GetRentIdByCarPoolAsync(int carPoolID)
         {
             CarPool? rentByCarPool = await this._context.CarPools
                 .FirstOrDefaultAsync(carpool => carpool.Id == carPoolID);
-                
+            if (rentByCarPool == null)
+            {
+                return 0;
+            }
             return rentByCarPool.RentId;
         }
 
