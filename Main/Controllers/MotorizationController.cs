@@ -50,25 +50,9 @@ namespace Main.Controllers
             catch (Exception ex) { return BadRequest(ex.Message); }
         }
 
-        ///// <summary>
-        ///// Dlete a Motorization into the db, use a DTO for delete        
-        ///// 
-        ///// /// </summary>
-        ///// <param name="deleteOneMotorization">DTO of Motorization for delete</param>
-        ///// <returns>Returns a DTO of the deleted motorization</returns>
-        //[HttpDelete]
-        //public async Task<ActionResult<GetOneMotorizationDTO?>> DeleteOneMotorizationByIdAsync(int Id)
-        //{
-        //    try
-        //    {
-        //        return Ok(await _motorizationServices.DeleteOneMotorizationByIdAsync(Id));
-        //    }
-        //    catch (Exception ex) { return BadRequest(ex.Message); }
-        //}
-
         /// <summary>
         /// Get a Motorization By Id into the db, use a Id       
-        /// /// </summary>
+        /// </summary>
         /// <param name="GetOneMotorizationById">DTO of Motorization for GetOneMotorization</param>
         /// <returns>Returns a DTO of the GetOneMotorizationById Motorization</returns>
         [HttpGet]

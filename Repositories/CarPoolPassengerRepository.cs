@@ -35,6 +35,11 @@ namespace Repositories
             return await this._context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Get all passengers of a carpool
+        /// </summary>
+        /// <param name="pageForkDTO"></param>
+        /// <returns></returns>
         public async Task<List<GetOneCarPoolPassengerDTO>> GetAllPassengersAsync(PageForkDTO pageForkDTO)
         {
             return await this._context.CarPoolPassengers
@@ -67,6 +72,11 @@ namespace Repositories
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Get passengers of a carpool by a carpool passenger Id
+        /// </summary>
+        /// <param name="carPoolPassengerID"></param>
+        /// <returns></returns>
         public async Task<GetOneCarPoolPassengerDTO?> GetPassengerByIdAsync(int carPoolPassengerID)
         {
             return await this._context.CarPoolPassengers
@@ -88,11 +98,37 @@ namespace Repositories
                 .FirstOrDefaultAsync(passenger => passenger.Id == carPoolPassengerID);
         }
 
-        public Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByCarPoolAsync(int carPoolID)
+        /// <summary>
+        /// Get passengers of a carpool by Carpool Id
+        /// </summary>
+        /// <param name="carPoolID"></param>
+        /// <returns></returns>
+        public async Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByCarPoolAsync(int carPoolID)
         {
-            throw new NotImplementedException();
+            return await this._context.CarPoolPassengers
+                .Where(passenger => passenger.CarPoolID == carPoolID)
+                .Select(passenger =>
+                    new GetOneCarPoolPassengerDTO
+                    {
+                        Id = passenger.Id,
+                        CarPoolId = passenger.CarPoolID,
+                        Description = passenger.Description,
+                        UserDTO = new GetOneUserDTO
+                        {
+                            Id = passenger.UserID,
+                            Firstname = passenger.User.Firstname,
+                            Lastname = passenger.User.Lastname,
+                            PictureURL = passenger.User.PictureURL
+                        },
+                    })
+                .ToListAsync();
         }
 
+        /// <summary>
+        /// Get carpool passengers by user Id (driver) 
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
         public async Task<List<GetOneCarPoolPassengerDTO>> GetPassengersByUserAsync(string userID)
         {
             return await this._context.CarPoolPassengers
@@ -114,9 +150,10 @@ namespace Repositories
                 .ToListAsync();
         }
 
-        public Task<GetOneCarPoolPassengerDTO> UpdateCarPoolPassengerByIdAsync(int carPoolPassengerId)
+
+        public async Task<CarPoolPassenger?> GetCarpoolPassengerTypeAsync(int carpoolPassengerId)
         {
-            throw new NotImplementedException();
+            return await this._context.CarPoolPassengers.FindAsync(carpoolPassengerId);
         }
     }
 }

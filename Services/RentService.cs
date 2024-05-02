@@ -1,4 +1,4 @@
-﻿using DTO.CarPools;
+using DTO.CarPools;
 using DTO.Dates;
 using DTO.Rent;
 using DTO.User;
@@ -246,7 +246,6 @@ namespace Services
 
             return rentsWithCarPools;
         }
-
         /// <summary>
         /// Will check here all potentials errors before updating
         /// </summary>

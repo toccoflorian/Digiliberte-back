@@ -40,17 +40,6 @@ namespace Main.Controllers
             }
         }
 
-        //[HttpDelete]
-        //public async Task<ActionResult> DeleteVehicleById(int id)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public Task<UpdateOneVehicleDTO> UpdateVehicleById(UpdateOneVehicleDTO updateOneVehicleDTO)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
         /// <summary>
         /// Get a vehicle by id
         /// </summary>

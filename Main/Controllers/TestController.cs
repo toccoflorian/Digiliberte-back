@@ -18,7 +18,12 @@ namespace Main.Controllers
             this._rentHelper = rentHelper;
             this._context = databaseContext;
         }
-
+        /// <summary>
+        /// Test
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="forkDTO"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> isCarRented(int id, DateForkDTO forkDTO)
         {

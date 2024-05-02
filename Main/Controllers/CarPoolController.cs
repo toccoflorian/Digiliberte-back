@@ -16,7 +16,6 @@ namespace Main.Controllers
         public CarPoolController(ICarPoolService carPoolService)
         {
             this._carPoolService = carPoolService;
-        }
         /// <summary>
         /// Creates a new carpool asynchronously.
         /// </summary>
@@ -24,7 +23,6 @@ namespace Main.Controllers
         /// <returns>An action result containing a <see cref="GetOneCarPoolDTO"/> object representing the created carpool.</returns>
         /// <response code="200">Returns the newly created carpool.</response>
         /// <response code="400">If the request is invalid or an error occurs during creation.</response>
-
         [HttpPost]
         [Authorize]
         public async Task<ActionResult<GetOneCarPoolDTO>> CreateCarpool(CreateCarpoolRequestDTO createRequestCarPoolDTO)
@@ -48,7 +46,6 @@ namespace Main.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        }
         /// <summary>
         /// Retrieves a carpool by its ID asynchronously.
         /// </summary>
@@ -56,7 +53,6 @@ namespace Main.Controllers
         /// <returns>An action result containing a <see cref="GetOneCarPoolWithPassengersDTO"/> object representing the carpool.</returns>
         /// <response code="200">Returns the requested carpool.</response>
         /// <response code="400">If the request is invalid or an error occurs during retrieval.</response>
-
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<GetOneCarPoolWithPassengersDTO>> GetCarPoolByIdAsync(int carPoolID)
@@ -69,7 +65,6 @@ namespace Main.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        }
         /// <summary>
         /// Deletes a carpool by its ID asynchronously.
         /// </summary>
@@ -77,7 +72,6 @@ namespace Main.Controllers
         /// <returns>An action result.</returns>
         /// <response code="200">If the carpool is successfully deleted.</response>
         /// <response code="400">If the request is invalid or an error occurs during deletion.</response>
-
         [HttpDelete]
         public async Task<ActionResult> DeleteCarPoolByIdAsync(int carpoolId)
         {
@@ -90,14 +84,12 @@ namespace Main.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        }
         /// <summary>
         /// Retrieves all car pools asynchronously.
         /// </summary>
         /// <returns>An action result containing a list of <see cref="GetOneCarPoolDTO"/> objects representing the car pools.</returns>
         /// <response code="200">Returns the list of car pools.</response>
         /// <response code="400">If the request is invalid or an error occurs during retrieval.</response>
-
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<List<GetOneCarPoolDTO>>> GetAllCarPoolAsync()
@@ -110,14 +102,12 @@ namespace Main.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        }
         /// <summary>
         /// Retrieves car pools by the driver's ID asynchronously.
         /// </summary>
         /// <returns>An action result containing a list of <see cref="GetOneCarPoolWithPassengersDTO"/> objects representing the car pools.</returns>
         /// <response code="200">Returns the list of car pools.</response>
         /// <response code="400">If the request is invalid or an error occurs during retrieval.</response>
-
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<List<GetOneCarPoolWithPassengersDTO>>> GetCarPoolByDriverIdAsync()
@@ -133,6 +123,12 @@ namespace Main.Controllers
             }
         }
 
+        /// <summary>
+        /// GET a crPool by the carPool EndDate
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="marge"></param>
+        /// <returns></returns>
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<List<GetOneCarPoolWithPassengersDTO>>> GetCarPoolByEndDateAsync(DateTime date, float? marge)
@@ -152,6 +148,10 @@ namespace Main.Controllers
             }
         }
 
+        /// <summary>
+        /// Get a carPoll by user Id
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<List<GetOneCarPoolWithPassengersDTO>>> GetCarPoolByUserAsync()
@@ -167,6 +167,11 @@ namespace Main.Controllers
             }
         }
 
+        /// <summary>
+        /// Get a carPool by a rent id
+        /// </summary>
+        /// <param name="rentID"></param>
+        /// <returns></returns>
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<GetOneCarPoolWithPassengersDTO>> GetCarPoolByRentAsync(int rentID)
@@ -181,6 +186,12 @@ namespace Main.Controllers
             }
         }
 
+        /// <summary>
+        /// GET a carPool by StartDate
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="marge"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<List<GetOneCarPoolWithPassengersDTO>>> GetCarPoolByStartDateAsync(DateTime date, float? marge)
         {
@@ -199,6 +210,12 @@ namespace Main.Controllers
             }
         }
 
+        /// <summary>
+        /// GET a carPool by Date
+        /// </summary>
+        /// <param name="beginFork"></param>
+        /// <param name="endFork"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<List<GetOneCarPoolWithPassengersDTO>>> GetCarPoolsByDateForkAsync(DateTime beginFork, DateTime endFork)
         {
@@ -217,6 +234,11 @@ namespace Main.Controllers
             }
         }
 
+        /// <summary>
+        /// UPDATE a carPool by carPoolDTO
+        /// </summary>
+        /// <param name="carpoolDTO"></param>
+        /// <returns></returns>
         [HttpPut]
         public async Task<ActionResult<GetOneRentDTO>> UpdateCarPoolByIdAsync(UpdateOneCarPoolDTO carpoolDTO)
         {

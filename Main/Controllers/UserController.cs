@@ -156,6 +156,11 @@ namespace Main.Controllers
             }
         }
 
+        /// <summary>
+        /// PUT update user by user id
+        /// </summary>
+        /// <param name="updateOneUserDTO"></param>
+        /// <returns></returns>
         [HttpPut]
         [Authorize]
         public async Task<ActionResult<GetOneUserDTO>> UpdateUserById(UpdateUserDTO updateOneUserDTO)
