@@ -18,5 +18,6 @@ namespace IRepositories
         public Task<List<GetOneCarPoolDTO>> GetAllCarPoolAsync();
         public Task<GetOneCarPoolWithPassengersDTO?> GetCarPoolByIdAsync(int carPoolID);
         public Task<CarPool?> GetCarPoolTypeByIdAsync(int carPoolID);
+        public Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolsByRentAsync(int rentID);
     }
 }
