@@ -1,12 +1,10 @@
+
 ﻿using DTO.CarPools;
 using DTO.Dates;
 using DTO.Rent;
-using IRepositories;
 using IServices;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Models;
 using System.Security.Claims;
 
 namespace Main.Controllers
@@ -20,13 +18,29 @@ namespace Main.Controllers
         {
             this._carPoolService = carPoolService;
         }
+        /// <summary>
+        /// Creates a new carpool asynchronously.
+        /// </summary>
+        /// <param name="createRequestCarPoolDTO">The request DTO containing information about the carpool to create.</param>
+        /// <returns>An action result containing a <see cref="GetOneCarPoolDTO"/> object representing the created carpool.</returns>
+        /// <response code="200">Returns the newly created carpool.</response>
+        /// <response code="400">If the request is invalid or an error occurs during creation.</response>
 
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<GetOneCarPoolDTO>> CreateCarpool(CreateOneCarPoolDTO createOneCarPoolDTO)
+        public async Task<ActionResult<GetOneCarPoolDTO>> CreateCarpool(CreateCarpoolRequestDTO createRequestCarPoolDTO)
         {
             string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            createOneCarPoolDTO.UserId = userId;
+            CreateOneCarPoolDTO createOneCarPoolDTO = new CreateOneCarPoolDTO
+            {
+                CarpoolName = createRequestCarPoolDTO.CarpoolName,
+                UserId = userId,
+                StartDate = new GetOneDateDTO { Date = createRequestCarPoolDTO.StartDate },
+                EndDate = new GetOneDateDTO { Date = createRequestCarPoolDTO.EndDate },
+                StartLocalization = createRequestCarPoolDTO.StartLocalization,
+                EndLocalization = createRequestCarPoolDTO.EndLocalization,
+                RentId = createRequestCarPoolDTO.RentId,
+            };
             try
             {
                 return Ok(await this._carPoolService.CreateCarpoolAsync(createOneCarPoolDTO));
@@ -36,6 +50,13 @@ namespace Main.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        /// <summary>
+        /// Retrieves a carpool by its ID asynchronously.
+        /// </summary>
+        /// <param name="carPoolID">The ID of the carpool to retrieve.</param>
+        /// <returns>An action result containing a <see cref="GetOneCarPoolWithPassengersDTO"/> object representing the carpool.</returns>
+        /// <response code="200">Returns the requested carpool.</response>
+        /// <response code="400">If the request is invalid or an error occurs during retrieval.</response>
 
         [HttpGet]
         [Authorize]
@@ -51,13 +72,37 @@ namespace Main.Controllers
             }
         }
 
-        //public Task DeleteCarPoolByIdAsync(int rentID)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        /// <summary>
+        /// Deletes a carpool by its ID asynchronously.
+        /// </summary>
+        /// <param name="carpoolId">The ID of the carpool to delete.</param>
+        /// <returns>An action result.</returns>
+        /// <response code="200">If the carpool is successfully deleted.</response>
+        /// <response code="400">If the request is invalid or an error occurs during deletion.</response>
+
+        [HttpDelete]
+        public async Task<ActionResult> DeleteCarPoolByIdAsync(int carpoolId)
+        {
+            try
+            {
+                await this._carPoolService.DeleteCarPoolByIdAsync(carpoolId);
+                return Ok();
+            }
+            catch (Exception ex) 
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Retrieves all car pools asynchronously.
+        /// </summary>
+        /// <returns>An action result containing a list of <see cref="GetOneCarPoolDTO"/> objects representing the car pools.</returns>
+        /// <response code="200">Returns the list of car pools.</response>
+        /// <response code="400">If the request is invalid or an error occurs during retrieval.</response>
 
         [HttpGet]
-        //[Authorize]     // ADMIN
+        [Authorize]
         public async Task<ActionResult<List<GetOneCarPoolDTO>>> GetAllCarPoolAsync()
         {
             try
@@ -69,46 +114,160 @@ namespace Main.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        
+        /// <summary>
+        /// Retrieves car pools by the driver's ID asynchronously.
+        /// </summary>
+        /// <returns>An action result containing a list of <see cref="GetOneCarPoolWithPassengersDTO"/> objects representing the car pools.</returns>
+        /// <response code="200">Returns the list of car pools.</response>
+        /// <response code="400">If the request is invalid or an error occurs during retrieval.</response>
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult<List<GetOneCarPoolWithPassengersDTO>>> GetCarPoolByDriverIdAsync()
+        {
+            string? currentUser = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            try
+            {
+                return Ok(await this._carPoolService.GetCarPoolByDriverIdAsync(currentUser));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
-        //public Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolByDriverIdAsync(string userId)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        /// <summary>
+        /// GET a crPool by the carPool EndDate
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="marge"></param>
+        /// <returns></returns>
+        
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult<List<GetOneCarPoolWithPassengersDTO>>> GetCarPoolByEndDateAsync(DateTime date, float? marge)
+        {
+            try
+            {
+                return Ok(await this._carPoolService.GetCarPoolByEndDateAsync(
+                    new GetCarpoolByDateDTO
+                    {
+                        Date = date,
+                        Marge = marge == (float)0 ? (float)0.1 : (marge ?? (float)0.1)
+                    }));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
-        //public Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolByEndDateAsync(DateTime date)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        /// <summary>
+        /// Get a carPoll by user Id
+        /// </summary>
+        /// <returns></returns>
+        
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult<List<GetOneCarPoolWithPassengersDTO>>> GetCarPoolByUserAsync()
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            try
+            {
+                return Ok(await this._carPoolService.GetCarPoolByPassengerAsync(userId));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
+        /// <summary>
+        /// Get a carPool by a rent id
+        /// </summary>
+        /// <param name="rentID"></param>
+        /// <returns></returns>
+        
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult<GetOneCarPoolWithPassengersDTO>> GetCarPoolByRentAsync(int rentID)
+        {
+            try
+            {
+                return Ok(await this._carPoolService.GetCarPoolByRentAsync(rentID));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
-        //public Task<List<GetOneCarPoolDTO>> GetCarPoolByPassengerAsync(int carPoolPassengerID)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        /// <summary>
+        /// GET a carPool by StartDate
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="marge"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<ActionResult<List<GetOneCarPoolWithPassengersDTO>>> GetCarPoolByStartDateAsync(DateTime date, float? marge)
+        {
+            try
+            {
+                return Ok(await this._carPoolService.GetCarPoolByStartDateAsync(
+                    new GetCarpoolByDateDTO
+                    {
+                        Date = date,
+                        Marge = marge == (float)0 ? (float)0.1 : (marge ?? (float)0.1)
+                    }));
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
-        //public Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolByPassengerAsync(string userID)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        /// <summary>
+        /// GET a carPool by Date
+        /// </summary>
+        /// <param name="beginFork"></param>
+        /// <param name="endFork"></param>
+        /// <returns></returns>
+        
+        [HttpGet]
+        public async Task<ActionResult<List<GetOneCarPoolWithPassengersDTO>>> GetCarPoolsByDateForkAsync(DateTime beginFork, DateTime endFork)
+        {
+            try
+            {
+                return Ok(await this._carPoolService.GetCarPoolsByDateForkAsync(
+                    new DateForkDTO
+                    {
+                        StartDate = new GetOneDateDTO { Id = 1, Date = beginFork },
+                        EndDate = new GetOneDateDTO { Id = 1, Date = endFork }
+                    }));
+            }
+            catch( Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
-        //public Task<GetOneCarPoolWithPassengersDTO> GetCarPoolByRentAsync(int rentID)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolByStartDateAsync(DateTime date)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public Task<List<GetOneCarPoolWithPassengersDTO>> GetCarPoolsByDateForkAsync(DateForkDTO dateForkDTO)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public Task<GetOneRentDTO> UpdateCarPoolByIdAsync(int rentID)
-        //{
-        //    throw new NotImplementedException();
-        //} public    
+        /// <summary>
+        /// UPDATE a carPool by carPoolDTO
+        /// </summary>
+        /// <param name="carpoolDTO"></param>
+        /// <returns></returns>
+        
+        [HttpPut]
+        public async Task<ActionResult<GetOneRentDTO>> UpdateCarPoolByIdAsync(UpdateOneCarPoolDTO carpoolDTO)
+        {
+            try
+            {
+                return Ok(await this._carPoolService.UpdateCarPoolByIdAsync(carpoolDTO));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

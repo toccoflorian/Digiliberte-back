@@ -12,6 +12,7 @@ using Swashbuckle.AspNetCore.Filters;
 using System;
 using System.Reflection;
 using System.Text.Json.Serialization;
+using Repositories.Helper;
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 
@@ -38,7 +39,7 @@ builder.Services.AddScoped<ICarPoolRepository, CarPoolRepository>();
 builder.Services.AddScoped<ICarPoolService, CarPoolService>();
 builder.Services.AddScoped<ICarPoolPassengerRepository, CarPoolPassengerRepository>();
 builder.Services.AddScoped<ICarPoolPassengerService, CarPoolPassengerService>();
-
+builder.Services.AddScoped<RentHelper>();
 
 
 // ------------------Ajoue de la database 

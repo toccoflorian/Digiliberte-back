@@ -40,17 +40,6 @@ namespace Main.Controllers
             }
         }
 
-        //[HttpDelete]
-        //public async Task<ActionResult> DeleteVehicleById(int id)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public Task<UpdateOneVehicleDTO> UpdateVehicleById(UpdateOneVehicleDTO updateOneVehicleDTO)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
         /// <summary>
         /// Get a vehicle by id
         /// </summary>
@@ -67,13 +56,9 @@ namespace Main.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+
                 }
         }
-
-        //public Task<List<GetOneVehicleDTO>> GetAllVehicles()
-        //{
-        //    throw new NotImplementedException();
-        //}
 
         //public Task<List<GetOneVehicleWithRentDTO>> GetAllReservedVehicles()
         //{
@@ -91,16 +76,24 @@ namespace Main.Controllers
         //    throw new NotImplementedException();
         //}
 
-        //public Task<List<GetOneVehicleDTO>> GetUnreservedVehicleByDates(DateForkDTO dateForkDTO)
-        //{
-        //    throw new NotImplementedException();
-        //}
 
-
-        //public Task<GetOneVehicleWithRentDTO> GetVehicleByIdWithRent(int vehicleId)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        /// <summary>
+        /// Get One Vehicle with Rents
+        /// </summary>
+        /// <param name="vehicleId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<ActionResult<List<GetOneVehicleWithRentDTO>>> GetVehicleByIdWithRent(int vehicleId)
+        {
+            try
+            {
+                return await this._vehicleService.GetVehicleByIdWithRentAsync(vehicleId);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         /// <summary>
         /// Put a Vehicule into the db, use a DTO for update        
@@ -119,10 +112,10 @@ namespace Main.Controllers
         }
 
         /// <summary>
-        /// Get a vehicle by immat , used to know if immat exists already
+        /// Get a vehicle by immat
         /// </summary>
-        /// <param name="GetOneVehicleDTO">string</param>
-        /// <returns> null or one Vehicle formated with GetOneVehicleDTO</returns>
+        /// <param name="immat"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<GetOneVehicleDTO?>> GetVehicleByImmat(string immat)
         {
@@ -136,35 +129,110 @@ namespace Main.Controllers
             }
         }
 
-        //public Task<List<GetOneVehicleDTO>> GetVehiclesByBrand(int brandId)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        /// <summary>
+        /// Get a vehicle by brand,
+        /// </summary>
+        /// <param name="brandId"></param>
+        /// <param name="paginationIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<ActionResult<List<GetOneVehicleDTO>>> GetVehiclesByBrandAsync(int brandId, int paginationIndex = 0, int pageSize = 10)
+        {
+            try
+            {
+                return await this._vehicleService.GetVehiclesByBrandAsync(brandId, paginationIndex, pageSize);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
-        //public Task<List<GetOneVehicleDTO>> GetVehiclesByCategory(int categoryId)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        /// <summary>
+        /// Get a vehicle by category, 
+        /// </summary>
+        /// <param name="categoryId"></param>
+        /// <param name="paginationIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<ActionResult<List<GetOneVehicleDTO>>> GetVehiclesByCategoryAsync(int categoryId, int paginationIndex = 0, int pageSize = 10)
+        {
+            try
+            {
+                return await this._vehicleService.GetVehiclesByCategoryAsync(categoryId, paginationIndex, pageSize);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         //public Task<List<GetOneVehicleDTO>> GetVehiclesByLocalization(int id)
         //{
         //    throw new NotImplementedException();
         //}
 
-        //public Task<List<GetOneVehicleDTO>> GetVehiclesByModel(int modelId)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        /// <summary>
+        /// Get a vehicle by model 
+        /// </summary>
+        /// <param name="modelId"></param>
+        /// <param name="paginationIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<ActionResult<List<GetOneVehicleDTO>>> GetVehiclesByModel(int modelId, int paginationIndex = 0, int pageSize = 10)
+        {
+            try
+            {
+                return await this._vehicleService.GetVehiclesByModelAsync(modelId, paginationIndex, pageSize);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
-        //public Task<List<GetOneVehicleDTO>> GetVehiclesByMotorization(int vehicleId)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        /// <summary>
+        /// Get a vehicle by Motorization 
+        /// </summary>
+        /// <param name="motorizationId"></param>
+        /// <param name="paginationIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<ActionResult<List<GetOneVehicleDTO>>> GetVehiclesByMotorization(int motorizationId, int paginationIndex = 0, int pageSize = 10)
+        {
+            try
+            {
+                return await this._vehicleService.GetVehiclesByMotorizationAsync( motorizationId, paginationIndex, pageSize);
+        }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
-        //public Task<List<GetOneVehicleDTO>> GetVehiclesByState(int stateId)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        /// <summary>
+        /// Get a vehicle by State 
+        /// </summary>
+        /// <param name="stateId"></param>
+        /// <param name="paginationIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<ActionResult<List<GetOneVehicleDTO>>> GetVehiclesByState(int stateId, int paginationIndex = 0, int pageSize = 10)
+        {
+            try
+            {
+                return await this._vehicleService.GetVehiclesByStateAsync(stateId, paginationIndex, pageSize);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         //public Task<List<GetOneVehicleDTO>> GetVehiclesByUserId(string userID)
         //{
@@ -174,7 +242,9 @@ namespace Main.Controllers
         /// <summary>
         /// Get all vehicles
         /// </summary>
-        /// <returns>List of vehicle DTOs</returns>
+        /// <param name="paginationIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
         [HttpGet("all")]
         public async Task<ActionResult<List<GetOneVehicleDTO>>> GetAllVehiclesAsync(int paginationIndex = 0, int pageSize = 10)
         {
