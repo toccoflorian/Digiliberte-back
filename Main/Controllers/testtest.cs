@@ -7,5 +7,6 @@ namespace Main.Controllers
     [ApiController]
     public class testtest : ControllerBase
     {
+        mabite test;
     }
 }
