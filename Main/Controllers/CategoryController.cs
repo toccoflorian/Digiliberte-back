@@ -1,7 +1,9 @@
 ﻿using DTO.Dates;
 using IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services;
+using Utils.Constants;
 
 namespace Main.Controllers
 {
@@ -21,6 +23,7 @@ namespace Main.Controllers
         /// <param name="createOneCategoryDTO"></param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize(Roles = ROLE.ADMIN)]
         public async Task<ActionResult<GetOneCategoryDTO>> CreateOneCategory(CreateOneCategoryDTO createOneCategoryDTO)
         {
             try
@@ -39,8 +42,9 @@ namespace Main.Controllers
         /// <param name="updateOneCategory">DTO of Category for update</param>
         /// <returns>Returns a DTO of the updated category</returns>
         [HttpPut]
+		[Authorize(Roles = ROLE.ADMIN)]
 
-        public async Task<ActionResult<GetOneCategoryDTO?>> UpdateCategory(GetOneCategoryDTO getOneCategory)
+		public async Task<ActionResult<GetOneCategoryDTO?>> UpdateCategory(GetOneCategoryDTO getOneCategory)
         {
             try
             {
@@ -55,7 +59,8 @@ namespace Main.Controllers
         /// <param name="GetOneCategoryById">DTO of Category for GetOneCategory</param>
         /// <returns>Returns a DTO of the GetOneCategoryById Category</returns>
         [HttpGet]
-        public async Task<ActionResult<GetOneCategoryDTO?>> GetOneCategoryByIdAsync(int Id)
+		[Authorize]
+		public async Task<ActionResult<GetOneCategoryDTO?>> GetOneCategoryByIdAsync(int Id)
         {
             // Utilisez le service pour récupérer le modèle par son ID
             try
@@ -70,6 +75,7 @@ namespace Main.Controllers
         /// </summary>
         /// <returns>List of category DTOs</returns>
         [HttpGet("all")]
+        [Authorize]
         public async Task<ActionResult<List<GetOneCategoryDTO>>> GetAllCategorysAsync(int paginationIndex = 0, int pageSize = 10)
         {
             try

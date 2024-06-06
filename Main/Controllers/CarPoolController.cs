@@ -209,6 +209,7 @@ namespace Main.Controllers
         /// <param name="marge"></param>
         /// <returns></returns>
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<GetOneCarPoolWithPassengersDTO>>> GetCarPoolByStartDateAsync(DateTime date, float? marge)
         {
             try
@@ -234,6 +235,7 @@ namespace Main.Controllers
         /// <returns></returns>
         
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<GetOneCarPoolWithPassengersDTO>>> GetCarPoolsByDateForkAsync(DateTime beginFork, DateTime endFork)
         {
             try
@@ -258,6 +260,7 @@ namespace Main.Controllers
         /// <returns></returns>
         
         [HttpPut]
+        [Authorize]
         public async Task<ActionResult<GetOneRentDTO>> UpdateCarPoolByIdAsync(UpdateOneCarPoolDTO carpoolDTO)
         {
             try

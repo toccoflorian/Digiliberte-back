@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repositories;
 using Repositories.Helper;
+using System.Security.Claims;
 
 namespace Main.Controllers
 {
@@ -35,6 +36,14 @@ namespace Main.Controllers
             }
             return Ok("LE VEHICULE EST LIBRE");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> getUserRoles()
+        {
+            var user = HttpContext.User;
+			var roles = user.FindAll(ClaimTypes.Role).Select(r => r.Value);
+			return Ok(new { UserRoles = roles });
+		}
 
     }
 }
