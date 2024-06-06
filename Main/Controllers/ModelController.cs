@@ -27,7 +27,7 @@ namespace Main.Controllers
         /// <param name="createOneModel">DTO of Model for creation</param>
         /// <returns>Returns a DTO of the created Vehicle</returns>
         [HttpPost]
-		[Authorize(Roles = ROLE.ADMIN)]
+		//[Authorize(Roles = ROLE.ADMIN)]
 
 		public async Task<ActionResult<GetOneModelDTO?>> CreateModel(CreateOneModelDTO createOneModel)
         {
@@ -47,7 +47,7 @@ namespace Main.Controllers
         /// <param name="updateOneModel">DTO of Model for update</param>
         /// <returns>Returns a DTO of the updated Vehicle</returns>
         [HttpPut]
-		[Authorize(Roles = ROLE.ADMIN)]
+		//[Authorize(Roles = ROLE.ADMIN)]
 
 		public async Task<ActionResult<GetOneModelDTO?>> UpdateModel(GetOneModelDTO getOneModel)
         {
@@ -63,7 +63,7 @@ namespace Main.Controllers
         /// <param name="GetOneModelById">DTO of Model for GetOneModel</param>
         /// <returns>Returns a DTO of the GetOneModelById Model</returns>
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<GetOneModelDTO?>> GetOneModelByIdAsync(int Id)
         {
             // Si le modèle est trouvé, retournez-le en tant que réponse HTTP 200 OK
@@ -83,7 +83,7 @@ namespace Main.Controllers
         /// </summary>
         /// <returns>List of model DTOs</returns>
         [HttpGet("all")]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<List<GetOneModelDTO>>> GetAllModelsAsync(int paginationIndex = 0, int pageSize = 10)
         {
             try

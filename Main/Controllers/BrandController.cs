@@ -27,7 +27,7 @@ namespace Main.Controllers
         /// <returns>Returns a DTO of the created Brand</returns>
         /// 
 
-        [Authorize(Roles = ROLE.ADMIN)]
+        //[Authorize(Roles = ROLE.ADMIN)]
         [HttpPost]
         public async Task<ActionResult<GetOneBrandDTO?>> CreateBrand(CreateOneBrandDTO createOneBrand)
         {
@@ -41,7 +41,7 @@ namespace Main.Controllers
         /// <param name="updateOneBrand">DTO of Brand for update</param>
         /// <returns>Returns a DTO of the updated Brand</returns>
         [HttpPut]
-		[Authorize(Roles = ROLE.ADMIN)]
+		//[Authorize(Roles = ROLE.ADMIN)]
 		public async Task<ActionResult<GetOneBrandDTO?>> UpdateBrand(GetOneBrandDTO getOneOneBrand)
         {
             try
@@ -58,7 +58,7 @@ namespace Main.Controllers
         /// <param name="GetOneBrandById">DTO of Brand for GetOneBrand</param>
         /// <returns>Returns a DTO of the GetOneBrandById Brand</returns>
         [HttpGet]
-		[Authorize]
+		//[Authorize]
 
 		public async Task<ActionResult<GetOneBrandDTO?>> GetOneBrandByIdAsync(int Id)
         {
@@ -82,7 +82,7 @@ namespace Main.Controllers
         /// </summary>
         /// <returns>List of brand DTOs</returns>
         [HttpGet("all")]
-		[Authorize(Roles = ROLE.ADMIN+","+ROLE.USER)]
+		//[Authorize(Roles = ROLE.ADMIN+","+ROLE.USER)]
 		public async Task<ActionResult<List<GetOneBrandDTO>>> GetAllBrandsAsync()
         {
             try

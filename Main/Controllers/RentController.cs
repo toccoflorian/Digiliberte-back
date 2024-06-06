@@ -30,7 +30,7 @@ namespace Main.Controllers
         /// <param name="createOneRentDTO"></param>
         /// <returns>the created rent formated with GetOneRentDTO</returns>
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<GetOneRentDTO>> CreateOneRent(CreateRentDTO createOneRentDTO)
         {
             string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -59,7 +59,7 @@ namespace Main.Controllers
         /// </summary>
         /// <returns>List of Rent formated with GetOneRentDTO</returns>
         [HttpGet]
-        [Authorize(Roles = ROLE.ADMIN)]
+        //[Authorize(Roles = ROLE.ADMIN)]
         public async Task<ActionResult<List<GetOneRentDTO>>> GetAllRent(int pageSize = 10, int pageIndex = 0)
         {
             try
@@ -73,7 +73,7 @@ namespace Main.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<GetOneRentWithCarPoolDTO>> GetRentByCarPoolId(int carPoolId)
         {
             try
@@ -87,7 +87,7 @@ namespace Main.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<GetOneRentWithCarPoolDTO>> GetRentById(int rentID)
         {
             try
@@ -125,7 +125,7 @@ namespace Main.Controllers
         //    throw new NotImplementedException();
         //}
         [HttpPost]
-		[Authorize]
+		//[Authorize]
 		public async Task<IActionResult> UpdateRentById(UpdateRentRequestDTO updateRentRequest)
         {
             try
@@ -146,7 +146,7 @@ namespace Main.Controllers
         /// <response code="400">If the request is invalid or an error occurs during retrieval.</response>
 
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> GetRentByDateFork(DateForkDTO dateFork)
         {
             try
@@ -169,7 +169,7 @@ namespace Main.Controllers
         /// <response code="200">Returns the list of rents with associated car pools.</response>
         /// <response code="400">If the request is invalid or an error occurs during retrieval.</response>
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> GetRentByUserId(string? userId = null)
         {
             string? TargetUser = User.FindFirstValue(ClaimTypes.NameIdentifier);

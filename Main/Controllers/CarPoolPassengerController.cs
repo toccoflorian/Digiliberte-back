@@ -27,7 +27,7 @@ namespace Main.Controllers
         /// <param name="createCarPoolPassengerDTO"></param>
         /// <returns></returns>
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<GetOneCarPoolPassengerDTO>> CreateCarPoolPassenger(CreateCarPoolPassengerDTO createCarPoolPassengerDTO)
         {
             string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -52,7 +52,7 @@ namespace Main.Controllers
         /// <param name="deleteCarPoolPassengerDTO"></param>
         /// <returns></returns>
         [HttpDelete]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult> DeleteCarPoolPassengerById(DeleteCarpoolPassengerDTO deleteCarPoolPassengerDTO)
         {
             string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -78,7 +78,7 @@ namespace Main.Controllers
         /// <param name="pageSize"></param>
         /// <returns></returns>
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<List<GetOneCarPoolPassengerDTO>>> GetAllPassengers(int? pageIndex, int? pageSize)
         {
             try
@@ -113,7 +113,7 @@ namespace Main.Controllers
         /// <param name="pageSize"></param>
         /// <returns></returns>
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<GetOneCarPoolPassengerDTO>> GetPassengerById(int carPoolPassengerID, int? pageIndex, int? pageSize)
         {
             try
@@ -135,7 +135,7 @@ namespace Main.Controllers
         /// <param name="pageSize"></param>
         /// <returns></returns>
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<List<GetOneCarPoolPassengerDTO>>> GetPassengersByCarPoolAsync(int carPoolID, int paginationIndex = 0, int pageSize = 10)
         {
             try
@@ -154,7 +154,7 @@ namespace Main.Controllers
         /// <param name="userID"></param>
         /// <returns></returns>
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<List<GetOneCarPoolPassengerDTO>>> GetPassengersByUserAsync(string userID)
         {
             try
@@ -173,7 +173,7 @@ namespace Main.Controllers
         /// <param name="updateCarpoolDTO"></param>
         /// <returns></returns>
         [HttpPut]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<GetOneCarPoolPassengerDTO>> UpdateCarPoolPassengerById(UpdateCarPoolPassengerControllerDTO updateCarpoolDTO)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;

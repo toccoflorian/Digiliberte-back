@@ -27,7 +27,7 @@ namespace Main.Controllers
         /// <response code="400">If the request is invalid or an error occurs during creation.</response>
 
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<GetOneCarPoolDTO>> CreateCarpool(CreateCarpoolRequestDTO createRequestCarPoolDTO)
         {
             string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -59,7 +59,7 @@ namespace Main.Controllers
         /// <response code="400">If the request is invalid or an error occurs during retrieval.</response>
 
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<GetOneCarPoolWithPassengersDTO>> GetCarPoolByIdAsync(int carPoolID)
         {
             try
@@ -102,7 +102,7 @@ namespace Main.Controllers
         /// <response code="400">If the request is invalid or an error occurs during retrieval.</response>
 
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<List<GetOneCarPoolDTO>>> GetAllCarPoolAsync()
         {
             try
@@ -122,7 +122,7 @@ namespace Main.Controllers
         /// <response code="200">Returns the list of car pools.</response>
         /// <response code="400">If the request is invalid or an error occurs during retrieval.</response>
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<List<GetOneCarPoolWithPassengersDTO>>> GetCarPoolByDriverIdAsync()
         {
             string? currentUser = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -144,7 +144,7 @@ namespace Main.Controllers
         /// <returns></returns>
         
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<List<GetOneCarPoolWithPassengersDTO>>> GetCarPoolByEndDateAsync(DateTime date, float? marge)
         {
             try
@@ -168,7 +168,7 @@ namespace Main.Controllers
         /// <returns></returns>
         
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<List<GetOneCarPoolWithPassengersDTO>>> GetCarPoolByUserAsync()
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
@@ -189,7 +189,7 @@ namespace Main.Controllers
         /// <returns></returns>
         
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<GetOneCarPoolWithPassengersDTO>> GetCarPoolByRentAsync(int rentID)
         {
             try
@@ -209,7 +209,7 @@ namespace Main.Controllers
         /// <param name="marge"></param>
         /// <returns></returns>
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<List<GetOneCarPoolWithPassengersDTO>>> GetCarPoolByStartDateAsync(DateTime date, float? marge)
         {
             try
@@ -235,7 +235,7 @@ namespace Main.Controllers
         /// <returns></returns>
         
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<List<GetOneCarPoolWithPassengersDTO>>> GetCarPoolsByDateForkAsync(DateTime beginFork, DateTime endFork)
         {
             try
@@ -260,7 +260,7 @@ namespace Main.Controllers
         /// <returns></returns>
         
         [HttpPut]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<GetOneRentDTO>> UpdateCarPoolByIdAsync(UpdateOneCarPoolDTO carpoolDTO)
         {
             try

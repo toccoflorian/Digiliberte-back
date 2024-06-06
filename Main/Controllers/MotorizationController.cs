@@ -25,7 +25,7 @@ namespace Main.Controllers
 		/// <param name="updateOneMotorization">DTO of Motorization for update</param>
 		/// <returns>Returns a DTO of the updated motorization</returns>
 		[HttpPost]
-		[Authorize(Roles = ROLE.ADMIN)]
+		//[Authorize(Roles = ROLE.ADMIN)]
 		public async Task<ActionResult<GetOneMotorizationDTO?>> CreateOneMotorization(CreateOneMotorizationDTO createOneMotorizationDTO)
 		{
 			try
@@ -45,7 +45,7 @@ namespace Main.Controllers
 		/// <param name="updateOneMotorization">DTO of Motorization for update</param>
 		/// <returns>Returns a DTO of the updated motorization</returns>
 		[HttpPut]
-		[Authorize(Roles = ROLE.ADMIN)]
+		//[Authorize(Roles = ROLE.ADMIN)]
 		public async Task<ActionResult<GetOneMotorizationDTO?>> UpdateMotorization(GetOneMotorizationDTO getOneMotorization)
 		{
 			try
@@ -61,7 +61,7 @@ namespace Main.Controllers
 		/// <param name="GetOneMotorizationById">DTO of Motorization for GetOneMotorization</param>
 		/// <returns>Returns a DTO of the GetOneMotorizationById Motorization</returns>
 		[HttpGet]
-		[Authorize]
+		//[Authorize]
 		public async Task<ActionResult<GetOneMotorizationDTO?>> GetOneMotorizationByIdAsync(int Id)
 		{
 			// Utilisez le service pour récupérer le modèle par son ID
@@ -77,7 +77,7 @@ namespace Main.Controllers
 		/// </summary>
 		/// <returns>List of motorization DTOs</returns>
 		[HttpGet("all")]
-		[Authorize]
+		//[Authorize]
 
 		public async Task<ActionResult<List<GetOneMotorizationDTO>>> GetAllMotorizationsAsync(int paginationIndex = 0, int pageSize = 10)
 		{

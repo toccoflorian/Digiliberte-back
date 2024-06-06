@@ -24,7 +24,7 @@ namespace Main.Controllers
         /// <param name="userID"></param>
         /// <returns>void</returns>
         [HttpDelete]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult> DeleteUserById(string userID)           // delete user
         {
             try
@@ -43,7 +43,7 @@ namespace Main.Controllers
         /// </summary>
         /// <returns>List of users formated with GetOneUserDTO</returns>
         [HttpGet]
-        [Authorize(Roles = ROLE.ADMIN)]
+        //[Authorize(Roles = ROLE.ADMIN)]
         public async Task<ActionResult<List<GetOneUserDTO>>> GetAllUsers()         // get all users
         {
             try
@@ -62,7 +62,7 @@ namespace Main.Controllers
         /// <param name="carPoolID"></param>
         /// <returns>one user formated with GetOneUserDTO</returns>
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<List<GetOneUserDTO>>> GetUserByCarPool(int carPoolID)
         {
             try
@@ -81,7 +81,7 @@ namespace Main.Controllers
         /// <param name="userID"></param>
         /// <returns>one user formated with GetOneUserDTO</returns>
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<GetOneUserDTO>> GetUserById(string userID)           // get user by Id
         {
             try
@@ -100,7 +100,7 @@ namespace Main.Controllers
         /// <param name="rentId"></param>
         /// <returns>one user formated with GetOneUserDTO</returns>
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<GetOneUserDTO>> GetUserByRent(int rentId)
         {
             try
@@ -119,7 +119,7 @@ namespace Main.Controllers
         /// <param name="role"></param>
         /// <returns>List of user formated with GetOneUserDTO</returns>
         [HttpGet]
-        [Authorize(Roles = ROLE.ADMIN)]
+        //[Authorize(Roles = ROLE.ADMIN)]
         public async Task<ActionResult<List<GetOneUserDTO>>> GetUserByRole(string role)         // get user by role
         {
             try
@@ -139,7 +139,7 @@ namespace Main.Controllers
         /// <param name="lastname"></param>
         /// <returns>List of users formated with GetUserByNameDTO</returns>
         [HttpGet]
-        [Authorize(Roles = ROLE.ADMIN)]
+        //[Authorize(Roles = ROLE.ADMIN)]
         public async Task<ActionResult<List<GetOneUserDTO>>> GetUsersByName(string? firstname, string? lastname)     // get users by name
         {
             try
@@ -162,7 +162,7 @@ namespace Main.Controllers
         /// <param name="updateOneUserDTO"></param>
         /// <returns></returns>
         [HttpPut]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<GetOneUserDTO>> UpdateUserById(UpdateUserDTO updateOneUserDTO)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
