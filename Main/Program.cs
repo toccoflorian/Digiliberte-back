@@ -67,6 +67,21 @@ builder.Services.AddIdentityApiEndpoints<AppUser>()
 
 builder.Services.AddScoped<InitializeUser>();
 
+// ---- CORS
+string? MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy(name: MyAllowSpecificOrigins,
+					  policy =>
+					  {
+						  policy.WithOrigins("*")
+							.AllowAnyHeader()
+							.AllowAnyMethod();
+					  });
+});
+
 
 // AJOUT DES CONTROLLERS
 
@@ -116,6 +131,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors(MyAllowSpecificOrigins);
 
 app.MapIdentityApi<AppUser>();
 
