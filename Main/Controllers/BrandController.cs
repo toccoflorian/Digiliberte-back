@@ -1,9 +1,11 @@
 ﻿using DTO.Brands;
 using DTO.Brands;
 using IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services;
+using Utils.Constants;
 
 namespace Main.Controllers
 {
@@ -23,6 +25,9 @@ namespace Main.Controllers
         /// </summary>
         /// <param name="createOneBrand">DTO of Brand for creation</param>
         /// <returns>Returns a DTO of the created Brand</returns>
+        /// 
+
+        [Authorize(Roles = ROLE.ADMIN)]
         [HttpPost]
         public async Task<ActionResult<GetOneBrandDTO?>> CreateBrand(CreateOneBrandDTO createOneBrand)
         {
@@ -36,8 +41,8 @@ namespace Main.Controllers
         /// <param name="updateOneBrand">DTO of Brand for update</param>
         /// <returns>Returns a DTO of the updated Brand</returns>
         [HttpPut]
-
-        public async Task<ActionResult<GetOneBrandDTO?>> UpdateBrand(GetOneBrandDTO getOneOneBrand)
+		[Authorize(Roles = ROLE.ADMIN)]
+		public async Task<ActionResult<GetOneBrandDTO?>> UpdateBrand(GetOneBrandDTO getOneOneBrand)
         {
             try
             {
@@ -53,7 +58,9 @@ namespace Main.Controllers
         /// <param name="GetOneBrandById">DTO of Brand for GetOneBrand</param>
         /// <returns>Returns a DTO of the GetOneBrandById Brand</returns>
         [HttpGet]
-        public async Task<ActionResult<GetOneBrandDTO?>> GetOneBrandByIdAsync(int Id)
+		[Authorize]
+
+		public async Task<ActionResult<GetOneBrandDTO?>> GetOneBrandByIdAsync(int Id)
         {
             // Utilisez le service pour récupérer le modèle par son ID
             var brandDto = await brandService.GetOneBrandByIdAsync(Id);
@@ -75,7 +82,8 @@ namespace Main.Controllers
         /// </summary>
         /// <returns>List of brand DTOs</returns>
         [HttpGet("all")]
-        public async Task<ActionResult<List<GetOneBrandDTO>>> GetAllBrandsAsync()
+		[Authorize(Roles = ROLE.ADMIN+","+ROLE.USER)]
+		public async Task<ActionResult<List<GetOneBrandDTO>>> GetAllBrandsAsync()
         {
             try
             {
