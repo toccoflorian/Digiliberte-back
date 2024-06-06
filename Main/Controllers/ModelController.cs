@@ -2,12 +2,13 @@
 using DTO.Models;
 
 using IServices;
-
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repositories;
 using Services;
 using System.Threading.Tasks;
+using Utils.Constants;
 
 namespace Main.Controllers
 {
@@ -26,8 +27,9 @@ namespace Main.Controllers
         /// <param name="createOneModel">DTO of Model for creation</param>
         /// <returns>Returns a DTO of the created Vehicle</returns>
         [HttpPost]
-        
-        public async Task<ActionResult<GetOneModelDTO?>> CreateModel(CreateOneModelDTO createOneModel)
+		[Authorize(Roles = ROLE.ADMIN)]
+
+		public async Task<ActionResult<GetOneModelDTO?>> CreateModel(CreateOneModelDTO createOneModel)
         {
             try
             {
@@ -45,8 +47,9 @@ namespace Main.Controllers
         /// <param name="updateOneModel">DTO of Model for update</param>
         /// <returns>Returns a DTO of the updated Vehicle</returns>
         [HttpPut]
+		[Authorize(Roles = ROLE.ADMIN)]
 
-        public async Task<ActionResult<GetOneModelDTO?>> UpdateModel(GetOneModelDTO getOneModel)
+		public async Task<ActionResult<GetOneModelDTO?>> UpdateModel(GetOneModelDTO getOneModel)
         {
             try
             {
@@ -60,6 +63,7 @@ namespace Main.Controllers
         /// <param name="GetOneModelById">DTO of Model for GetOneModel</param>
         /// <returns>Returns a DTO of the GetOneModelById Model</returns>
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<GetOneModelDTO?>> GetOneModelByIdAsync(int Id)
         {
             // Si le modèle est trouvé, retournez-le en tant que réponse HTTP 200 OK
@@ -79,6 +83,7 @@ namespace Main.Controllers
         /// </summary>
         /// <returns>List of model DTOs</returns>
         [HttpGet("all")]
+        [Authorize]
         public async Task<ActionResult<List<GetOneModelDTO>>> GetAllModelsAsync(int paginationIndex = 0, int pageSize = 10)
         {
             try
