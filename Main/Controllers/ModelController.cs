@@ -12,7 +12,7 @@ using Utils.Constants;
 
 namespace Main.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class ModelController : ControllerBase
     {
@@ -27,14 +27,15 @@ namespace Main.Controllers
         /// <param name="createOneModel">DTO of Model for creation</param>
         /// <returns>Returns a DTO of the created Vehicle</returns>
         [HttpPost]
-		//[Authorize(Roles = ROLE.ADMIN)]
+        //[Authorize(Roles = ROLE.ADMIN)]
 
-		public async Task<ActionResult<GetOneModelDTO?>> CreateModel(CreateOneModelDTO createOneModel)
+        public async Task<ActionResult<GetOneModelDTO?>> CreateModel(CreateOneModelDTO createOneModel)
         {
             try
             {
                 return Ok(await _modelServices.CreateModelAsync(createOneModel));
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -47,14 +48,15 @@ namespace Main.Controllers
         /// <param name="updateOneModel">DTO of Model for update</param>
         /// <returns>Returns a DTO of the updated Vehicle</returns>
         [HttpPut]
-		//[Authorize(Roles = ROLE.ADMIN)]
+        //[Authorize(Roles = ROLE.ADMIN)]
 
-		public async Task<ActionResult<GetOneModelDTO?>> UpdateModel(GetOneModelDTO getOneModel)
+        public async Task<ActionResult<GetOneModelDTO?>> UpdateModel(GetOneModelDTO getOneModel)
         {
             try
             {
-            return Ok(await _modelServices.UpdateModelAsync(getOneModel));
-            }catch (Exception ex) { return BadRequest(ex.Message); }
+                return Ok(await _modelServices.UpdateModelAsync(getOneModel));
+            }
+            catch (Exception ex) { return BadRequest(ex.Message); }
         }
 
         /// <summary>
@@ -71,7 +73,8 @@ namespace Main.Controllers
             {
                 var modelDto = await _modelServices.GetOneModelByIdAsync(Id);
                 return Ok(modelDto);
-            }catch(Exception ex) 
+            }
+            catch (Exception ex)
             {
                 // Si le modèle n'est pas trouvé, retournez une réponse HTTP 404 Not Found
                 return BadRequest(ex.Message);
@@ -82,13 +85,13 @@ namespace Main.Controllers
         /// Get all models
         /// </summary>
         /// <returns>List of model DTOs</returns>
-        [HttpGet("all")]
+        [HttpGet]
         //[Authorize]
         public async Task<ActionResult<List<GetOneModelDTO>>> GetAllModelsAsync(int paginationIndex = 0, int pageSize = 10)
         {
             try
             {
-                var models = await _modelServices.GetAllModelsAsync(paginationIndex,pageSize) ;
+                var models = await _modelServices.GetAllModelsAsync(paginationIndex, pageSize);
                 return Ok(models);
             }
             catch (Exception ex)
