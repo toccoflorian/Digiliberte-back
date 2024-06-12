@@ -1,19 +1,26 @@
 ﻿using DTO.User;
 using IServices;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Models;
+using System.Security.Claims;
+using Utils.Constants;
 
 namespace Main.Controllers
 {
-    [Route("api/[controller],[action]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
-        public AuthController(IAuthService authService)
+        private readonly UserManager<AppUser> _userManager;
+        public AuthController(IAuthService authService, UserManager<AppUser> userManager)
         {
             this._authService = authService;
+            this._userManager = userManager;
         }
 
         /// <summary>
@@ -33,6 +40,19 @@ namespace Main.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        }   
+        }
+
+
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult<List<string>>> GetRole()
+        {
+            AppUser? appUser = await this._userManager.GetUserAsync(User);
+            if (appUser == null)
+            {
+                return Unauthorized();
+            }
+            return Ok(await this._userManager.GetRolesAsync(appUser));
+        }
     }
 }

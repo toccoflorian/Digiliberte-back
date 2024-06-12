@@ -62,6 +62,22 @@ builder.Services.AddIdentityApiEndpoints<AppUser>()
     .AddEntityFrameworkStores<DatabaseContext>(); // ADDING IDENTITY
 
 
+
+string? MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.WithOrigins("*")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                      });
+});
+
+
 // ---------- AJOUT SERVICES
 
 builder.Services.AddScoped<InitializeUser>();
@@ -117,6 +133,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapIdentityApi<AppUser>();
+
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseHttpsRedirection();
 

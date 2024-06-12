@@ -1,6 +1,7 @@
 ﻿using DTO.Brands;
 using DTO.Brands;
 using IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services;
@@ -24,6 +25,7 @@ namespace Main.Controllers
         /// <param name="createOneBrand">DTO of Brand for creation</param>
         /// <returns>Returns a DTO of the created Brand</returns>
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<GetOneBrandDTO?>> CreateBrand(CreateOneBrandDTO createOneBrand)
         {
             var createdBrand = await brandService.CreateBrandAsync(createOneBrand);
@@ -74,6 +76,7 @@ namespace Main.Controllers
         /// <param name="GetOneBrandById">DTO of Brand for GetOneBrand</param>
         /// <returns>Returns a DTO of the GetOneBrandById Brand</returns>
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<GetOneBrandDTO?>> GetOneBrandByIdAsync(int Id)
         {
             // Utilisez le service pour récupérer le modèle par son ID
