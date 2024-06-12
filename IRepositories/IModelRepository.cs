@@ -13,7 +13,9 @@ namespace IRepositories
     {
         public Task<GetOneModelDTO> CreateModelAsync(CreateOneModelDTO createModelDTO);
         public Task<GetOneModelDTO?> UpdateOneModelByIdAsync(GetOneModelDTO updatedModelDTO);
-        public Task DeleteOneModelByIdAsync(int modelId);
+        //public Task DeleteOneModelByIdAsync(int modelId);
         public Task<Model?> GetOneModelByIdAsync(int Id);
+        public Task<List<GetOneModelDTO>> GetAllModelsAsync(int paginationIndex = 0, int pageSize = 10);
+
     }
 }

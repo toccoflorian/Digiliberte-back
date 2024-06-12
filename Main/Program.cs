@@ -12,6 +12,7 @@ using Swashbuckle.AspNetCore.Filters;
 using System;
 using System.Reflection;
 using System.Text.Json.Serialization;
+using Repositories.Helper;
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 
@@ -38,7 +39,7 @@ builder.Services.AddScoped<ICarPoolRepository, CarPoolRepository>();
 builder.Services.AddScoped<ICarPoolService, CarPoolService>();
 builder.Services.AddScoped<ICarPoolPassengerRepository, CarPoolPassengerRepository>();
 builder.Services.AddScoped<ICarPoolPassengerService, CarPoolPassengerService>();
-
+builder.Services.AddScoped<RentHelper>();
 
 
 // ------------------Ajoue de la database 
@@ -81,6 +82,21 @@ builder.Services.AddCors(options =>
 // ---------- AJOUT SERVICES
 
 builder.Services.AddScoped<InitializeUser>();
+
+// ---- CORS
+string? MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy(name: MyAllowSpecificOrigins,
+					  policy =>
+					  {
+						  policy.WithOrigins("*")
+							.AllowAnyHeader()
+							.AllowAnyMethod();
+					  });
+});
 
 
 // AJOUT DES CONTROLLERS
@@ -131,6 +147,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors(MyAllowSpecificOrigins);
 
 app.MapIdentityApi<AppUser>();
 

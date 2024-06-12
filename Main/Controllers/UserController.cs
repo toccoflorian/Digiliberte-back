@@ -62,7 +62,7 @@ namespace Main.Controllers
         /// <param name="carPoolID"></param>
         /// <returns>one user formated with GetOneUserDTO</returns>
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<List<GetOneUserDTO>>> GetUserByCarPool(int carPoolID)
         {
             try
@@ -135,24 +135,34 @@ namespace Main.Controllers
         /// <summary>
         /// get a list of users by name
         /// </summary>
-        /// <param name="getUserByNameDTO"></param>
+        /// <param name="firstname"></param>
+        /// <param name="lastname"></param>
         /// <returns>List of users formated with GetUserByNameDTO</returns>
         [HttpGet]
         //[Authorize(Roles = ROLE.ADMIN)]
-        public async Task<ActionResult<List<GetOneUserDTO>>> GetUsersByName(GetUserByNameDTO getUserByNameDTO)     // get users by name
+        public async Task<ActionResult<List<GetOneUserDTO>>> GetUsersByName(string? firstname, string? lastname)     // get users by name
         {
             try
             {
-                return await this._userService.GetUsersByNameAsync(getUserByNameDTO);
+                return await this._userService.GetUsersByNameAsync(new GetUserByNameDTO
+                {
+                    Firstname = firstname,
+                    Lastname = lastname
+                });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
+        /// <summary>
+        /// PUT update user by user id
+        /// </summary>
+        /// <param name="updateOneUserDTO"></param>
+        /// <returns></returns>
         [HttpPut]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<GetOneUserDTO>> UpdateUserById(UpdateUserDTO updateOneUserDTO)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;

@@ -39,23 +39,23 @@ namespace Services
             return existingModel;
         }
 
-        public async Task<bool> DeleteOneModelByIdAsync(int modelId)
-        {
+        //public async Task<bool> DeleteOneModelByIdAsync(int modelId)
+        //{
 
-            // Vérifiez d'abord si un modèle avec le même id existe déjà dans la base de données
-            var existingModel = await ModelRepository.GetOneModelByIdAsync(modelId);
+        //    // Vérifiez d'abord si un modèle avec le même id existe déjà dans la base de données
+        //    var existingModel = await ModelRepository.GetOneModelByIdAsync(modelId);
 
-            // Si le modèle existe, procédez à sa suppression
-            if (existingModel != null)
-            {
-                await ModelRepository.DeleteOneModelByIdAsync(modelId);
-                return true; // Indique que la suppression a été effectuée avec succès
-            }
-            else
-            {
-                return false; // Indique que le modèle n'a pas été trouvé, donc la suppression n'a pas été effectuée
-            }
-        }
+        //    // Si le modèle existe, procédez à sa suppression
+        //    if (existingModel != null)
+        //    {
+        //        await ModelRepository.DeleteOneModelByIdAsync(modelId);
+        //        return true; // Indique que la suppression a été effectuée avec succès
+        //    }
+        //    else
+        //    {
+        //        return false; // Indique que le modèle n'a pas été trouvé, donc la suppression n'a pas été effectuée
+        //    }
+        //}
 
         public async Task<GetOneModelDTO?> GetOneModelByIdAsync(int modelId)
         {
@@ -77,6 +77,20 @@ namespace Services
             {
                 // Si le modèle n'existe pas, retournez null
                 return null;
+            }
+        }
+
+        public async Task<List<GetOneModelDTO>> GetAllModelsAsync(int paginationIndex = 0, int pageSize = 10)
+        {
+                var models = await ModelRepository.GetAllModelsAsync(paginationIndex,pageSize);
+            if(models == null || models.Count == 0)
+            {
+                // Gérer les exceptions appropriées
+                throw new Exception("Failed to retrieve models");
+            }
+            else
+            {
+                return models;
             }
         }
 

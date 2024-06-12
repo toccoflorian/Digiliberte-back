@@ -71,22 +71,22 @@ namespace Repositories
             };
         }
 
-        /// <summary>
-        /// Delete a brand by Id , used Id to know if  exists
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public async Task DeleteOneBrandByIdAsync(int brandId)
-        {
-            var brandToDelete = await Context.Brands.FindAsync(brandId);
+        ///// <summary>
+        ///// Delete a brand by Id , used Id to know if  exists
+        ///// </summary>
+        ///// <param name="Id"></param>
+        ///// <returns></returns>
+        //public async Task DeleteOneBrandByIdAsync(int brandId)
+        //{
+        //    var brandToDelete = await Context.Brands.FindAsync(brandId);
 
-            if (brandToDelete != null)
-            {
-                Context.Brands.Remove(brandToDelete);
-                await Context.SaveChangesAsync();
-            }
-            // Si le brand n'existe pas, il n'y a rien à supprimer
-        }
+        //    if (brandToDelete != null)
+        //    {
+        //        Context.Brands.Remove(brandToDelete);
+        //        await Context.SaveChangesAsync();
+        //    }
+        //    // Si le brand n'existe pas, il n'y a rien à supprimer
+        //}
 
         /// <summary>
         /// Get a brand by Id , used Id to know if  exists already
@@ -96,6 +96,25 @@ namespace Repositories
         public async Task<Brand?> GetOneBrandByIdAsync(int Id)
         {
             return await Context.Brands.FirstOrDefaultAsync(c => c.Id == Id);
+        }
+
+        /// <summary>
+        /// Get all brands
+        /// </summary>
+        /// <returns>List of brand DTOs</returns>
+        public async Task<List<GetOneBrandDTO>> GetAllBrandsAsync(int paginationIndex = 0, int pageSize = 1)
+        {
+            // Interrogez la base de données pour obtenir toutes les motorisations
+            var brands = await Context.Brands.Skip(pageSize * paginationIndex).Take(pageSize).ToListAsync();
+
+            // Convertissez les objets Brand en DTOs
+            var brandDTOs = brands.Select(m => new GetOneBrandDTO
+            {
+                Id = m.Id,
+                Name = m.Label
+            }).ToList();
+
+            return brandDTOs;
         }
 
     }

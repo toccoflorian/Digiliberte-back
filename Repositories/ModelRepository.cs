@@ -82,22 +82,22 @@ namespace Repositories
             };
         }
 
-        /// <summary>
-        /// Delete a model by Id , used Id to know if  exists
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public async Task DeleteOneModelByIdAsync(int modelId)
-        {
-            var modelToDelete = await Context.Models.FindAsync(modelId);
+        ///// <summary>
+        ///// Delete a model by Id , used Id to know if  exists
+        ///// </summary>
+        ///// <param name="Id"></param>
+        ///// <returns></returns>
+        //public async Task DeleteOneModelByIdAsync(int modelId)
+        //{
+        //    var modelToDelete = await Context.Models.FindAsync(modelId);
 
-            if (modelToDelete != null)
-            {
-                Context.Models.Remove(modelToDelete);
-                await Context.SaveChangesAsync();
-            }
-            // Si le modèle n'existe pas, il n'y a rien à supprimer
-        }
+        //    if (modelToDelete != null)
+        //    {
+        //        Context.Models.Remove(modelToDelete);
+        //        await Context.SaveChangesAsync();
+        //    }
+        //    // Si le modèle n'existe pas, il n'y a rien à supprimer
+        //}
 
         /// <summary>
         /// Get a model by Id , used Id to know if  exists already
@@ -107,6 +107,26 @@ namespace Repositories
         public async Task<Model?> GetOneModelByIdAsync(int Id)
         {
             return await Context.Models.FirstOrDefaultAsync(c=>c.Id == Id);
+        }
+
+
+        /// <summary>
+        /// Get all models
+        /// </summary>
+        /// <returns>List of model DTOs</returns>
+        public async Task<List<GetOneModelDTO>> GetAllModelsAsync(int paginationIndex = 0, int pageSize = 10)
+        {
+            // Interrogez la base de données pour obtenir toutes les motorisations
+            var models = await Context.Models.Skip(pageSize * paginationIndex).Take(pageSize).ToListAsync();
+
+            // Convertissez les objets Model en DTOs
+            var modelDTOs = models.Select(m => new GetOneModelDTO
+            {
+                Id = m.Id,
+                Name = m.Label
+            }).ToList();
+
+            return modelDTOs;
         }
 
     }

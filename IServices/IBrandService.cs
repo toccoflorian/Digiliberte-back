@@ -11,7 +11,8 @@ namespace IServices
     {
         public Task<GetOneBrandDTO?> CreateBrandAsync(CreateOneBrandDTO createBrandDTO);
         public Task<GetOneBrandDTO?> UpdateBrandAsync(GetOneBrandDTO getOneBrandDTO);
-        public Task<bool> DeleteOneBrandByIdAsync(int brandId);
+        //public Task<bool> DeleteOneBrandByIdAsync(int brandId);
         public Task<GetOneBrandDTO?> GetOneBrandByIdAsync(int brandId);
+        public Task<List<GetOneBrandDTO>> GetAllBrandsAsync(int paginationIndex = 0, int pageSize = 10);
     }
 }

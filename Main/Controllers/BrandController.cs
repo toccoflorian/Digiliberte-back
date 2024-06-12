@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services;
+using Utils.Constants;
 
 namespace Main.Controllers
 {
@@ -24,6 +25,9 @@ namespace Main.Controllers
         /// </summary>
         /// <param name="createOneBrand">DTO of Brand for creation</param>
         /// <returns>Returns a DTO of the created Brand</returns>
+        /// 
+
+        //[Authorize(Roles = ROLE.ADMIN)]
         [HttpPost]
         [Authorize]
         public async Task<ActionResult<GetOneBrandDTO?>> CreateBrand(CreateOneBrandDTO createOneBrand)
@@ -38,7 +42,7 @@ namespace Main.Controllers
         /// <param name="updateOneBrand">DTO of Brand for update</param>
         /// <returns>Returns a DTO of the updated Brand</returns>
         [HttpPut]
-
+        //[Authorize(Roles = ROLE.ADMIN)]
         public async Task<ActionResult<GetOneBrandDTO?>> UpdateBrand(GetOneBrandDTO getOneOneBrand)
         {
             try
@@ -48,49 +52,48 @@ namespace Main.Controllers
             catch (Exception ex) { return BadRequest(ex.Message); }
         }
 
-        /// <summary>
-        /// Dlete a Brand into the db, use a DTO for delete        
-        /// 
-        /// /// </summary>
-        /// <param name="deleteOneBrand">DTO of Brand for delete</param>
-        /// <returns>Returns a DTO of the deleted Brand</returns>
-        [HttpDelete]
-        public async Task<ActionResult<GetOneBrandDTO?>> DeleteOneBrandByIdAsync(int Id)
-        {
-            var brand = await brandService.GetOneBrandByIdAsync(Id);
-
-            if (brand != null)
-            {
-                await brandService.DeleteOneBrandByIdAsync(Id);
-                return Ok($"Modèle {Id} delete ");
-            }
-            else
-            {
-                return null; // Indique que le modèle n'a pas été trouvé, donc la suppression n'a pas été effectuée
-            }
-        }
 
         /// <summary>
         /// Get a Brand By Id into the db, use a Id       
-        /// /// </summary>
+        /// </summary>
         /// <param name="GetOneBrandById">DTO of Brand for GetOneBrand</param>
         /// <returns>Returns a DTO of the GetOneBrandById Brand</returns>
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<GetOneBrandDTO?>> GetOneBrandByIdAsync(int Id)
+
         {
             // Utilisez le service pour récupérer le modèle par son ID
             var brandDto = await brandService.GetOneBrandByIdAsync(Id);
 
             // Si le modèle est trouvé, retournez-le en tant que réponse HTTP 200 OK
-            if (brandDto != null)
+            try
             {
                 return Ok(brandDto);
             }
-            else
+            catch
+             (Exception ex)
             {
-                // Si le modèle n'est pas trouvé, retournez une réponse HTTP 404 Not Found
-                return NotFound();
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Get all brands
+        /// </summary>
+        /// <returns>List of brand DTOs</returns>
+        [HttpGet("all")]
+        //[Authorize(Roles = ROLE.ADMIN+","+ROLE.USER)]
+        public async Task<ActionResult<List<GetOneBrandDTO>>> GetAllBrandsAsync()
+        {
+            try
+            {
+                var brands = await brandService.GetAllBrandsAsync();
+                return Ok(brands);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }

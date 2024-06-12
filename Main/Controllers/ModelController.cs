@@ -1,12 +1,14 @@
 ﻿using DTO.Dates;
 using DTO.Models;
+
 using IServices;
-using IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repositories;
 using Services;
 using System.Threading.Tasks;
+using Utils.Constants;
 
 namespace Main.Controllers
 {
@@ -25,8 +27,9 @@ namespace Main.Controllers
         /// <param name="createOneModel">DTO of Model for creation</param>
         /// <returns>Returns a DTO of the created Vehicle</returns>
         [HttpPost]
-        
-        public async Task<ActionResult<GetOneModelDTO?>> CreateModel(CreateOneModelDTO createOneModel)
+		//[Authorize(Roles = ROLE.ADMIN)]
+
+		public async Task<ActionResult<GetOneModelDTO?>> CreateModel(CreateOneModelDTO createOneModel)
         {
             try
             {
@@ -39,12 +42,14 @@ namespace Main.Controllers
         }
 
         /// <summary>
-        /// Put a Model into the db, use a DTO for update        /// </summary>
+        /// Put a Model into the db, use a DTO for update        
+        /// </summary>
         /// <param name="updateOneModel">DTO of Model for update</param>
         /// <returns>Returns a DTO of the updated Vehicle</returns>
         [HttpPut]
+		//[Authorize(Roles = ROLE.ADMIN)]
 
-        public async Task<ActionResult<GetOneModelDTO?>> UpdateModel(GetOneModelDTO getOneModel)
+		public async Task<ActionResult<GetOneModelDTO?>> UpdateModel(GetOneModelDTO getOneModel)
         {
             try
             {
@@ -53,47 +58,42 @@ namespace Main.Controllers
         }
 
         /// <summary>
-        /// Dlete a Model into the db, use a DTO for delete        
-        /// 
-        /// /// </summary>
-        /// <param name="deleteOneModel">DTO of Model for delete</param>
-        /// <returns>Returns a DTO of the deleted Vehicle</returns>
-        [HttpDelete]
-        public async Task<ActionResult<GetOneModelDTO?>> DeleteOneModelByIdAsync(int Id)
+        /// Get a Model By Id into the db, use a Id       
+        /// </summary>
+        /// <param name="GetOneModelById">DTO of Model for GetOneModel</param>
+        /// <returns>Returns a DTO of the GetOneModelById Model</returns>
+        [HttpGet]
+        //[Authorize]
+        public async Task<ActionResult<GetOneModelDTO?>> GetOneModelByIdAsync(int Id)
         {
-            var model = await _modelServices.GetOneModelByIdAsync(Id);
-
-            if (model != null)
+            // Si le modèle est trouvé, retournez-le en tant que réponse HTTP 200 OK
+            try
             {
-                await _modelServices.DeleteOneModelByIdAsync(Id); 
-                return Ok($"Le modèle avec le id : {Id} à été supprimé ");
-            }
-            else
+                var modelDto = await _modelServices.GetOneModelByIdAsync(Id);
+                return Ok(modelDto);
+            }catch(Exception ex) 
             {
-                return null; // Indique que le modèle n'a pas été trouvé, donc la suppression n'a pas été effectuée
+                // Si le modèle n'est pas trouvé, retournez une réponse HTTP 404 Not Found
+                return BadRequest(ex.Message);
             }
         }
 
         /// <summary>
-        /// Get a Model By Id into the db, use a Id       
-        /// /// </summary>
-        /// <param name="GetOneModelById">DTO of Model for GetOneModel</param>
-        /// <returns>Returns a DTO of the GetOneModelById Model</returns>
-        [HttpGet]
-        public async Task<ActionResult<GetOneModelDTO?>> GetOneModelByIdAsync(int Id)
+        /// Get all models
+        /// </summary>
+        /// <returns>List of model DTOs</returns>
+        [HttpGet("all")]
+        //[Authorize]
+        public async Task<ActionResult<List<GetOneModelDTO>>> GetAllModelsAsync(int paginationIndex = 0, int pageSize = 10)
         {
-            // Utilisez le service pour récupérer le modèle par son ID
-            var modelDto = await _modelServices.GetOneModelByIdAsync(Id);
-
-            // Si le modèle est trouvé, retournez-le en tant que réponse HTTP 200 OK
-            if (modelDto != null)
+            try
             {
-                return Ok(modelDto);
+                var models = await _modelServices.GetAllModelsAsync(paginationIndex,pageSize) ;
+                return Ok(models);
             }
-            else
+            catch (Exception ex)
             {
-                // Si le modèle n'est pas trouvé, retournez une réponse HTTP 404 Not Found
-                return NotFound();
+                return BadRequest(ex.Message);
             }
         }
     }

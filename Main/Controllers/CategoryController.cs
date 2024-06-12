@@ -1,6 +1,9 @@
 ﻿using DTO.Dates;
 using IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Services;
+using Utils.Constants;
 
 namespace Main.Controllers
 {
@@ -15,11 +18,12 @@ namespace Main.Controllers
         }
 
         /// <summary>
-        /// Create a Category into the db, use a DTO for Create        
+        /// Create a Category into the db, use a DTO for Create   
         /// </summary>
-        /// <param name="updateOneCategory">DTO of Category for update</param>
-        /// <returns>Returns a DTO of the updated category</returns>
+        /// <param name="createOneCategoryDTO"></param>
+        /// <returns></returns>
         [HttpPost]
+        //[Authorize(Roles = ROLE.ADMIN)]
         public async Task<ActionResult<GetOneCategoryDTO>> CreateOneCategory(CreateOneCategoryDTO createOneCategoryDTO)
         {
             try
@@ -38,8 +42,9 @@ namespace Main.Controllers
         /// <param name="updateOneCategory">DTO of Category for update</param>
         /// <returns>Returns a DTO of the updated category</returns>
         [HttpPut]
+		//[Authorize(Roles = ROLE.ADMIN)]
 
-        public async Task<ActionResult<GetOneCategoryDTO?>> UpdateCategory(GetOneCategoryDTO getOneCategory)
+		public async Task<ActionResult<GetOneCategoryDTO?>> UpdateCategory(GetOneCategoryDTO getOneCategory)
         {
             try
             {
@@ -49,28 +54,13 @@ namespace Main.Controllers
         }
 
         /// <summary>
-        /// Dlete a Category into the db, use a DTO for delete        
-        /// 
-        /// /// </summary>
-        /// <param name="deleteOneCategory">DTO of Category for delete</param>
-        /// <returns>Returns a DTO of the deleted category</returns>
-        [HttpDelete]
-        public async Task<ActionResult<GetOneCategoryDTO?>> DeleteOneCategoryByIdAsync(int Id)
-        {
-            try
-            {
-                return Ok(await _categoryServices.DeleteOneCategoryByIdAsync(Id));
-            }
-            catch(Exception ex) { return BadRequest(ex.Message) ; }
-        }
-
-        /// <summary>
         /// Get a Category By Id into the db, use a Id       
-        /// /// </summary>
+        /// </summary>
         /// <param name="GetOneCategoryById">DTO of Category for GetOneCategory</param>
         /// <returns>Returns a DTO of the GetOneCategoryById Category</returns>
         [HttpGet]
-        public async Task<ActionResult<GetOneCategoryDTO?>> GetOneCategoryByIdAsync(int Id)
+		//[Authorize]
+		public async Task<ActionResult<GetOneCategoryDTO?>> GetOneCategoryByIdAsync(int Id)
         {
             // Utilisez le service pour récupérer le modèle par son ID
             try
@@ -78,6 +68,25 @@ namespace Main.Controllers
                 return Ok(await _categoryServices.GetOneCategoryByIdAsync(Id));
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
+        }
+
+        /// <summary>
+        /// Get all categorys
+        /// </summary>
+        /// <returns>List of category DTOs</returns>
+        [HttpGet("all")]
+        //[Authorize]
+        public async Task<ActionResult<List<GetOneCategoryDTO>>> GetAllCategorysAsync(int paginationIndex = 0, int pageSize = 10)
+        {
+            try
+            {
+                var categorys = await _categoryServices.GetAllCategorysAsync(paginationIndex, pageSize);
+                return Ok(categorys);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
