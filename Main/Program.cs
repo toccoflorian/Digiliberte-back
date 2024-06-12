@@ -83,8 +83,6 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddScoped<InitializeUser>();
 
-// ---- CORS
-string? MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 
 builder.Services.AddCors(options =>
