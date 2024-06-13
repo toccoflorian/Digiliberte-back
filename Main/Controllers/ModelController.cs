@@ -27,9 +27,9 @@ namespace Main.Controllers
         /// <param name="createOneModel">DTO of Model for creation</param>
         /// <returns>Returns a DTO of the created Vehicle</returns>
         [HttpPost]
-        //[Authorize(Roles = ROLE.ADMIN)]
+        [Authorize]
 
-        public async Task<ActionResult<GetOneModelDTO?>> CreateModel(CreateOneModelDTO createOneModel)
+        public async Task<ActionResult<GetOneModelDTO?>> CreateModel([FromBody] CreateOneModelDTO createOneModel)
         {
             try
             {

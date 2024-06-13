@@ -125,8 +125,8 @@ namespace Main.Controllers
         //    throw new NotImplementedException();
         //}
         [HttpPost]
-		//[Authorize]
-		public async Task<IActionResult> UpdateRentById(UpdateRentRequestDTO updateRentRequest)
+        //[Authorize]
+        public async Task<IActionResult> UpdateRentById(UpdateRentRequestDTO updateRentRequest)
         {
             try
             {
@@ -169,19 +169,16 @@ namespace Main.Controllers
         /// <response code="200">Returns the list of rents with associated car pools.</response>
         /// <response code="400">If the request is invalid or an error occurs during retrieval.</response>
         [HttpGet]
-        //[Authorize]
-        public async Task<IActionResult> GetRentByUserId(string? userId = null)
+        [Authorize]
+        public async Task<IActionResult> GetRentByUserId()
         {
-            string? TargetUser = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (!(userId == null))
-            {
-                TargetUser = userId;
-            }
-
             try
             {
-                return Ok(await this._rentService.GetRentsByUserAsync(TargetUser));
-            }catch (Exception ex)
+                string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier)
+                    ?? throw new Exception("Merci de vous connecter");
+                return Ok(await this._rentService.GetRentsByUserAsync(userId));
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
