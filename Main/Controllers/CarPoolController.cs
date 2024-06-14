@@ -27,7 +27,7 @@ namespace Main.Controllers
         /// <response code="400">If the request is invalid or an error occurs during creation.</response>
 
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public async Task<ActionResult<GetOneCarPoolDTO>> CreateCarpool(CreateCarpoolRequestDTO createRequestCarPoolDTO)
         {
             string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

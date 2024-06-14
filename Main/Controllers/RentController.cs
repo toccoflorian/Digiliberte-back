@@ -146,7 +146,7 @@ namespace Main.Controllers
         /// <response code="400">If the request is invalid or an error occurs during retrieval.</response>
 
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> GetRentByDateFork(DateForkDTO dateFork)
         {
             try
