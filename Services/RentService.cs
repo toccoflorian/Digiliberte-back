@@ -242,7 +242,8 @@ namespace Services
                     UserLastname = rentDto.UserLastname,
                     VehiceId = rentDto.VehiceId,
                     VehicleInfo = rentDto.VehicleInfo,
-                    CarPools = carPools ?? new List<GetOneCarPoolWithPassengersDTO>()
+                    CarPools = carPools ?? new List<GetOneCarPoolWithPassengersDTO>(),
+                    Vehicle = rentDto.Vehicle
                 });
             }
 

@@ -112,9 +112,15 @@ namespace Repositories
             return this._context.Rents
                 .Include(rent => rent.User)
                 .Include(rent => rent.Vehicle)
+                .Include(rent => rent.User)
+                .Include(rent => rent.Vehicle)
                 .ThenInclude(vehicle => vehicle.Brand)
                 .Include(rent => rent.Vehicle)
                 .ThenInclude(vehicle => vehicle.Model)
+                .Include(rent => rent.Vehicle)
+                .ThenInclude(vehicle => vehicle.Category)
+                .Include(rent => rent.Vehicle)
+                .ThenInclude(vehicle => vehicle.Motorization)
                 .Include(rent => rent.StartDate)
                 .Include(rent => rent.ReturnDate)
                 .Select(rent =>
@@ -128,7 +134,8 @@ namespace Repositories
                         ReturnDate = rent.ReturnDate.Date,
                         VehiceId = rent.VehicleId,
                         VehicleInfo = $"{rent.Vehicle.Brand.Label} {rent.Vehicle.Model.Label} {rent.Vehicle.Model.Year}",
-                        Immatriculation = rent.Vehicle.Immatriculation
+                        Immatriculation = rent.Vehicle.Immatriculation,
+                        Vehicle = new GetVehicleDTO(rent.Vehicle)
                     })
                 .FirstOrDefaultAsync(rentDTO => rentDTO.Id == rentID);
         }   // TODO : CHANGER LE RETOUR EN GETRENTWITHCARPOOL

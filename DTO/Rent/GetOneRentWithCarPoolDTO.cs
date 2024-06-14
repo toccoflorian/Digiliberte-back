@@ -1,4 +1,5 @@
 ﻿using DTO.CarPools;
+using DTO.Vehicles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,5 +20,6 @@ namespace DTO.Rent
         public string UserFirstname { get; set; }
         public string UserLastname { get; set; }
         public List<GetOneCarPoolWithPassengersDTO> CarPools  {  get; set; }
+        public GetVehicleDTO Vehicle { get; set; }
     }
 }

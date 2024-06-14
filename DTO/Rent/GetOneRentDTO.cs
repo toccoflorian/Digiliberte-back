@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DTO.Vehicles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,8 @@ namespace DTO.Rent
         public string UserId { get; set; }
         public int VehiceId { get; set; }
         public string VehicleInfo { get; set; }
+        public GetVehicleDTO Vehicle { get; set; }
+
         public string Immatriculation { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime ReturnDate { get; set; }

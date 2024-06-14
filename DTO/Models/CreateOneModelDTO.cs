@@ -12,7 +12,7 @@ namespace DTO.Models
     public class CreateOneModelDTO
     {
         public string Name { get; set; }
-        public double Co2 { get; set; }
+        public int Co2 { get; set; }
         public int Year {  get; set; }
     }
 }
